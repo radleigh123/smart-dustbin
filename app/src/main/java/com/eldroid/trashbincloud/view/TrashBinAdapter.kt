@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.model.entity.TrashBin
+import java.util.Locale
 
 class TrashBinAdapter(
     private val onBinClickListener: (TrashBin) -> Unit
@@ -58,7 +59,7 @@ class TrashBinAdapter(
         fun bind(bin: TrashBin) {
             nameText.text = bin.name
             locationText.text = bin.location
-            statusText.text = bin.status.capitalize()
+            statusText.text = bin.status.replaceFirstChar { if (it.isLowerCase()) it.titlecase(Locale.getDefault()) else it.toString() }
             fillLevelBar.progress = bin.fillLevel
             fillLevelText.text = "${bin.fillLevel}%"
             lastUpdatedText.text = "Updated: ${bin.getFormattedTimestamp()}"

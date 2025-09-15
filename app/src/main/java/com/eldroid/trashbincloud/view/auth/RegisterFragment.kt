@@ -44,11 +44,11 @@ class RegisterFragment : Fragment(), AuthContract.View {
         }
 
         binding.registerBtn.setOnClickListener {
-            val firstName = binding.fNameEt.text.toString().trim()
-            val lastName = binding.lNameEt.text.toString().trim()
-            val email = binding.emailEt.text.toString().trim()
-            val password = binding.passEt.text.toString().trim()
-            val confirmPassword = binding.pass2Et.text.toString().trim()
+            val firstName = binding.fNameEt.editText.toString().trim()
+            val lastName = binding.lNameEt.editText.toString().trim()
+            val email = binding.emailEt.editText.toString().trim()
+            val password = binding.passEt.editText.toString().trim()
+            val confirmPassword = binding.pass2Et.editText.toString().trim()
             val isChecked = binding.checkboxMeat.isChecked
 
             if (firstName.isEmpty()) {

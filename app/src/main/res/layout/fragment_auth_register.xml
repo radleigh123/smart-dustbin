@@ -4,45 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:background="@drawable/gradient_bg"
     tools:context=".view.auth.RegisterFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="8dp"
         >
+
+        <!-- Vertical Guidelines -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.04" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.96" />
+
+        <!-- Horizontal Guidelines -->
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_top"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.05" />
 
         <LinearLayout
             android:id="@+id/titleLinear"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:padding="15dp"
-                app:srcCompat="@android:drawable/ic_menu_delete" />
+            app:layout_constraintTop_toTopOf="@id/guideline_top"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            >
 
             <TextView
                 android:id="@+id/title2_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/margin_tiny"
+                android:fontFamily="@font/montserrat_bold"
                 android:gravity="center"
-                android:text="Create an account" />
+                android:text="Register"
+                android:textColor="@color/primary"
+                android:textSize="@dimen/text_title"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/title22_tv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat"
                 android:gravity="center"
-                android:text="Enter your details below to create your account" />
+                android:text="@string/login_details"
+                android:textColor="@color/secondary" />
 
         </LinearLayout>
 
@@ -50,127 +74,117 @@
             android:id="@+id/inputLinear"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="1dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="1dp"
             android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/titleLinear">
+            app:layout_constraintTop_toBottomOf="@id/titleLinear"
+            app:layout_constraintStart_toStartOf="@id/guideline_start"
+            app:layout_constraintEnd_toEndOf="@id/guideline_end"
+            android:paddingVertical="@dimen/margin_large"
+            >
 
-            <LinearLayout
+            <com.google.android.material.textfield.TextInputLayout
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+                android:id="@+id/fName_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:baselineAligned="false"
-                android:orientation="horizontal">
+                android:hint="First Name"
+                android:textColorHint="@color/white"
+                android:layout_marginBottom="@dimen/margin_default"
+                app:boxStrokeColor="@color/secondary"
+                app:boxStrokeWidth="2dp"
+                app:boxBackgroundColor="@color/white_20"
+                >
 
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/fName_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="First name" />
-
-                    <EditText
-                        android:id="@+id/fName_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="text" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:id="@+id/lName_tv"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Last name" />
-
-                    <EditText
-                        android:id="@+id/lName_et"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:ems="10"
-                        android:inputType="text" />
-                </LinearLayout>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/email_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Email" />
-
-                <EditText
-                    android:id="@+id/email_et"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
+                    android:fontFamily="@font/montserrat_medium"
                     android:inputType="text" />
-            </LinearLayout>
 
-            <LinearLayout
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+                android:id="@+id/lName_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:hint="Last Name"
+                android:textColorHint="@color/white"
+                android:layout_marginBottom="@dimen/margin_default"
+                app:boxStrokeColor="@color/secondary"
+                app:boxStrokeWidth="2dp"
+                app:boxBackgroundColor="@color/white_20"
+                >
 
-                <TextView
-                    android:id="@+id/pass_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Password" />
-
-                <EditText
-                    android:id="@+id/pass_et"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
+                    android:fontFamily="@font/montserrat_medium"
                     android:inputType="text" />
-            </LinearLayout>
 
-            <LinearLayout
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+                android:id="@+id/email_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:hint="@string/email"
+                android:textColorHint="@color/white"
+                android:layout_marginBottom="@dimen/margin_default"
+                app:boxStrokeColor="@color/secondary"
+                app:boxStrokeWidth="2dp"
+                app:boxBackgroundColor="@color/white_20"
+                >
 
-                <TextView
-                    android:id="@+id/pass2_tv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Confirm password" />
-
-                <EditText
-                    android:id="@+id/pass2_et"
+                <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:ems="10"
-                    android:inputType="text" />
-            </LinearLayout>
+                    android:fontFamily="@font/montserrat_medium"
+                    android:inputType="textEmailAddress" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+                android:id="@+id/pass_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
+                android:textColorHint="@color/white"
+                android:layout_marginBottom="@dimen/margin_small"
+                app:boxStrokeColor="@color/secondary"
+                app:boxStrokeWidth="2dp"
+                app:boxBackgroundColor="@color/white_20"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+                android:id="@+id/pass2_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:textColorHint="@color/white"
+                android:layout_marginBottom="@dimen/margin_small"
+                app:boxStrokeColor="@color/secondary"
+                app:boxStrokeWidth="2dp"
+                app:boxBackgroundColor="@color/white_20"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:inputType="textPassword" />
+
+            </com.google.android.material.textfield.TextInputLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -181,6 +195,7 @@
                     android:id="@+id/checkbox_meat"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
                     android:text="Agree to terms and conditions" />
 
             </LinearLayout>
@@ -198,11 +213,17 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/inputLinear">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/register_btn"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Create account" />
+                android:layout_height="@dimen/button_height"
+                android:layout_marginHorizontal="@dimen/margin_large"
+                android:background="@drawable/gradient_button_bg"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="Register"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_large"
+                />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -216,6 +237,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
+                android:layout_marginTop="20dp"
                 android:gravity="center">
 
                 <TextView
@@ -232,7 +254,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Log in"
-                    android:textColorLink="@color/black"
+                    android:textColor="@color/white"
                     />
 
             </LinearLayout>
