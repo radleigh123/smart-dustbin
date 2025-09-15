@@ -12,15 +12,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrashbinCloud">
         <activity
-            android:name=".MainActivity"
+            android:name=".view.MainActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.auth.IndexActivity"
             android:exported="true"
-            android:theme="@style/Theme.TrashbinCloud">
+            android:theme="@style/Theme.TrashbinCloud.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
