@@ -48,7 +48,7 @@ class DashboardFragment : Fragment() {
     }
 
     private fun setupRecyclerView() {
-        binding.recyclerTrashBins.apply {
+        binding.recyclerTrashbins.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = trashBinAdapter
         }

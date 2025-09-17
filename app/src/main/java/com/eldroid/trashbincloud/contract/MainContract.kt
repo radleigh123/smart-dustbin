@@ -7,6 +7,7 @@ interface MainContract {
     }
 
     interface Presenter {
+        fun checkUser()
         fun logout()
     }
 }

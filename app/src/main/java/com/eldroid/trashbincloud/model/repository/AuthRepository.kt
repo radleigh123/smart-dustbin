@@ -1,8 +1,14 @@
 package com.eldroid.trashbincloud.model.repository
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 
 class AuthRepository(private val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
+
+    fun currentUser(): FirebaseUser? {
+        return auth.currentUser
+    }
+
     fun login(email: String, password: String, callback: (Boolean, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
