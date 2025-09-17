@@ -19,8 +19,8 @@ cd smart-dustbin
 #### 2. Service Account Key
 
 1. Go to the [Firebase Console](https://console.firebase.google.com/u/0/project/smart-dustbin-43323).
-2. Navigate to "Project Settings" > "Service accounts".
-3. Click "Generate new private key" and save the JSON file.
+2. Navigate to "General".
+3. Under "Your apps" > Download "google-services.json".
 4. Place the JSON file in the `app/` directory of your cloned repository.
     ```text
     trashbincloud/

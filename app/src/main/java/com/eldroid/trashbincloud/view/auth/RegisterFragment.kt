@@ -2,6 +2,7 @@ package com.eldroid.trashbincloud.view.auth
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.eldroid.trashbincloud.contract.auth.AuthContract
 import com.eldroid.trashbincloud.databinding.FragmentAuthRegisterBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.presenter.auth.AuthPresenter
+import com.google.android.material.textfield.TextInputEditText
 
 class RegisterFragment : Fragment(), AuthContract.View {
 
@@ -44,11 +46,11 @@ class RegisterFragment : Fragment(), AuthContract.View {
         }
 
         binding.registerBtn.setOnClickListener {
-            val firstName = binding.fNameEt.editText.toString().trim()
-            val lastName = binding.lNameEt.editText.toString().trim()
-            val email = binding.emailEt.editText.toString().trim()
-            val password = binding.passEt.editText.toString().trim()
-            val confirmPassword = binding.pass2Et.editText.toString().trim()
+            val firstName = binding.fNameEt.editText?.text.toString().trim()
+            val lastName = binding.lNameEt.editText?.text.toString().trim()
+            val email = binding.emailEt.editText?.text.toString().trim()
+            val password = binding.passEt.editText?.text.toString()
+            val confirmPassword = binding.pass2Et.editText?.text.toString().trim()
             val isChecked = binding.checkboxMeat.isChecked
 
             if (firstName.isEmpty()) {
