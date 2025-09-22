@@ -40,7 +40,7 @@ This project explores **Mobile Cloud Computing** by:
 
 This project follows the **Model-View-Presenter (MVP)** architecture pattern to ensure separation of concerns and maintainable code structure:
 
-#### 1. Model Layer
+~~#### 1. Model Layer
 - **Repositories**: 
   - `AuthRepository`: Handles Firebase Authentication operations (login, registration, password reset)
   - `TrashBinRepository`: Manages trash bin data CRUD operations via Firebase Realtime Database
@@ -62,4 +62,4 @@ This project follows the **Model-View-Presenter (MVP)** architecture pattern to 
   - `MainContract`: Defines interfaces for main activity functionality
 - **Presenters**:
   - `AuthPresenter`: Implements authentication business logic
-  - `MainPresenter`: Implements main app functionality like logout
+  - `MainPresenter`: Implements main app functionality like logout~~

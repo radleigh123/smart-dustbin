@@ -9,4 +9,6 @@
     <color name="secondary">#006C67</color>
 
     <color name="transparent">#00FFFFFF</color>
+    <color name="white_30">#EFF9F0</color>
+    <color name="text_color">#003844</color>
 </resources>
