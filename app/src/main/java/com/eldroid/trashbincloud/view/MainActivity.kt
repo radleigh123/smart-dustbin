@@ -151,7 +151,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         finish()
     }
 }
-// Example Fragments
+// Example Fragments - *Had to comment, causing a redeclaration error
+/*
 class DashboardFragment : Fragment(R.layout.fragment_main_dashboard)
 class HistoryFragment : Fragment(R.layout.fragment_history)
 class SettingsFragment : Fragment(R.layout.fragment_settings)
+*/
