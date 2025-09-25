@@ -38,21 +38,14 @@ class DashboardFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        setupRecyclerView()
 
         loadTrashBins()
 
-        binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_DashboardFragment_to_SecondFragment)
-        }
+//        binding.buttonFirst.setOnClickListener {
+//            findNavController().navigate(R.id.action_DashboardFragment_to_SecondFragment)
+//        }
     }
 
-    private fun setupRecyclerView() {
-        binding.recyclerTrashbins.apply {
-            layoutManager = LinearLayoutManager(context)
-            adapter = trashBinAdapter
-        }
-    }
 
     private fun loadTrashBins() {
         // Here you would get your data from a repository or viewModel
