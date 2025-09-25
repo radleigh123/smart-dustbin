@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
+    android:backgroundTint="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:id="@+id/ivBinIcon"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:src="@drawable/ic_bin2"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:id="@+id/tvBinName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:text="Kitchen Bin (Sample)"
+                    android:textStyle="bold"
+                    android:textColor="#2C2C2C" />
+
+                <TextView
+                    android:id="@+id/tvBinLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Main Kitchen Area"
+                    android:textSize="12sp"
+                    android:textColor="#8A8A8A" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvBinStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10sp"
+                android:text="Sample"
+                android:textColor="@color/white"
+                android:background="@drawable/background_text"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:visibility="visible" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="12dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Fill Level"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:textStyle="bold"/>
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tvFillLevel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="35%"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#16A34A" />
+
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:layout_marginBottom="16dp"
+            android:progress="45"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progressTint="#16A34A"
+            android:backgroundTint="#E0E0E0"
+            android:progressDrawable="@drawable/progress_rounded"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <!-- Open Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnOpen"
+                style="@style/Widget.MaterialComponents.Button"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Open"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                app:cornerRadius="8dp"
+                app:backgroundTint="@color/tertiary" />
+
+            <!-- Close Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnClose"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginEnd="8dp"
+                android:text="Close"
+                android:backgroundTint="#D3D2D2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/transparent"
+                app:strokeWidth="2dp" />
+
+            <!-- Hold Button -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnHold"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Hold"
+                android:backgroundTint="#D3D2D2"
+                android:textSize="12sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"
+                app:cornerRadius="8dp"
+                app:strokeColor="@color/transparent"
+                app:strokeWidth="2dp" />
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
