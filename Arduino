@@ -1,0 +1,63 @@
+#include <ESP32Servo.h>
+
+Servo servo;
+const int servoPin = 27;
+
+// Angles
+const int openAngle = 0;
+const int closeAngle = 90;
+
+// Ultrasonic pins
+const int trigPin = 26;
+const int echoPin = 25;
+
+const int distanceThreshold = 20; // cm
+
+bool isOpen = false;  // track servo state
+
+void setup() {
+  Serial.begin(115200);
+
+  pinMode(trigPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+
+  servo.attach(servoPin);      // attach once
+  servo.write(closeAngle);     // start closed
+}
+
+void loop() {
+  // average 3 readings
+  long sum = 0;
+  for (int i = 0; i < 3; i++) {
+    sum += readDistance();
+    delay(5);
+  }
+  long averageDistance = sum / 3;
+  Serial.println(averageDistance);
+
+  if (averageDistance <= distanceThreshold && !isOpen) {
+    // object detected and currently closed → open once
+    servo.write(openAngle);
+    isOpen = true;
+    Serial.println("Opened");
+  }
+  else if (averageDistance > distanceThreshold && isOpen) {
+    // no object and currently open → close once
+    servo.write(closeAngle);
+    isOpen = false;
+    Serial.println("Closed");
+  }
+
+  delay(100); // small delay for stability
+}
+
+float readDistance() {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  float distance = pulseIn(echoPin, HIGH, 30000) / 58.0; // timeout at 30 ms
+  return distance;
+}
