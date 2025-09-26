@@ -61,3 +61,130 @@ float readDistance() {
   float distance = pulseIn(echoPin, HIGH, 30000) / 58.0; // timeout at 30 ms
   return distance;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//With LED sensor
+#include <ESP32Servo.h>
+
+Servo servo;
+
+// Servo pin
+const int servoPin = 27;
+
+// Servo angles
+const int openAngle = 0;    // adjust as needed
+const int closeAngle = 90;  // adjust as needed
+
+// Object-detect ultrasonic pins
+const int trigPin1 = 26;
+const int echoPin1 = 25;
+
+// Bin-full ultrasonic pins
+const int trigPin2 = 33;    // output-capable pin
+const int echoPin2 = 34;    // input-only pin
+
+// LED pins – make sure these match your Wokwi wiring
+const int greenLED = 22;   // bin empty
+const int redLED   = 23;   // bin full
+
+// Thresholds (tune to your setup)
+const int distanceThreshold = 20;  // cm for opening servo
+const int binFullThreshold  = 10;  // cm or less means bin full
+
+bool isOpen = false; // track servo state
+
+void setup() {
+  Serial.begin(115200);
+
+  // Pins for first ultrasonic
+  pinMode(trigPin1, OUTPUT);
+  pinMode(echoPin1, INPUT);
+
+  // Pins for second ultrasonic
+  pinMode(trigPin2, OUTPUT);
+  pinMode(echoPin2, INPUT);
+
+  // LEDs
+  pinMode(greenLED, OUTPUT);
+  pinMode(redLED, OUTPUT);
+
+  servo.attach(servoPin);
+  servo.write(closeAngle); // start closed
+
+  // start with green on (empty)
+  digitalWrite(greenLED, HIGH);
+  digitalWrite(redLED, LOW);
+}
+
+void loop() {
+  // --- Sensor 1: object detection for servo ---
+  long avgDistance1 = averageDistance(trigPin1, echoPin1, 3);
+  Serial.print("Front sensor distance: ");
+  Serial.print(avgDistance1);
+  Serial.println(" cm");
+
+  if (avgDistance1 <= distanceThreshold && !isOpen) {
+    servo.write(openAngle);
+    isOpen = true;
+    Serial.println("Servo Opened");
+  }
+  else if (avgDistance1 > distanceThreshold && isOpen) {
+    servo.write(closeAngle);
+    isOpen = false;
+    Serial.println("Servo Closed");
+  }
+
+  // --- Sensor 2: bin full detection ---
+  long avgDistance2 = averageDistance(trigPin2, echoPin2, 3);
+  Serial.print("Bin sensor distance: ");
+  Serial.print(avgDistance2);
+  Serial.println(" cm");
+
+  if (avgDistance2 > binFullThreshold) {
+    // bin empty
+    digitalWrite(redLED, LOW);
+    digitalWrite(greenLED, HIGH);
+    Serial.println("Bin EMPTY");
+  } else {
+    // bin full
+    digitalWrite(redLED, HIGH);
+    digitalWrite(greenLED, LOW);
+    Serial.println("Bin FULL");
+  }
+
+  delay(200); // small delay for stability
+}
+
+long averageDistance(int trigPin, int echoPin, int samples) {
+  long sum = 0;
+  for (int i = 0; i < samples; i++) {
+    sum += readDistance(trigPin, echoPin);
+    delay(5);
+  }
+  return sum / samples;
+}
+
+float readDistance(int trigPin, int echoPin) {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+
+  float distance = pulseIn(echoPin, HIGH, 30000) / 58.0; // timeout 30ms
+  return distance;
+}
