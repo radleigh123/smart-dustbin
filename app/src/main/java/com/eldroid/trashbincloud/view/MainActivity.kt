@@ -24,6 +24,8 @@ import com.eldroid.trashbincloud.view.auth.IndexActivity
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
+    private lateinit var binding: ActivityMainBinding
+
     private lateinit var presenter: MainContract.Presenter
 
     private lateinit var navDashboard: LinearLayout
@@ -46,6 +48,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         presenter = MainPresenter(this, AuthRepository())
         presenter.checkUser()
 
+        binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
 
         initViews()

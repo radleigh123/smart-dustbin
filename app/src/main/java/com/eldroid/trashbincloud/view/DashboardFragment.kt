@@ -1,5 +1,6 @@
 package com.eldroid.trashbincloud.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -32,7 +33,6 @@ class DashboardFragment : Fragment() {
 
         _binding = FragmentMainDashboardBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,11 +41,20 @@ class DashboardFragment : Fragment() {
 
         loadTrashBins()
 
-//        binding.buttonFirst.setOnClickListener {
-//            findNavController().navigate(R.id.action_DashboardFragment_to_SecondFragment)
-//        }
+        setupClickListeners()
+        /*binding.buttonFirst.setOnClickListener {
+            findNavController().navigate(R.id.action_DashboardFragment_to_SecondFragment)
+        }*/
     }
 
+    private fun setupClickListeners() {
+        binding.addBinBtn.setOnClickListener {
+            // TODO: this needs to be on presenter
+            val intent = Intent(requireContext(), AddBinActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
+    }
 
     private fun loadTrashBins() {
         // Here you would get your data from a repository or viewModel

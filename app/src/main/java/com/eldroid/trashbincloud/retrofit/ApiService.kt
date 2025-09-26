@@ -15,4 +15,20 @@ interface ApiService {
 
     // Generic GET request
     suspend fun makeGetRequest(@Url url: String): Response<String>
+
+    // Generic POST request
+    @POST
+    suspend fun makePostRequest(
+        @Url url: String,
+        @Body body: Any
+    ): Response<String>
+
+    @GET("ping")
+    suspend fun pingDevice(): Response<PingResponse>
+
+    @POST("setwifi")
+    suspend fun setWifiCredentials(@Body wifiCredentials: WifiCredentials): Response<WifiSetupResponse>
+
+    @POST("servo")
+    suspend fun controlServo(@Body servoRequest: ServoRequest): Response<ServoResponse>
 }
