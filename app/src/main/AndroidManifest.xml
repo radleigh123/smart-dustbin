@@ -11,7 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.TrashbinCloud">
-
+        <activity
+            android:name=".view.AddBin"
+            android:exported="false" />
         <activity
             android:name=".view.MainActivity"
             android:exported="true"
@@ -29,7 +31,6 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
 
 </manifest>

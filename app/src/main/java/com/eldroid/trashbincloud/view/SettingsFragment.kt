@@ -1,20 +1,28 @@
 package com.eldroid.trashbincloud.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.eldroid.trashbincloud.contract.MainContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
+import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.presenter.MainPresenter
+import com.eldroid.trashbincloud.view.auth.IndexActivity
+import com.google.android.material.snackbar.Snackbar
 
 /**
  * A simple [Fragment] subclass.
  * Use the [SettingsFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class SettingsFragment : Fragment() {
+class SettingsFragment : Fragment(), MainContract.View {
     private var _binding: FragmentSettingsBinding?=null
     private val binding get() = _binding!!
+
+    private lateinit var presenter: MainContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,6 +34,26 @@ class SettingsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        presenter = MainPresenter(this, AuthRepository())
+
+        setupListeners()
+    }
+
+    private fun setupListeners() {
+        binding.itemLogOut.setOnClickListener {
+            presenter.logout()
+        }
+    }
+
+    override fun showLogoutSuccess() {
+        Snackbar.make(binding.root, "Logged out successfully", Snackbar.LENGTH_SHORT).show()
+    }
+
+    override fun navigateToLogin() {
+        val intent = Intent(requireContext(), IndexActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 
     override fun onDestroyView() {
