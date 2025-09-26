@@ -5,5 +5,11 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
+    
+    <style name="Base.Theme.TrashbinCloud.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
+        <item name="trackTint">@color/tertiary</item>
+        <item name="colorPrimary">@color/tertiary</item>
+        <item name="colorSurfaceContainerHighest">@color/gray_500</item>
+    </style>
 
 </resources>
