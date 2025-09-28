@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="binSpinner" type="id" />
+    <item name="dateEditText" type="id" />
+    <item name="weeklyChart" type="id" />
+</resources>
