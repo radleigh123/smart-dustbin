@@ -94,4 +94,54 @@
     <string name="day_friday">Fri</string>
     <string name="day_saturday">Sat</string>
     <string name="day_sunday">Sun</string>
+
+    <string name="kitchen_bin">Kitchen Bin</string>
+    <string name="location_main_kitchen">Main Kitchen, Floor 2</string>
+    <string name="fill_percentage">80% Full</string>
+    <string name="percentage_80">80%</string>
+
+    <string name="alert_nearly_full">Bin is nearly full - requires attention</string>
+
+    <string name="fill_level">Fill Level</string>
+    <string name="remote_control">Remote Control</string>
+    <string name="smart_insights">Smart Insights</string>
+
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <string name="hold">Hold</string>
+
+    <string name="legend_0_50">0-50%</string>
+    <string name="legend_51_75">51-75%</string>
+    <string name="legend_76_100">76-100%</string>
+
+    <string name="days_to_fill">2.5</string>
+    <string name="days_to_fill_label">Days to fill</string>
+    <string name="last_emptied_date">Sep 18</string>
+    <string name="last_emptied_label">Last emptied</string>
+
+    <string name="activity_motion_detected">Motion detected</string>
+    <string name="activity_time_1">Today 3:45 PM</string>
+
+    <string name="activity_bin_full_alert">Bin Full Alert</string>
+    <string name="activity_capacity_reached">80% capacity reached</string>
+    <string name="activity_time_2">Sep 20, 8:00 AM</string>
+
+    <string name="activity_manual_close">Manual Close</string>
+    <string name="activity_user_action">User action</string>
+    <string name="activity_time_3">Sep 19, 2:30 PM</string>
+
+    <string name="activity_bin_emptied">Bin Emptied</string>
+    <string name="activity_maintenance_completed">Maintenance completed</string>
+    <string name="activity_time_4">Sep 18, 10:15 AM</string>
+
+    <string name="cd_location_icon">Location icon</string>
+    <string name="cd_alert_icon">Alert icon</string>
+    <string name="cd_open_icon">Open bin icon</string>
+    <string name="cd_close_icon">Close bin icon</string>
+    <string name="cd_hold_icon">Hold bin icon</string>
+    <string name="cd_activity_status">Activity status indicator</string>
+
+    <string name="back">Back</string>
+    <string name="bin_details">Bin Details</string>
+    <string name="more_options">More options</string>
 </resources>

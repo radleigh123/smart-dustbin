@@ -20,7 +20,10 @@ data class TrashBin(
     val status: String = "offline",
     val lastUpdated: Long = 0,
     val battery: Int = 0,
-    val temperature: Float = 0.0f
+    val temperature: Float = 0.0f,
+    val lastEmptied: String,
+    val daysToFill: Double
+
 ) {
     // Helper function to get formatted timestamp
     fun getFormattedTimestamp(): String {
