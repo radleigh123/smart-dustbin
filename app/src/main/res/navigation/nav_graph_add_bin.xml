@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/bin_nav_graph"
+    app:startDestination="@id/addBinScanningFragment">
+
+    <fragment
+        android:id="@+id/addBinScanningFragment"
+        android:name="com.eldroid.trashbincloud.view.bin.AddBinScanningFragment"
+        android:label="fragment_add_bin_scanning"
+        tools:layout="@layout/fragment_add_bin_scanning" />
+</navigation>

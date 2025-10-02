@@ -2,7 +2,6 @@ package com.eldroid.trashbincloud.view.auth
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -15,7 +14,6 @@ import com.eldroid.trashbincloud.contract.auth.AuthContract
 import com.eldroid.trashbincloud.databinding.FragmentAuthRegisterBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.presenter.auth.AuthPresenter
-import com.google.android.material.textfield.TextInputEditText
 
 class RegisterFragment : Fragment(), AuthContract.View {
 
@@ -113,7 +111,7 @@ class RegisterFragment : Fragment(), AuthContract.View {
 
     override fun navigate() {
         Toast.makeText(requireContext(), "Registration success!", Toast.LENGTH_LONG).show()
-        val intent = Intent(requireContext(), IndexActivity::class.java)
+        val intent = Intent(requireContext(), AuthActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
     }

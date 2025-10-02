@@ -17,7 +17,7 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.TrashbinCloud">
         <activity
-            android:name=".view.AddBinActivity"
+            android:name=".view.bin.AddBinActivity"
             android:exported="false" />
         <activity
             android:name=".view.MainActivity"
@@ -30,7 +30,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".view.auth.IndexActivity"
+            android:name=".view.auth.AuthActivity"
             android:exported="false" />
 
         <meta-data
