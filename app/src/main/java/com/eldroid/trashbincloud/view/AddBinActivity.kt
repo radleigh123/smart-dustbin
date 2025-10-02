@@ -1,12 +1,19 @@
 package com.eldroid.trashbincloud.view
 
+import android.Manifest.permission.*
+import android.annotation.SuppressLint
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
+import android.content.pm.PackageManager
+import android.location.LocationManager
 import android.net.wifi.WifiManager
-import android.os.Build
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
-import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.eldroid.trashbincloud.databinding.ActivityAddBinBinding
 import com.eldroid.trashbincloud.retrofit.NetworkClient
@@ -20,9 +27,10 @@ class AddBinActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinBinding
 
-    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        checkPermissions()
 
         binding = ActivityAddBinBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -33,20 +41,141 @@ class AddBinActivity : AppCompatActivity() {
             setWifiCredentials(ssid, password)
         }
 
-        binding.btnPing.setOnClickListener @androidx.annotation.RequiresPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) {
+        binding.btnPing.setOnClickListener {
             pingDevice()
-
-            val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
-            val scanResults = wifiManager.scanResults
-
-            val dustbinNetworks = scanResults.filter { it.wifiSsid.toString().startsWith("Dustbin") }
-            for (result in dustbinNetworks) {
-                Log.d("SCAN", "Found Dustbin SSID: ${result.SSID}");
-            }
+            scanBins()
         }
 
         binding.btnOpen.setOnClickListener {
             controlServo(90, "manual") // Open position, manual mode
+        }
+    }
+
+    private fun checkPermissions() {
+        // Check for location permission
+        if (checkSelfPermission(ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(arrayOf(ACCESS_FINE_LOCATION), 1)
+            return
+        }
+        
+        // Check if location services are enabled
+        if (!isLocationEnabled()) {
+            showLocationSettingsAlert()
+        }
+    }
+
+    private fun isLocationEnabled(): Boolean {
+        val locationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
+        return locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) ||
+                locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)
+    }
+
+    private fun showLocationSettingsAlert() {
+        AlertDialog.Builder(this)
+            .setTitle("Location Services Required")
+            .setMessage("WiFi scanning requires location services to be enabled. Please enable location services.")
+            .setPositiveButton("Settings") { _, _ ->
+                startActivity(Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS))
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                Toast.makeText(this, "Location services are required for WiFi scanning", Toast.LENGTH_LONG).show()
+            }
+            .show()
+    }
+
+    @SuppressLint("MissingPermission")
+    private fun scanBins() {
+        // Check permissions and location first
+        if (checkSelfPermission(ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Location permission required", Toast.LENGTH_SHORT).show()
+            checkPermissions()
+            return
+        }
+
+        if (!isLocationEnabled()) {
+            Toast.makeText(this, "Please enable location services", Toast.LENGTH_LONG).show()
+            showLocationSettingsAlert()
+            return
+        }
+
+        val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+
+        // Check if WiFi is enabled
+        if (!wifiManager.isWifiEnabled) {
+            Toast.makeText(this, "Please enable WiFi", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val wifiScanReceiver = object: BroadcastReceiver() {
+            @SuppressLint("NewApi")
+            override fun onReceive(context: Context?, intent: Intent?) {
+                val success = intent?.getBooleanExtra(WifiManager.EXTRA_RESULTS_UPDATED, false) ?: false
+                
+                Log.d("SCAN", "Scan completed. Success: $success")
+                
+                if (success) {
+                    val results = wifiManager.scanResults
+                    
+                    Log.d("SCAN", "Total networks found: ${results.size}")
+                    
+                    if (results.isEmpty()) {
+                        Toast.makeText(this@AddBinActivity, "No WiFi networks detected. Make sure location is ON and WiFi is enabled.", Toast.LENGTH_LONG).show()
+                    }
+                    
+                    results.forEach { result ->
+                        Log.d("SCAN", "Network - SSID: '${result.SSID}', BSSID: ${result.BSSID}, Level: ${result.level}")
+                    }
+
+                    val dustbins = results.filter {
+                        !it.SSID.isNullOrEmpty() && it.SSID.startsWith("DUSTBIN", ignoreCase = true)
+                    }
+
+                    Log.d("SCAN", "Found ${dustbins.size} dustbin(s)")
+                    dustbins.forEach { result ->
+                        Log.d("SCAN", "Dustbin SSID: ${result.SSID}")
+                    }
+
+                    Toast.makeText(this@AddBinActivity, "Found ${results.size} networks, ${dustbins.size} dustbin(s)", Toast.LENGTH_SHORT).show()
+                } else {
+                    Log.e("SCAN", "Scan failed")
+                    Toast.makeText(this@AddBinActivity, "WiFi scan failed. Try again in a few seconds.", Toast.LENGTH_SHORT).show()
+                }
+                
+                try {
+                    unregisterReceiver(this)
+                } catch (e: IllegalArgumentException) {
+                    Log.e("SCAN", "Receiver already unregistered", e)
+                }
+            }
+        }
+
+        val intentFilter = IntentFilter()
+        intentFilter.addAction(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION)
+        registerReceiver(wifiScanReceiver, intentFilter)
+
+        val success = wifiManager.startScan()
+        Log.d("SCAN", "Scan started: $success")
+        
+        if (!success) {
+            Toast.makeText(this, "Scan throttled. Wait a few seconds and try again.", Toast.LENGTH_LONG).show()
+        } else {
+            Toast.makeText(this, "Scanning for WiFi networks...", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        if (requestCode == 1) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                if (isLocationEnabled()) {
+                    Toast.makeText(this, "Permission granted. You can now scan for WiFi.", Toast.LENGTH_SHORT).show()
+                } else {
+                    showLocationSettingsAlert()
+                }
+            } else {
+                Toast.makeText(this, "Location permission denied. Cannot scan WiFi.", Toast.LENGTH_LONG).show()
+            }
         }
     }
 
