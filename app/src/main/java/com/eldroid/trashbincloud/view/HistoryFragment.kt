@@ -21,10 +21,10 @@ import java.time.LocalTime
 class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.View {
 
     private lateinit var presenter: HistoryPresenter
-    private lateinit var filterButton: ImageButton
-    private lateinit var allEventsButton: Button
-    private lateinit var autoOpenButton: Button
-    private lateinit var manualOpenButton: Button
+    private lateinit var filterButton: ImageView
+    private lateinit var allEventsButton: TextView
+    private lateinit var autoOpenButton: TextView
+    private lateinit var manualOpenButton: TextView
     private lateinit var binSpinner: Spinner
     private lateinit var dateEditText: EditText
     //private lateinit var weeklyChart: BarChart

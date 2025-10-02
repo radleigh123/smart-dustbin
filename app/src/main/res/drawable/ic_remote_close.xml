@@ -8,9 +8,9 @@
         android:fillColor="@android:color/white"
         android:pathData="M6,19c0,1.1 0.9,2 2,2h8c1.1,0 2,-0.9 2,-2V7H6v12zM8,9h8v10H8V9zM15.5,4l-1,-1h-5l-1,1H5v2h14V4z" />
     <!-- Small circle indicator -->
-    <circle
+    <!--<circle
         android:cx="16"
         android:cy="8"
         android:r="2"
-        android:fillColor="#F472B6" />
+        android:fillColor="#F472B6" />-->
 </vector>

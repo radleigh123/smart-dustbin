@@ -46,6 +46,15 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
     override fun showError(message: String) {
         // Show a toast/snackbar/dialog
     }
+
+    override fun findViewById(
+        statusDot: Int,
+        tvActivityTitle: Int,
+        tvActivityTime: Int,
+        ivInfo: Int
+    ): BinDetailsContract.View {
+        TODO("Not yet implemented")
+    }
 }
 
 private fun Any.setBackgroundColor(statusColor: Int) {
