@@ -6,13 +6,11 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
-import android.text.InputType
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
@@ -23,8 +21,6 @@ import com.eldroid.trashbincloud.databinding.FragmentAddBinScanningBinding
 import com.eldroid.trashbincloud.model.entity.bin.FoundBin
 import com.eldroid.trashbincloud.presenter.bin.AddBinScanningPresenter
 import com.eldroid.trashbincloud.view.MainActivity
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
 
 class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
 
@@ -199,27 +195,6 @@ class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
 
     override fun showWifiRequired() {
         Toast.makeText(requireContext(), "Please enable WiFi", Toast.LENGTH_SHORT).show()
-    }
-
-    override fun showApPasswordDialog(bin: FoundBin) {
-        val passwordInput = EditText(requireContext()).apply {
-            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
-            hint = "Enter AP password"
-        }
-
-        AlertDialog.Builder(requireContext())
-            .setTitle("Connect to ${bin.name}")
-            .setMessage("Enter the Access Point password for this dustbin")
-            .setView(passwordInput)
-            .setPositiveButton("Connect") { dialog, _ ->
-                val password = passwordInput.text.toString()
-                presenter.onApPasswordEntered(bin, password)
-                dialog.dismiss()
-            }
-            .setNegativeButton("Cancel") { dialog, _ ->
-                dialog.dismiss()
-            }
-            .show()
     }
 
     override fun navigateToWifiSetup(bin: FoundBin) {

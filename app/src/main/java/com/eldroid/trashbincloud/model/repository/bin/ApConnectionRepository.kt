@@ -1,6 +1,5 @@
 package com.eldroid.trashbincloud.model.repository.bin
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.Network
@@ -27,6 +26,8 @@ class ApConnectionRepository(private val context: Context) {
         context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
     }
 
+    private var networkCallback: ConnectivityManager.NetworkCallback? = null
+
     suspend fun connectToAp(ssid: String, password: String): Result<String> {
         return withContext(Dispatchers.IO) {
             try {
@@ -48,8 +49,18 @@ class ApConnectionRepository(private val context: Context) {
     private suspend fun connectToApAndroid10Plus(ssid: String, password: String): Result<String> {
         return withContext(Dispatchers.Main) {
             try {
-                Log.d("ApConnectionRepository", "Using Android 10+ connection method")
+                Log.d("ApConnectionRepository", "Using Android 10+ connection method for SSID: $ssid")
                 
+                // Unregister any existing callback first
+                networkCallback?.let {
+                    try {
+                        connectivityManager.unregisterNetworkCallback(it)
+                        Log.d("ApConnectionRepository", "Unregistered previous network callback")
+                    } catch (e: Exception) {
+                        Log.w("ApConnectionRepository", "No previous callback to unregister")
+                    }
+                }
+
                 val specifier = WifiNetworkSpecifier.Builder()
                     .setSsid(ssid)
                     .setWpa2Passphrase(password)
@@ -63,30 +74,42 @@ class ApConnectionRepository(private val context: Context) {
 
                 var isConnected = false
                 var connectionError: String? = null
+                var connectedNetwork: Network? = null
 
-                val networkCallback = object : ConnectivityManager.NetworkCallback() {
+                networkCallback = object : ConnectivityManager.NetworkCallback() {
                     override fun onAvailable(network: Network) {
                         super.onAvailable(network)
                         Log.d("ApConnectionRepository", "Network available: $ssid")
+                        
                         try {
-                            connectivityManager.bindProcessToNetwork(network)
-                            isConnected = true
-                            Log.d("ApConnectionRepository", "Successfully bound to network: $ssid")
+                            // Bind the process to this network
+                            val bindResult = connectivityManager.bindProcessToNetwork(network)
+                            if (bindResult) {
+                                connectedNetwork = network
+                                isConnected = true
+                                Log.d("ApConnectionRepository", "Successfully bound to network: $ssid")
+                            } else {
+                                connectionError = "Failed to bind to network"
+                                Log.e("ApConnectionRepository", "Failed to bind to network")
+                            }
                         } catch (e: Exception) {
-                            Log.e("ApConnectionRepository", "Failed to bind to network", e)
                             connectionError = "Failed to bind to network: ${e.message}"
+                            Log.e("ApConnectionRepository", "Failed to bind to network", e)
                         }
                     }
 
                     override fun onUnavailable() {
                         super.onUnavailable()
                         Log.e("ApConnectionRepository", "Network unavailable: $ssid")
-                        connectionError = "Network unavailable - check password and signal strength"
+                        connectionError = "Network unavailable. Check password and try again."
                     }
 
                     override fun onLost(network: Network) {
                         super.onLost(network)
-                        Log.w("ApConnectionRepository", "Lost connection to AP: $ssid")
+                        Log.w("ApConnectionRepository", "Lost connection to: $ssid")
+                        if (!isConnected) {
+                            connectionError = "Connection lost"
+                        }
                     }
 
                     override fun onCapabilitiesChanged(
@@ -94,23 +117,27 @@ class ApConnectionRepository(private val context: Context) {
                         networkCapabilities: NetworkCapabilities
                     ) {
                         super.onCapabilitiesChanged(network, networkCapabilities)
-                        Log.d("ApConnectionRepository", "Network capabilities changed")
+                        val hasWifi = networkCapabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
+                        Log.d("ApConnectionRepository", "Capabilities changed - Has WiFi: $hasWifi")
                     }
                 }
 
-                connectivityManager.requestNetwork(request, networkCallback)
+                // Request network connection - this will show system dialog on Android 10+
+                connectivityManager.requestNetwork(request, networkCallback!!)
+                Log.d("ApConnectionRepository", "Network request submitted. System dialog should appear...")
 
                 // Wait for connection with timeout
-                val result = withTimeoutOrNull(20000) { // Increased timeout to 20 seconds
+                val result = withTimeoutOrNull(30000) { // 30 seconds timeout
                     while (!isConnected && connectionError == null) {
                         delay(500)
                     }
                     isConnected
                 }
 
-                if (result == true) {
+                if (result == true && connectedNetwork != null) {
                     Log.d("ApConnectionRepository", "Connected successfully, verifying connection...")
-                    // Wait for network to stabilize
+                    
+                    // Give the network time to stabilize
                     delay(2000)
                     
                     // Verify connection by pinging the device
@@ -118,41 +145,60 @@ class ApConnectionRepository(private val context: Context) {
                     
                     if (verificationResult.isSuccess) {
                         Log.d("ApConnectionRepository", "Connection verified successfully")
-                        verificationResult
+                        Result.success("Connected and verified")
                     } else {
-                        Log.w("ApConnectionRepository", "Connection established but verification failed")
-                        // Still consider it successful if we connected, even if ping fails
-                        Result.success("Connected (verification pending)")
+                        Log.w("ApConnectionRepository", "Connection established but verification failed: ${verificationResult.exceptionOrNull()?.message}")
+                        // Still return success if connected, ping might fail for other reasons
+                        Result.success("Connected (awaiting verification)")
                     }
                 } else {
-                    try {
-                        connectivityManager.unregisterNetworkCallback(networkCallback)
-                    } catch (e: Exception) {
-                        Log.e("ApConnectionRepository", "Error unregistering callback", e)
+                    // Cleanup on failure
+                    networkCallback?.let {
+                        try {
+                            connectivityManager.unregisterNetworkCallback(it)
+                        } catch (e: Exception) {
+                            Log.e("ApConnectionRepository", "Error unregistering callback", e)
+                        }
+                    }
+                    networkCallback = null
+                    
+                    val errorMessage = when {
+                        connectionError != null -> connectionError!!
+                        result == null -> "Connection timeout. Make sure you accepted the system dialog and the password is correct."
+                        else -> "Failed to connect"
                     }
                     
-                    val errorMessage = connectionError ?: "Connection timeout - network not available within 20 seconds"
-                    Log.e("ApConnectionRepository", errorMessage)
+                    Log.e("ApConnectionRepository", "Connection failed: $errorMessage")
                     Result.failure(Exception(errorMessage))
                 }
             } catch (e: Exception) {
                 Log.e("ApConnectionRepository", "Error in Android 10+ connection", e)
+                
+                // Cleanup on exception
+                networkCallback?.let {
+                    try {
+                        connectivityManager.unregisterNetworkCallback(it)
+                    } catch (cleanupException: Exception) {
+                        Log.e("ApConnectionRepository", "Error during cleanup", cleanupException)
+                    }
+                }
+                networkCallback = null
+                
                 Result.failure(e)
             }
         }
     }
 
-    @SuppressLint("MissingPermission")
     @Suppress("DEPRECATION")
     private suspend fun connectToApLegacy(ssid: String, password: String): Result<String> {
         return withContext(Dispatchers.IO) {
             try {
-                Log.d("ApConnectionRepository", "Using legacy connection method")
+                Log.d("ApConnectionRepository", "Using legacy connection method for SSID: $ssid")
                 
                 // Check if WiFi is enabled
                 if (!wifiManager.isWifiEnabled) {
                     Log.e("ApConnectionRepository", "WiFi is not enabled")
-                    return@withContext Result.failure(Exception("WiFi is not enabled. Please enable WiFi and try again."))
+                    return@withContext Result.failure(Exception("Please enable WiFi and try again"))
                 }
 
                 // Remove any existing configuration for this SSID
@@ -168,7 +214,7 @@ class ApConnectionRepository(private val context: Context) {
                     SSID = "\"$ssid\""
                     preSharedKey = "\"$password\""
                     
-                    // Set security type
+                    // Set WPA/WPA2 security
                     allowedKeyManagement.set(WifiConfiguration.KeyMgmt.WPA_PSK)
                     allowedProtocols.set(WifiConfiguration.Protocol.RSN)
                     allowedProtocols.set(WifiConfiguration.Protocol.WPA)
@@ -183,14 +229,11 @@ class ApConnectionRepository(private val context: Context) {
                 val networkId = wifiManager.addNetwork(wifiConfig)
                 
                 if (networkId == -1) {
-                    Log.e("ApConnectionRepository", "Failed to add network configuration. This method is deprecated on Android 10+")
-                    return@withContext Result.failure(Exception(
-                        "Cannot add WiFi network on this Android version. " +
-                        "Please connect to the dustbin's WiFi manually through Settings, then try again."
-                    ))
+                    Log.e("ApConnectionRepository", "Failed to add network - addNetwork returned -1")
+                    return@withContext Result.failure(Exception("Failed to add network configuration. Please try connecting manually through WiFi settings."))
                 }
 
-                Log.d("ApConnectionRepository", "Network added with ID: $networkId")
+                Log.d("ApConnectionRepository", "Network added with ID: $networkId, enabling...")
                 
                 wifiManager.disconnect()
                 delay(1000)
@@ -198,6 +241,7 @@ class ApConnectionRepository(private val context: Context) {
                 val enabled = wifiManager.enableNetwork(networkId, true)
                 if (!enabled) {
                     Log.e("ApConnectionRepository", "Failed to enable network")
+                    wifiManager.removeNetwork(networkId)
                     return@withContext Result.failure(Exception("Failed to enable network"))
                 }
                 
@@ -209,7 +253,14 @@ class ApConnectionRepository(private val context: Context) {
 
                 // Verify connection
                 Log.d("ApConnectionRepository", "Verifying connection...")
-                verifyConnection()
+                val verificationResult = verifyConnection()
+                
+                if (verificationResult.isSuccess) {
+                    Result.success("Connected and verified")
+                } else {
+                    Log.w("ApConnectionRepository", "Connected but verification failed")
+                    Result.success("Connected (awaiting verification)")
+                }
             } catch (e: Exception) {
                 Log.e("ApConnectionRepository", "Error in legacy connection", e)
                 Result.failure(e)
@@ -220,7 +271,7 @@ class ApConnectionRepository(private val context: Context) {
     private suspend fun verifyConnection(): Result<String> {
         return withContext(Dispatchers.IO) {
             try {
-                Log.d("ApConnectionRepository", "Attempting to ping device at ${NetworkClient.apiService}")
+                Log.d("ApConnectionRepository", "Pinging device at http://192.168.4.1/")
                 val response = NetworkClient.apiService.pingDevice()
                 
                 if (response.isSuccessful) {
@@ -228,22 +279,35 @@ class ApConnectionRepository(private val context: Context) {
                     Log.d("ApConnectionRepository", "Ping successful: ${pingResponse?.status}")
                     Result.success(pingResponse?.status ?: "Connected")
                 } else {
-                    Log.e("ApConnectionRepository", "Ping failed with code: ${response.code()}")
-                    Result.failure(Exception("Ping failed with code: ${response.code()}"))
+                    Log.e("ApConnectionRepository", "Ping failed with HTTP code: ${response.code()}")
+                    Result.failure(Exception("Device not responding (HTTP ${response.code()})"))
                 }
             } catch (e: Exception) {
                 Log.e("ApConnectionRepository", "Ping verification failed: ${e.message}", e)
-                Result.failure(Exception("Failed to verify connection: ${e.message}"))
+                Result.failure(Exception("Cannot reach device: ${e.message}"))
             }
         }
     }
 
     fun disconnectFromAp() {
         try {
+            // Unregister callback if exists
+            networkCallback?.let {
+                try {
+                    connectivityManager.unregisterNetworkCallback(it)
+                    Log.d("ApConnectionRepository", "Unregistered network callback")
+                } catch (e: Exception) {
+                    Log.w("ApConnectionRepository", "Callback already unregistered", e)
+                }
+            }
+            networkCallback = null
+            
+            // Unbind from network
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 connectivityManager.bindProcessToNetwork(null)
                 Log.d("ApConnectionRepository", "Unbound from network")
             }
+            
             Log.d("ApConnectionRepository", "Disconnected from AP")
         } catch (e: Exception) {
             Log.e("ApConnectionRepository", "Error disconnecting from AP", e)

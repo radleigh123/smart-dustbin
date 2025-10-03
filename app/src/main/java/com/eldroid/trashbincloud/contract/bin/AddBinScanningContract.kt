@@ -13,7 +13,6 @@ interface AddBinScanningContract {
         fun showLocationPermissionRequired()
         fun showLocationServicesRequired()
         fun showWifiRequired()
-        fun showApPasswordDialog(bin: FoundBin)
         fun navigateToWifiSetup(bin: FoundBin)
         fun navigateBack()
     }
@@ -23,7 +22,6 @@ interface AddBinScanningContract {
         fun detachView()
         fun startWifiScan()
         fun onBinSelected(bin: FoundBin)
-        fun onApPasswordEntered(bin: FoundBin, password: String)
         fun onBackPressed()
         fun onPermissionGranted()
         fun onPermissionDenied()
