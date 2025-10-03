@@ -6,20 +6,25 @@ import android.content.pm.PackageManager
 import android.location.LocationManager
 import android.os.Bundle
 import android.provider.Settings
+import android.text.InputType
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eldroid.trashbincloud.contract.bin.AddBinScanningContract
 import com.eldroid.trashbincloud.databinding.FragmentAddBinScanningBinding
 import com.eldroid.trashbincloud.model.entity.bin.FoundBin
 import com.eldroid.trashbincloud.presenter.bin.AddBinScanningPresenter
 import com.eldroid.trashbincloud.view.MainActivity
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 
 class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
 
@@ -39,7 +44,7 @@ class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentAddBinScanningBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -138,38 +143,8 @@ class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
         }
     }
 
-    /*private fun loadFoundBins() {
-        // Scan WiFi
-
-        val sampleFoundBins = listOf(
-            FoundBin(
-                binId = "bin1",
-                name = "Dustbin_001",
-                location = ""
-            ),
-            FoundBin(
-                binId = "bin2",
-                name = "Dustbin_002",
-                location = ""
-            ),
-            FoundBin(
-                binId = "bin3",
-                name = "Dustbin_003",
-                location = ""
-            )
-        )
-
-        addBinScanningAdapter.submitList(sampleFoundBins)
-    }
-
-    private fun onBinClicked(bin: FoundBin) {
-        // Handle bin click event
-        Log.d("BIN", "Selected bin: ${bin.name}")
-        Toast.makeText(requireContext(), "Selected bin: ${bin.name}", Toast.LENGTH_SHORT).show()
-    }*/
-
+    // View Interface Implementation
     override fun showFoundBins(bins: List<FoundBin>) {
-        // submitList with callback to ensure list is updated
         addBinScanningAdapter.submitList(bins.toList()) {
             if (bins.isEmpty()) {
                 binding.recyclerFoundBins.visibility = View.GONE
@@ -226,10 +201,33 @@ class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
         Toast.makeText(requireContext(), "Please enable WiFi", Toast.LENGTH_SHORT).show()
     }
 
-    override fun navigateToWifiSetup(bin: FoundBin) {
-        // Log.d("AddBinScanningFragment", "Navigate to WiFi setup for bin: ${bin.name}")
-        Toast.makeText(requireContext(), "Connecting to ${bin.name}...", Toast.LENGTH_SHORT).show()
+    override fun showApPasswordDialog(bin: FoundBin) {
+        val passwordInput = EditText(requireContext()).apply {
+            inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            hint = "Enter AP password"
+        }
 
+        AlertDialog.Builder(requireContext())
+            .setTitle("Connect to ${bin.name}")
+            .setMessage("Enter the Access Point password for this dustbin")
+            .setView(passwordInput)
+            .setPositiveButton("Connect") { dialog, _ ->
+                val password = passwordInput.text.toString()
+                presenter.onApPasswordEntered(bin, password)
+                dialog.dismiss()
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    override fun navigateToWifiSetup(bin: FoundBin) {
+        val action = AddBinScanningFragmentDirections
+            .actionAddBinScanningFragmentToAddBinSetupFragment(bin)
+        findNavController().navigate(action)
+
+        Log.d("AddBinScanningFragment", "Navigating to WiFi setup for bin: ${bin.name}")
     }
 
     override fun navigateBack() {
@@ -243,5 +241,4 @@ class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
         presenter.detachView()
         _binding = null
     }
-
 }
