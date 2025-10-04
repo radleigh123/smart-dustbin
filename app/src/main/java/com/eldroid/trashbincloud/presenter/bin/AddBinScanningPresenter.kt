@@ -1,99 +1,108 @@
 package com.eldroid.trashbincloud.presenter.bin
 
+import android.Manifest
 import android.content.Context
+import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
+import androidx.core.content.ContextCompat
 import com.eldroid.trashbincloud.contract.bin.AddBinScanningContract
 import com.eldroid.trashbincloud.model.entity.bin.FoundBin
-import com.eldroid.trashbincloud.model.repository.bin.WifiScanRepository
+import com.eldroid.trashbincloud.model.repository.bin.BleProvisioningManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AddBinScanningPresenter(
-    context: Context
+    private val context: Context
 ) : AddBinScanningContract.Presenter {
 
     private var view: AddBinScanningContract.View? = null
-    private val wifiScanRepository = WifiScanRepository(context)
     private val presenterScope = CoroutineScope(Dispatchers.Main + Job())
     private val foundBins = mutableListOf<FoundBin>()
+    
+    private val bleManager = BleProvisioningManager(context)
 
     override fun attachView(view: AddBinScanningContract.View) {
         this.view = view
+        startBleScanning()
     }
 
     override fun detachView() {
+        stopBleScanning()
         this.view = null
     }
-
-    override fun startWifiScan() {
-        if (!wifiScanRepository.isWifiEnabled()) {
-            view?.showWifiRequired()
+    
+    override fun startBleScanning() {
+        if (!bleManager.isBluetoothEnabled()) {
+            view?.showBluetoothDisabled()
             return
         }
-
+        
+        if (!checkBluetoothPermissions()) {
+            view?.requestBluetoothPermissions()
+            return
+        }
+        
         view?.showLoading()
-        // Clear previous results before starting new scan
         foundBins.clear()
-        view?.showFoundBins(emptyList())
-        view?.updateFoundBinsCount(0)
-
-        presenterScope.launch {
-            try {
-                wifiScanRepository.scanForDustbins().collect { result ->
-                    withContext(Dispatchers.Main) {
-                        when (result) {
-                            is WifiScanRepository.ScanResult.Success -> {
-                                val bin = FoundBin(
-                                    binId = result.wifiResult.BSSID ?: "unknown",
-                                    name = result.wifiResult.SSID ?: "Unknown Dustbin",
-                                    location = "Signal: ${result.wifiResult.level} dBm"
-                                )
-                                foundBins.add(bin)
-                                // Create a new list to trigger ListAdapter's DiffUtil
-                                view?.showFoundBins(foundBins.toList())
-                                view?.updateFoundBinsCount(foundBins.size)
-                            }
-                            is WifiScanRepository.ScanResult.Complete -> {
-                                view?.hideLoading()
-                                if (result.count == 0) {
-                                    view?.showError("No dustbins found. Make sure the dustbin is powered on and in AP mode.")
-                                }
-                                Log.d("AddBinScanningPresenter", "Scan complete. Found ${result.count} dustbin(s)")
-                            }
-                            is WifiScanRepository.ScanResult.Error -> {
-                                view?.hideLoading()
-                                view?.showError(result.message)
-                            }
-                        }
-                    }
-                }
-            } catch (e: Exception) {
-                withContext(Dispatchers.Main) {
-                    view?.hideLoading()
-                    view?.showError("Scan failed: ${e.message}")
-                    Log.e("AddBinScanningPresenter", "WiFi scan exception", e)
+        
+        bleManager.startScanning { foundBin ->
+            presenterScope.launch {
+                // Avoid duplicates
+                if (foundBins.none { it.binId == foundBin.binId }) {
+                    foundBins.add(foundBin)
+                    view?.showFoundBins(foundBins.toList())
+                    view?.updateFoundBinCount(foundBins.size)
+                    Log.d("AddBinScanningPresenter", "Found bin: ${foundBin.name}")
                 }
             }
         }
+        
+        // Auto-stop scanning after 30 seconds
+        presenterScope.launch {
+            delay(30000)
+            stopBleScanning()
+            view?.hideLoading()
+        }
     }
-
+    
+    override fun stopBleScanning() {
+        bleManager.stopScanning()
+        view?.hideLoading()
+    }
+    
     override fun onBinSelected(bin: FoundBin) {
-        Log.d("AddBinScanningPresenter", "Bin selected: ${bin.name}")
-        view?.navigateToWifiSetup(bin)
+        stopBleScanning()
+        view?.navigateToSetup(bin)
     }
-
+    
+    override fun onRefreshClicked() {
+        startBleScanning()
+    }
+    
     override fun onBackPressed() {
-        view?.navigateBack()
+        stopBleScanning()
     }
-
-    override fun onPermissionGranted() {
-        startWifiScan()
-    }
-
-    override fun onPermissionDenied() {
-        view?.showLocationPermissionRequired()
+    
+    override fun checkBluetoothPermissions(): Boolean {
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            arrayOf(
+                Manifest.permission.BLUETOOTH_SCAN,
+                Manifest.permission.BLUETOOTH_CONNECT
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.BLUETOOTH,
+                Manifest.permission.BLUETOOTH_ADMIN,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            )
+        }
+        
+        return permissions.all {
+            ContextCompat.checkSelfPermission(context, it) == PackageManager.PERMISSION_GRANTED
+        }
     }
 }

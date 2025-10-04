@@ -7,5 +7,6 @@ import kotlinx.parcelize.Parcelize
 data class FoundBin(
     val binId: String = "",
     val name: String = "",
-    val location: String = ""
+    val location: String = "",
+    val isProvisioned: Boolean = false
 ) : Parcelable
