@@ -4,12 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -20,7 +14,7 @@ import com.eldroid.trashbincloud.contract.MainContract
 import com.eldroid.trashbincloud.databinding.ActivityMainBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.presenter.MainPresenter
-import com.eldroid.trashbincloud.view.auth.IndexActivity
+import com.eldroid.trashbincloud.view.auth.AuthActivity
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -148,7 +142,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     override fun navigateToLogin() {
-        val intent = Intent(this, IndexActivity::class.java)
+        val intent = Intent(this, AuthActivity::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()

@@ -10,7 +10,7 @@ import com.eldroid.trashbincloud.contract.MainContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.presenter.MainPresenter
-import com.eldroid.trashbincloud.view.auth.IndexActivity
+import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.google.android.material.snackbar.Snackbar
 
 /**
@@ -51,7 +51,7 @@ class SettingsFragment : Fragment(), MainContract.View {
     }
 
     override fun navigateToLogin() {
-        val intent = Intent(requireContext(), IndexActivity::class.java)
+        val intent = Intent(requireContext(), AuthActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
     }
