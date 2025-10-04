@@ -1,10 +1,13 @@
 package com.eldroid.trashbincloud.view
 
+import android.content.Context
+import android.net.wifi.WifiManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.databinding.ActivityAddBinBinding
 import com.eldroid.trashbincloud.retrofit.NetworkClient
 import kotlinx.coroutines.CoroutineScope
@@ -17,6 +20,7 @@ class AddBinActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityAddBinBinding
 
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -29,8 +33,16 @@ class AddBinActivity : AppCompatActivity() {
             setWifiCredentials(ssid, password)
         }
 
-        binding.btnPing.setOnClickListener {
+        binding.btnPing.setOnClickListener @androidx.annotation.RequiresPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) {
             pingDevice()
+
+            val wifiManager = applicationContext.getSystemService(Context.WIFI_SERVICE) as WifiManager
+            val scanResults = wifiManager.scanResults
+
+            val dustbinNetworks = scanResults.filter { it.wifiSsid.toString().startsWith("Dustbin") }
+            for (result in dustbinNetworks) {
+                Log.d("SCAN", "Found Dustbin SSID: ${result.SSID}");
+            }
         }
 
         binding.btnOpen.setOnClickListener {

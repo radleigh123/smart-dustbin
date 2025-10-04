@@ -77,7 +77,9 @@ class DashboardFragment : Fragment() {
                 status = "warning",
                 lastUpdated = System.currentTimeMillis(),
                 battery = 80,
-                temperature = 22.5f
+                temperature = 22.5f,
+                lastEmptied = "2025-10-01",
+                daysToFill = 22.3
             ),
             TrashBin(
                 binId = "bin2",
@@ -87,7 +89,9 @@ class DashboardFragment : Fragment() {
                 status = "normal",
                 lastUpdated = System.currentTimeMillis() - 3600000, // 1 hour ago
                 battery = 95,
-                temperature = 21.0f
+                temperature = 21.0f,
+                lastEmptied = "2025-10-01",
+                daysToFill = 22.3
             )
         )
         trashBinAdapter.submitList(sampleBins)
