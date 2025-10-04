@@ -30,6 +30,12 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.TrashbinCloud">
         <activity
+            android:name=".view.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.bin.AddBinActivity"
             android:exported="false" />
         <activity
