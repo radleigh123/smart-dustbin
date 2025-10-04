@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Base.Theme.TrashbinCloud">
         <activity
+            android:name=".view.ProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.AddBinActivity"
             android:exported="false" />
         <activity
