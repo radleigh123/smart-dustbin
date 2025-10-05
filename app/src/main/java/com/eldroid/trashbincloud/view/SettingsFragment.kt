@@ -44,6 +44,11 @@ class SettingsFragment : Fragment(), MainContract.View {
         binding.itemLogOut.setOnClickListener {
             presenter.logout()
         }
+        binding.constraintProfile.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), ProfileActivity::class.java)
+            )
+        }
     }
 
     override fun showLogoutSuccess() {
