@@ -1,28 +1,26 @@
-package com.eldroid.trashbincloud.view
+package com.eldroid.trashbincloud.view.settings
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.eldroid.trashbincloud.contract.MainContract
+import android.widget.Toast
+import androidx.fragment.app.Fragment
+import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
-import com.eldroid.trashbincloud.presenter.MainPresenter
+import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
+import com.eldroid.trashbincloud.view.ProfileActivity
 import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.google.android.material.snackbar.Snackbar
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SettingsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class SettingsFragment : Fragment(), MainContract.View {
+class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding?=null
     private val binding get() = _binding!!
 
-    private lateinit var presenter: MainContract.Presenter
+    private lateinit var presenter: SettingsContract.Presenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -35,13 +33,15 @@ class SettingsFragment : Fragment(), MainContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = MainPresenter(this, AuthRepository())
+        presenter = SettingsPresenter(this, AuthRepository())
 
+        presenter.getUserInfo()
         setupListeners()
     }
 
     private fun setupListeners() {
         binding.itemLogOut.setOnClickListener {
+            // Toast.makeText(context, "Log out Clicked", Toast.LENGTH_SHORT).show()
             presenter.logout()
         }
         binding.constraintProfile.setOnClickListener {
@@ -51,14 +51,19 @@ class SettingsFragment : Fragment(), MainContract.View {
         }
     }
 
-    override fun showLogoutSuccess() {
-        Snackbar.make(binding.root, "Logged out successfully", Snackbar.LENGTH_SHORT).show()
-    }
-
     override fun navigateToLogin() {
         val intent = Intent(requireContext(), AuthActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
+    }
+
+    override fun showError(message: String) {
+        TODO("Not yet implemented")
+    }
+
+    override fun loadUserInfo(name: String, email: String) {
+        binding.topCardDetailsName.text = if (name.isEmpty()) name else "UNKNOWN"
+        binding.topCardDetailsEmail.text = email
     }
 
     override fun onDestroyView() {

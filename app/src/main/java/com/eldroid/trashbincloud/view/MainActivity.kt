@@ -2,6 +2,7 @@ package com.eldroid.trashbincloud.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageView
@@ -15,6 +16,7 @@ import com.eldroid.trashbincloud.databinding.ActivityMainBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.presenter.MainPresenter
 import com.eldroid.trashbincloud.view.auth.AuthActivity
+import com.eldroid.trashbincloud.view.settings.SettingsFragment
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -114,6 +116,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             }
         }
     }
+
     private fun resetAllTabs() {
         val unselectedColor = ContextCompat.getColor(this, R.color.gray_500)
 
@@ -136,8 +139,8 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             .commit()
     }
 
-    // ---------------- MVP Contract ----------------
     override fun showLogoutSuccess() {
+        Log.d("MainActivity", "Logged out successfully")
         Snackbar.make(findViewById(R.id.fragment_container), "Logged out successfully", Snackbar.LENGTH_SHORT).show()
     }
 
@@ -148,9 +151,3 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         finish()
     }
 }
-// Example Fragments - *Had to comment, causing a redeclaration error
-/*
-class DashboardFragment : Fragment(R.layout.fragment_main_dashboard)
-class HistoryFragment.kt : Fragment(R.layout.fragment_history)
-class SettingsFragment : Fragment(R.layout.fragment_settings)
-*/
