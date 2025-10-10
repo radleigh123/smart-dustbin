@@ -25,7 +25,7 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
     private lateinit var allEventsButton: TextView
     private lateinit var autoOpenButton: TextView
     private lateinit var manualOpenButton: TextView
-    private lateinit var binSpinner: Spinner
+//    private lateinit var binSpinner: Spinner
     private lateinit var dateEditText: EditText
     //private lateinit var weeklyChart: BarChart
     private lateinit var activityRecyclerView: RecyclerView
@@ -38,25 +38,31 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_history, container, false)
-        initViews(view)
-        setupPresenter()
-        //setupChart()
-        setupRecyclerView()
-        setupListeners()
+//        initViews(view)
+//        setupRecyclerView()
+//        setupPresenter()
+//        //setupChart()
+//        setupListeners()
         return view
     }
 
-    class HistoryFragment : Fragment(R.layout.fragment_history) {
+//    class HistoryFragment : Fragment(R.layout.fragment_history) {
 
-        private lateinit var recyclerView: RecyclerView
-        private lateinit var adapter: HistoryAdapter
+//        private lateinit var recyclerView: RecyclerView
+//        private lateinit var adapter: HistoryAdapter
 
         @RequiresApi(Build.VERSION_CODES.O)
         override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
             super.onViewCreated(view, savedInstanceState)
 
-            recyclerView = view.findViewById(R.id.activityRecyclerView)
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            initViews(view)
+            setupRecyclerView()
+            setupPresenter()
+            //setupChart()
+            setupListeners()
+
+//            recyclerView = view.findViewById(R.id.activityRecyclerView)
+//            recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
             //sample data only
             val sampleActivities = mutableListOf(
@@ -97,10 +103,10 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
                     date = LocalDate.now()
                 )
             )
-            adapter = HistoryAdapter(sampleActivities)
-            recyclerView.adapter = adapter
+            activityAdapter = HistoryAdapter(sampleActivities)
+            activityRecyclerView.adapter = activityAdapter
         }
-    }
+//    }
 
 
     private fun initViews(view: View) {
@@ -108,7 +114,9 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
         allEventsButton = view.findViewById(R.id.allEventsButton)
         autoOpenButton = view.findViewById(R.id.autoOpenButton)
         manualOpenButton = view.findViewById(R.id.manualOpenButton)
-        binSpinner = view.findViewById(R.id.binSpinner)
+        //ako sani gi comment ang spinner kay di niya ma detect sa history fragment kay wala daw sa xml.
+        //wako kahibaw asa e butang ang spinner
+//        binSpinner = view.findViewById(R.id.binSpinner)
         dateEditText = view.findViewById(R.id.dateEditText)
         //weeklyChart = view.findViewById(R.id.weeklyChart)
         activityRecyclerView = view.findViewById(R.id.activityRecyclerView)
@@ -164,19 +172,19 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
         autoOpenButton.setOnClickListener { presenter.onEventTypeSelected("auto") }
         manualOpenButton.setOnClickListener { presenter.onEventTypeSelected("manual") }
 
-        binSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>?,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                val selectedBin = parent?.getItemAtPosition(position) as String
-                presenter.onBinSelected(selectedBin)
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>?) {}
-        }
+//        binSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(
+//                parent: AdapterView<*>?,
+//                view: View?,
+//                position: Int,
+//                id: Long
+//            ) {
+//                val selectedBin = parent?.getItemAtPosition(position) as String
+//                presenter.onBinSelected(selectedBin)
+//            }
+//
+//            override fun onNothingSelected(parent: AdapterView<*>?) {}
+//        }
     }
 
     //for the bar chart ni siya
@@ -204,10 +212,11 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
         // TODO: same code as before to highlight buttons
     }
 
+    //Ako sa gi comment kay mao ni naka cause og error nga di ma acccess ni nga fragment
     override fun setupBinSpinner(bins: List<String>) {
-        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, bins)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binSpinner.adapter = adapter
+//        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, bins)
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        binSpinner.adapter = adapter
     }
 
     override fun showLoading() { /* TODO */ }
