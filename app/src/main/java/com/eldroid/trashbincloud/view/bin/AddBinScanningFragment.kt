@@ -69,7 +69,8 @@ class AddBinScanningFragment : Fragment(), AddBinScanningContract.View {
     private fun setupClickListeners() {
         binding.backBtn.setOnClickListener {
             presenter.onBackPressed()
-            findNavController().navigateUp()
+            // findNavController().navigateUp()
+            findNavController().popBackStack()
         }
 
         binding.refreshBtn.setOnClickListener {

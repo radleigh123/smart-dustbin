@@ -38,7 +38,7 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
         binding.tvBinName.text = bin.name
         binding.tvLocation.text = bin.location
         binding.tvFillLevel.text = "${bin.fillLevel}%"
-        binding.progressBarCircular.progress = bin.fillLevel
+        binding.progressBarCircular.progress = bin.fillLevel?.toInt()!!
         binding.tvLastEmptied.text = "Last Emptied: ${bin.lastEmptied}"
         binding.tvDaysToFill.text = "Days to fill: ${bin.daysToFill}"
     }

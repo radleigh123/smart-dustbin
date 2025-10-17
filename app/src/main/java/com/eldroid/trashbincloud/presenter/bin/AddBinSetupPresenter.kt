@@ -99,7 +99,7 @@ class AddBinSetupPresenter(
         }
 
         val authRepo = AuthRepository()
-        val userUid = "user_" + authRepo.currentUser()?.uid.toString()
+        val userUid = authRepo.currentUser()?.uid.toString() // 'user_' remove to exactly match the UID on RTDB rule
         val binId = "bin_${UUID.randomUUID()}"
         
         view?.showLoading()

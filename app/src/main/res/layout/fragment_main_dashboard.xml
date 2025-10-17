@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="#E5E7EB">
 
@@ -31,10 +32,10 @@
                     android:layout_width="40dp"
                     android:layout_height="40dp"
                     android:src="@drawable/ic_profile"
-                    android:tint="@color/primary"
                     android:scaleType="centerCrop"
                     android:layout_alignParentStart="true"
-                    android:background="@drawable/circle_bg" />
+                    android:background="@drawable/circle_bg"
+                    app:tint="@color/primary" />
 
                 <LinearLayout
                     android:orientation="vertical"
@@ -94,7 +95,9 @@
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Default Content Section -->
         <LinearLayout
+            android:id="@+id/section_default"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -171,9 +174,9 @@
                 app:iconTint="@android:color/white"/>
         </LinearLayout>
 
-        <!-- Main Content Section -->
-        <!-- Show only after successfully connected the device -->
+        <!-- Content Section: Show only after successfully connected the device -->
         <LinearLayout
+            android:id="@+id/section_success"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -200,7 +203,7 @@
                         android:layout_width="24dp"
                         android:layout_height="24dp"
                         android:src="@drawable/ic_chart"
-                        android:tint="#2E7D5A" />
+                        app:tint="#2E7D5A" />
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -257,7 +260,9 @@
                     android:id="@+id/recyclerViewBins"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    tools:listitem="@layout/item_bin"
+                    />
 
             </LinearLayout>
 
@@ -313,6 +318,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
+                        tools:listitem="@layout/item_recent_activity"
                         android:nestedScrollingEnabled="false" />
 
                 </LinearLayout>

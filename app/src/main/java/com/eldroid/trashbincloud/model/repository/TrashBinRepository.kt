@@ -13,7 +13,31 @@ import com.google.firebase.database.ValueEventListener
 class TrashBinRepository(
     private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
 ) {
+
     private val binsRef = database.getReference("trash_bins")
+
+    /**
+     * Get all bins associated with user UID
+     */
+    fun getUserBins(userUid: String, callback: (List<TrashBin>, String?) -> Unit) {
+        binsRef.child(userUid).addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val binsList = mutableListOf<TrashBin>()
+                for (binSnapshot in snapshot.children) {
+                    val bin = binSnapshot.getValue(TrashBin::class.java)
+                    bin?.let {
+                        it.binId = binSnapshot.key ?: ""
+                        binsList.add(it)
+                    }
+                }
+                callback(binsList, null)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(emptyList(), error.message)
+            }
+        })
+    }
 
     /**
      * Get a specific trash bin by ID
@@ -29,6 +53,33 @@ class TrashBinRepository(
                 callback(null, error.message)
             }
         })
+    }
+
+    /**
+     * Update a trash bin data
+     */
+    fun updateBin(userUid: String, bin: TrashBin, callback: (Boolean, String?) -> Unit) {
+        binsRef.child(userUid).child(bin.binId.toString()).setValue(bin)
+            .addOnSuccessListener { callback(true, null) }
+            .addOnFailureListener { e -> callback(false, e.message) }
+    }
+
+    /**
+     * Add a new trash bin
+     */
+    fun addBin(userUid: String, bin: TrashBin, callback: (Boolean, String?) -> Unit) {
+        binsRef.child(userUid).child(bin.binId.toString()).setValue(bin)
+            .addOnSuccessListener { callback(true, null) }
+            .addOnFailureListener { e -> callback(false, e.message) }
+    }
+
+    /**
+     * Delete a trash bin
+     */
+    fun deleteBin(userUid: String, binId: String, callback: (Boolean, String?) -> Unit) {
+        binsRef.child(userUid).child(binId).removeValue()
+            .addOnSuccessListener { callback(true, null) }
+            .addOnFailureListener { e -> callback(false, e.message) }
     }
 
     /**
@@ -49,48 +100,6 @@ class TrashBinRepository(
                 callback(emptyList(), error.message)
             }
         })
-    }
-
-    /**
-     * Update a trash bin data
-     */
-    fun updateBin(bin: TrashBin, callback: (Boolean, String?) -> Unit) {
-        binsRef.child(bin.binId).setValue(bin)
-            .addOnSuccessListener {
-                callback(true, null)
-            }
-            .addOnFailureListener { e ->
-                callback(false, e.message)
-            }
-    }
-
-    /**
-     * Add a new trash bin
-     */
-    fun addBin(bin: TrashBin, callback: (Boolean, String?) -> Unit) {
-        val newBinRef = binsRef.push()
-        val binWithId = bin.copy(binId = newBinRef.key ?: "")
-
-        newBinRef.setValue(binWithId)
-            .addOnSuccessListener {
-                callback(true, null)
-            }
-            .addOnFailureListener { e ->
-                callback(false, e.message)
-            }
-    }
-
-    /**
-     * Delete a trash bin
-     */
-    fun deleteBin(binId: String, callback: (Boolean, String?) -> Unit) {
-        binsRef.child(binId).removeValue()
-            .addOnSuccessListener {
-                callback(true, null)
-            }
-            .addOnFailureListener { e ->
-                callback(false, e.message)
-            }
     }
 
     /**
