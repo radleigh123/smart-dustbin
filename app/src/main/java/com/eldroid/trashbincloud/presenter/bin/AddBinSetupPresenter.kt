@@ -4,12 +4,14 @@ import android.content.Context
 import android.util.Log
 import com.eldroid.trashbincloud.contract.bin.AddBinSetupContract
 import com.eldroid.trashbincloud.model.entity.bin.FoundBin
+import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.bin.BleProvisioningManager
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.UUID
 
 class AddBinSetupPresenter(
     private val context: Context
@@ -85,6 +87,7 @@ class AddBinSetupPresenter(
 
     override fun onConnectClicked(password: String) {
         val ssid = selectedSsid
+
         if (ssid == null) {
             view?.showError("Please select a WiFi network")
             return
@@ -94,10 +97,14 @@ class AddBinSetupPresenter(
             view?.showError("Please enter WiFi password")
             return
         }
+
+        val authRepo = AuthRepository()
+        val userUid = "user_" + authRepo.currentUser()?.uid.toString()
+        val binId = "bin_${UUID.randomUUID()}"
         
         view?.showLoading()
         
-        bleManager?.provisionWifi(ssid, password) { success, error ->
+        bleManager?.provisionWifi(ssid, password, userUid, binId) { success, error ->
             presenterScope.launch {
                 if (success) {
                     view?.hideLoading()

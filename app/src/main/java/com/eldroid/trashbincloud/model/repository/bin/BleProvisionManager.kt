@@ -20,10 +20,12 @@ class BleProvisioningManager(
 
         // Update these UUIDs to match your ESP32 BLE provisioning service
         private const val PROVISIONING_SERVICE_UUID = "6e400001-b5a3-f393-e0a9-e50e24dcca9e"
-        private const val WIFI_SSID_CHAR_UUID = "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
-        private const val WIFI_PASSWORD_CHAR_UUID = "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
-        private const val WIFI_STATUS_CHAR_UUID = "6e400004-b5a3-f393-e0a9-e50e24dcca9e"
-        private const val WIFI_SCAN_CHAR_UUID = "6e400005-b5a3-f393-e0a9-e50e24dcca9e"
+        private const val WIFI_SSID_CHAR_UUID =       "6e400002-b5a3-f393-e0a9-e50e24dcca9e"
+        private const val WIFI_PASSWORD_CHAR_UUID =   "6e400003-b5a3-f393-e0a9-e50e24dcca9e"
+        private const val WIFI_STATUS_CHAR_UUID =     "6e400004-b5a3-f393-e0a9-e50e24dcca9e"
+        private const val WIFI_SCAN_CHAR_UUID =       "6e400005-b5a3-f393-e0a9-e50e24dcca9e"
+        private const val USERUID_CHAR_UUID =         "6e400007-b5a3-f393-e0a9-e50e24dcca9e"
+        private const val BINID_CHAR_UUID =           "6e400008-b5a3-f393-e0a9-e50e24dcca9e"
     }
     
     private val bluetoothAdapter: BluetoothAdapter? by lazy {
@@ -134,11 +136,9 @@ class BleProvisioningManager(
             if (status == BluetoothGatt.GATT_SUCCESS) {
                 Log.d(TAG, "Characteristic written successfully: ${characteristic.uuid}")
                 
-                // Check if this was the SSID write
-                if (characteristic.uuid == UUID.fromString(WIFI_SSID_CHAR_UUID)) {
+                /* if (characteristic.uuid == UUID.fromString(WIFI_SSID_CHAR_UUID)) {
                     Log.d(TAG, "SSID written successfully, now writing password...")
                     
-                    // Now write the password
                     val password = pendingPasswordWrite
                     val passwordChar = pendingPasswordChar
                     
@@ -158,13 +158,39 @@ class BleProvisioningManager(
                         pendingPasswordChar = null
                     }
                 }
-                // Check if this was the password write
                 else if (characteristic.uuid == UUID.fromString(WIFI_PASSWORD_CHAR_UUID)) {
                     Log.d(TAG, "Password written successfully!")
                     Log.d(TAG, "WiFi credentials sent completely via BLE")
                     
                     // Provisioning complete - notify success
                     onProvisioningComplete?.invoke(true, null)
+                } */
+                when (characteristic.uuid.toString()) {
+                    WIFI_SSID_CHAR_UUID -> {
+                        Log.d(TAG, "SSID written successfully, now writing password...")
+                        pendingPasswordChar?.value = pendingPasswordWrite?.toByteArray()
+                        val success = gatt.writeCharacteristic(pendingPasswordChar)
+                    }
+
+                    WIFI_PASSWORD_CHAR_UUID -> {
+                        Log.d(TAG, "Password written successfully, now writing User UID...")
+                        pendingUserUidChar?.value = pendingUserUidWrite?.toByteArray()
+                        val success = gatt.writeCharacteristic(pendingUserUidChar)
+                    }
+
+                    USERUID_CHAR_UUID -> {
+                        Log.d(TAG, "User UID written successfully, now writing Bin ID...")
+                        pendingBinIdChar?.value = pendingBinIdWrite?.toByteArray()
+                        val success = gatt.writeCharacteristic(pendingBinIdChar)
+                    }
+
+                    BINID_CHAR_UUID -> {
+                        Log.d(TAG, "Bin ID written successfully!")
+
+                        // Provisioning complete - notify success
+                        Log.d(TAG, "WiFi credentials and IDs sent completely via BLE")
+                        onProvisioningComplete?.invoke(true, null)
+                    }
                 }
             } else {
                 Log.e(TAG, "Characteristic write failed with status: $status for ${characteristic.uuid}")
@@ -208,6 +234,8 @@ class BleProvisioningManager(
     fun provisionWifi(
         ssid: String,
         password: String,
+        userUid: String,
+        binId: String,
         onComplete: (Boolean, String?) -> Unit
     ) {
         onProvisioningComplete = onComplete
@@ -222,15 +250,24 @@ class BleProvisioningManager(
         // Get characteristics
         val ssidChar = service.getCharacteristic(UUID.fromString(WIFI_SSID_CHAR_UUID))
         val passwordChar = service.getCharacteristic(UUID.fromString(WIFI_PASSWORD_CHAR_UUID))
-        
-        if (ssidChar == null || passwordChar == null) {
+        val userUidChar = service.getCharacteristic(UUID.fromString(USERUID_CHAR_UUID))
+        val binIdChar = service.getCharacteristic(UUID.fromString(BINID_CHAR_UUID))
+
+        if (ssidChar == null || passwordChar == null || userUidChar == null || binIdChar == null) {
             onComplete(false, "Required characteristics not found")
             return
         }
         
         // Store password to write after SSID write completes
+        // Save all to write in sequence
         pendingPasswordWrite = password
         pendingPasswordChar = passwordChar
+
+        pendingUserUidWrite = userUid
+        pendingUserUidChar = userUidChar
+
+        pendingBinIdWrite = binId
+        pendingBinIdChar = binIdChar
         
         // Write SSID first
         ssidChar.value = ssid.toByteArray()
@@ -246,6 +283,12 @@ class BleProvisioningManager(
     // Add these class properties at the top of the class
     private var pendingPasswordWrite: String? = null
     private var pendingPasswordChar: BluetoothGattCharacteristic? = null
+
+    private var pendingUserUidWrite: String? = null
+    private var pendingUserUidChar: BluetoothGattCharacteristic? = null
+
+    private var pendingBinIdWrite: String? = null
+    private var pendingBinIdChar: BluetoothGattCharacteristic? = null
     
     @SuppressLint("MissingPermission")
     fun requestWifiNetworks(onNetworks: (List<String>) -> Unit) {
