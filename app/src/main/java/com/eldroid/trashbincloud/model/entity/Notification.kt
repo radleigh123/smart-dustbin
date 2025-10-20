@@ -1,35 +1,37 @@
 package com.eldroid.trashbincloud.model.entity
+
 import android.text.format.DateFormat
 import com.google.firebase.Timestamp
+import android.graphics.Color
 
 data class Notification(
-    val notifId: String ?= null,
-    val userId: String ?= null,
-    val title: String ?= null,
-    val body: String ?= null,
-    val createdAt: Timestamp ?= null,
-    val isRead: Boolean ?= null,
-    val binId: String ?= null,
-    val binName: Int ?= null,
-    val icon: String ?= null,
-    val color: String ?= null,
-    val type: String ?= null
-){
+    var notifId: String? = null,
+    var userId: String? = null,
+    var title: String? = null,
+    var body: String? = null,
+    var createdAt: Timestamp? = null,
+    var isRead: Boolean? = null,
+    var binId: String? = null,
+    var binName: Int? = null,
+    var icon: String? = null,
+    var color: String? = null,
+    var type: String? = null
+) {
     fun getFormattedTimestamp(): String {
         return if (createdAt == null) {
             "Never"
         } else {
-            val date = createdAt.toDate() // convert Timestamp → Date
+            val date = createdAt!!.toDate()
             DateFormat.format("MMM dd, yyyy HH:mm:ss", date).toString()
         }
     }
 
     fun getStatusColor(): Int {
         return when (color) {
-            "normal" -> android.graphics.Color.GREEN
-            "warning" -> android.graphics.Color.YELLOW
-            "critical" -> android.graphics.Color.RED
-            else -> android.graphics.Color.GRAY
+            "normal" -> Color.GREEN
+            "warning" -> Color.YELLOW
+            "critical" -> Color.RED
+            else -> Color.GRAY
         }
     }
 }

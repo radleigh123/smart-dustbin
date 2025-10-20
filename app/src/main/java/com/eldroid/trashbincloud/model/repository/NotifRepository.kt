@@ -11,14 +11,19 @@ class NotifRepository (private val db: FirebaseFirestore = FirebaseFirestore.get
             .whereEqualTo("userId", userId)
             .get()
             .addOnSuccessListener { documents ->
-                val notifications = documents.map { it.toObject(Notification::class.java) }
-                callback(notifications, null)
+                if (!documents.isEmpty) {
+                    val notifications = documents.map { it.toObject(Notification::class.java) }
+                    callback(notifications, null)
+                } else {
+                    callback(emptyList(), null)
+                }
             }
             .addOnFailureListener { exception ->
                 Log.e("NotifRepository", "Error getting notifications", exception)
                 callback(emptyList(), exception.message)
             }
     }
+
 
     fun getUnreadNotif(userId: String, callback: (Int, String?) -> Unit) {
         db.collection("notifications")

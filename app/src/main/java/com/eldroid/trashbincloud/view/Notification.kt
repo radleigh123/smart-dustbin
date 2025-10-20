@@ -27,10 +27,14 @@ class Notification : AppCompatActivity(), NotifContract.View {
     private lateinit var auth: AuthRepository
     private lateinit var progressBar: ProgressBar
 
+    private lateinit var back: ImageButton
+    private var isActive = false
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification)
-
+        isActive = true
         recyclerView = findViewById(R.id.recyclerViewNotifications)
         recyclerView.layoutManager = LinearLayoutManager(this)
         adapter = NotificationAdapter(emptyList())
@@ -40,23 +44,26 @@ class Notification : AppCompatActivity(), NotifContract.View {
         progressBar = findViewById(R.id.progressBar)
         auth = AuthRepository()
         notif = NotifPresenter(this, NotifRepository())
-        val back = findViewById<ImageButton>(R.id.back_btn)
+        back = findViewById(R.id.back_btn)
 
         val userId = auth.currentUser()?.uid
         notif.getNotifications(userId ?: "")
         notif.getUnreadNotif(userId ?: "")
 
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                finish()
-            }
-        })
+        setupListeners()
 
+    }
+
+    private fun setupListeners() {
         back.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
+    }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        isActive = false
     }
 
     override fun showLoading() {
@@ -72,10 +79,12 @@ class Notification : AppCompatActivity(), NotifContract.View {
     }
 
     override fun showNotifications(notifications: List<Notification>) {
+        if (!isActive) return  // Prevent crash if activity is closed
         adapter.updateList(notifications)
     }
 
     override fun unreadNotifications(unreadCount: Int) {
+        if (!isActive) return  // Prevent crash if activity is closed
         val unreadBadge = findViewById<TextView>(R.id.unread)
 
         if (unreadCount > 0) {
