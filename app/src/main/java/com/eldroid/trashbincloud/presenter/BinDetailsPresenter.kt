@@ -22,7 +22,7 @@ class BinDetailsPresenter : BinDetailsContract.Presenter {
             name = "Kitchen Bin",
             location = "Main Kitchen, Floor 2",
             fillLevel = 80,
-            status = "warning",
+            status = 0,
             lastUpdated = System.currentTimeMillis(),
             battery = 75,
             temperature = 24.5f,

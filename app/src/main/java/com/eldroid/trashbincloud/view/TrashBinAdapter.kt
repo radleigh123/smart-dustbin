@@ -24,7 +24,13 @@ class TrashBinAdapter(
             tvBinName.text = bin.name ?: "UNNAMED BIN"
             tvBinLocation.text = bin.location ?: "UNKNOWN XYZ"
             tvFillLevel.text = "${bin.fillLevel ?: 0}%"
-            progressBar.progress = bin.distance ?: 0
+            tvBinStatus.background = when (bin.status) {
+                0 -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.background_text)
+                1 -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_orange)
+                2 -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_red)
+                else -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.gradient_button_bg)
+            }
+            progressBar.progress = bin.fillLevel ?: 0
         }
     }
 

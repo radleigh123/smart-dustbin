@@ -6,7 +6,7 @@ data class TrashBin(
     var location: String? = null,
     var distance: Int? = null,
     var fillLevel: Int? = null,
-    var status: String? = null,
+    var status: Int? = null,
     var lastUpdated: Long? = null,
     var battery: Int? = null,
     var temperature: Float? = null,
@@ -24,9 +24,9 @@ data class TrashBin(
     // Helper function to get status color
     fun getStatusColor(): Int {
         return when (status) {
-            "normal" -> android.graphics.Color.GREEN
-            "warning" -> android.graphics.Color.YELLOW
-            "critical" -> android.graphics.Color.RED
+            0 -> android.graphics.Color.GREEN
+            1 -> android.graphics.Color.YELLOW
+            2 -> android.graphics.Color.RED
             else -> android.graphics.Color.GRAY
         }
     }
