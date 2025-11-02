@@ -42,7 +42,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         super.onCreate(savedInstanceState)
 
         presenter = MainPresenter(this, AuthRepository())
-        presenter.checkUser()
+        presenter.checkAuth()
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(R.layout.activity_main)
@@ -139,9 +139,9 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             .commit()
     }
 
-    override fun showLogoutSuccess() {
-        Log.d("MainActivity", "Logged out successfully")
-        Snackbar.make(findViewById(R.id.fragment_container), "Logged out successfully", Snackbar.LENGTH_SHORT).show()
+    override fun showMessage(message: String) {
+        Log.d("MainActivity", message)
+        Snackbar.make(findViewById(R.id.fragment_container), message, Snackbar.LENGTH_SHORT).show()
     }
 
     override fun navigateToLogin() {
@@ -150,4 +150,5 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         startActivity(intent)
         finish()
     }
+
 }

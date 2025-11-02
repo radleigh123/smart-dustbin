@@ -1,15 +1,19 @@
 package com.eldroid.trashbincloud.presenter.auth
 
 import com.eldroid.trashbincloud.contract.auth.AuthContract
+import com.eldroid.trashbincloud.model.entity.User
 import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.model.repository.UserRepository
 
 class AuthPresenter(
     private val view: AuthContract.View,
-    private val repository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : AuthContract.Presenter {
+
     override fun login(email: String, password: String) {
         view.showLoading()
-        repository.login(email, password) { success, error ->
+        authRepository.login(email, password) { success, error ->
             view.hideLoading()
             if (success) {
                 view.navigate()
@@ -19,12 +23,35 @@ class AuthPresenter(
         }
     }
 
-    override fun register(email: String, password: String) {
+    override fun register(
+        email: String,
+        password: String,
+        name: String,
+        contactNumber: String
+    ) {
         view.showLoading()
-        repository.register(email, password) { success, error ->
+        authRepository.register(email, password) { success, error ->
             view.hideLoading()
             if (success) {
-                view.navigate()
+                val uid = authRepository.currentUserId() ?: return@register
+
+                val now = System.currentTimeMillis()
+
+                val user = User(
+                    name = name,
+                    email = email,
+                    role = "user",
+                    contactNumber = contactNumber,
+                    createdAt = now,
+                    lastUpdated = now
+                )
+                userRepository.addUser(uid, user) { saved, _ ->
+                    if (saved) {
+                        view.navigate()
+                    } else {
+                        view.showError("RTDB: Failed to add user profile")
+                    }
+                }
             } else {
                 view.showError(error ?: "Unknown error")
             }
@@ -32,7 +59,7 @@ class AuthPresenter(
     }
 
     override fun sendResetPasswordEmail(email: String) {
-        repository.sendResetPasswordEmail(email) { success, error ->
+        authRepository.sendResetPasswordEmail(email) { success, error ->
             if (success) {
                 view.showError("Password reset email sent.")
                 view.navigate()

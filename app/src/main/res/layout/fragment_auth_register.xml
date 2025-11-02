@@ -146,6 +146,28 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
+                android:id="@+id/contactNum_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/contact_number"
+                android:textColorHint="@color/white"
+                android:layout_marginBottom="@dimen/margin_default"
+                app:boxStrokeColor="@color/secondary"
+                app:boxStrokeWidth="2dp"
+                app:boxBackgroundColor="@color/white_20"
+                >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:inputType="phone"
+                    />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
                 android:id="@+id/pass_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

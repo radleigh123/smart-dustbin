@@ -1,35 +1,110 @@
 package com.eldroid.trashbincloud.model.repository
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
+import com.eldroid.trashbincloud.model.entity.User
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-/**
- * TEMP: For a more richer metadata, Firestore is need
- */
-class UserRepository(
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
-) {
+class UserRepository(private val database: FirebaseDatabase = FirebaseDatabase.getInstance()) {
 
-    private val usersCollection = firestore.collection("users")
+    private val usersRef = database.getReference("users")
 
-    fun getCurrentUserId(): String? = auth.currentUser?.uid
+    // TODO: KotlinDOC
+    /**
+     * Add a new user
+     */
+    fun addUser(userUid: String, user: User, callback: (Boolean, String?) -> Unit) {
+        usersRef.child(userUid).setValue(user)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true, null)
+                } else {
+                    callback(false, task.exception?.message)
+                }
+            }
+    }
+
+    fun getUser(userUid: String, callback: (User?, String?) -> Unit) {
+        usersRef.child(userUid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(User::class.java)
+                callback(user, null)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(null, error.message)
+            }
+        })
+    }
+
+    fun getUsers(callback: (List<User>?, String?) -> Unit) {
+        usersRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val usersList = mutableListOf<User>()
+                for (binSnapshot in snapshot.children) {
+                    val user = binSnapshot.getValue(User::class.java)
+                    user?.let { usersList.add(it) }
+                }
+                callback(usersList, null)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                callback(emptyList(), error.message)
+            }
+        })
+    }
+
+    fun updateUser(userUid: String, user: User, callback: (Boolean, String?) -> Unit) {
+        usersRef.child(userUid).setValue(user)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true, null)
+                } else {
+                    callback(false, task.exception?.message)
+                }
+            }
+    }
+
+    fun deleteUser(userUid: String, callback: (Boolean, String?) -> Unit) {
+        usersRef.child(userUid).removeValue()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true, null)
+                } else {
+                    callback(false, task.exception?.message)
+                }
+            }
+    }
+
+    fun updateFcmToken(userUid: String, token: String) {
+        usersRef.child(userUid).child("fcmToken").setValue(token)
+    }
 
     /**
-     * Add bin
+     * For now method is not used
      */
-    fun registerBin(binId: String, callback: (Boolean, String?) -> Unit) {
-        val userId = getCurrentUserId() ?: return callback(false, "User not authenticated")
+    fun listenForUserUpdates(userUid: String, callback: (User?, String?) -> Unit): ValueEventListener {
+        val listener = object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(User::class.java)
+                callback(user, null)
+            }
 
-        usersCollection.document(userId)
-            .update("bins", FieldValue.arrayUnion(binId))
-            .addOnSuccessListener {
-                callback(true, null)
+            override fun onCancelled(error: DatabaseError) {
+                callback(null, error.message)
             }
-            .addOnFailureListener { e ->
-                callback(false, e.message)
-            }
+        }
+
+        usersRef.child(userUid).addValueEventListener(listener)
+        return listener
+    }
+
+    /**
+     * Remove a listener when no longer needed
+     */
+    fun removeListener(userUid: String, listener: ValueEventListener) {
+        usersRef.child(userUid).removeEventListener(listener)
     }
 
 }

@@ -5,19 +5,19 @@ import com.eldroid.trashbincloud.model.repository.AuthRepository
 
 class MainPresenter(
     private val view: MainContract.View,
-    private val repository: AuthRepository
+    private val authRepository: AuthRepository
 ): MainContract.Presenter {
 
-    override fun checkUser() {
-        val user = repository.currentUser()
-        if (user == null) {
+    override fun checkAuth() {
+        val uid = authRepository.currentUserId()
+        if (uid == null) {
             view.navigateToLogin()
         }
     }
 
     override fun logout() {
-        repository.logout()
-        view.showLogoutSuccess()
+        authRepository.logout()
+        view.showMessage("Logged out successfully")
         view.navigateToLogin()
     }
 

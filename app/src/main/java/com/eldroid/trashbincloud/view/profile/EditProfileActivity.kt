@@ -1,4 +1,4 @@
-package com.eldroid.trashbincloud.view
+package com.eldroid.trashbincloud.view.profile
 
 import android.content.Intent
 import android.os.Bundle
@@ -9,10 +9,11 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.eldroid.trashbincloud.R
-import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.view.ChangePassword
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
+import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.auth.userProfileChangeRequest
 
 class EditProfileActivity : AppCompatActivity() {
@@ -76,8 +77,9 @@ class EditProfileActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            val profileUpdates = userProfileChangeRequest {
-                displayName = "$firstName $lastName"
+            // app logic should be in presenters
+            /*val profileUpdates = userProfileChangeRequest {
+                UserProfileChangeRequest.Builder.setDisplayName = "$firstName $lastName"
             }
 
             user.updateProfile(profileUpdates)
@@ -91,7 +93,7 @@ class EditProfileActivity : AppCompatActivity() {
                         Toast.makeText(this, "Failed to update profile", Toast.LENGTH_SHORT).show()
 
                     }
-                }
+                }*/
         }
     }
 }

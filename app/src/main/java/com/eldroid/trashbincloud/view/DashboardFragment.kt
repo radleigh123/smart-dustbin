@@ -2,16 +2,20 @@ package com.eldroid.trashbincloud.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.eldroid.trashbincloud.contract.DashboardContract
 import com.eldroid.trashbincloud.databinding.FragmentMainDashboardBinding
 import com.eldroid.trashbincloud.model.entity.TrashBin
+import com.eldroid.trashbincloud.model.entity.User
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.TrashBinRepository
+import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.DashboardPresenter
 import com.eldroid.trashbincloud.view.bin.AddBinActivity
 
@@ -38,9 +42,9 @@ class DashboardFragment : Fragment(), DashboardContract.View {
         binding.recyclerViewBins.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewBins.adapter = adapter
 
-        presenter = DashboardPresenter(this, AuthRepository(), TrashBinRepository())
+        presenter = DashboardPresenter(this, AuthRepository(), UserRepository(), TrashBinRepository())
         presenter.getUserInfo()
-
+        presenter.attachView(this)
 
         setupClickListeners()
         /*binding.buttonFirst.setOnClickListener {
@@ -66,6 +70,7 @@ class DashboardFragment : Fragment(), DashboardContract.View {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        presenter.detachView()
         _binding = null
     }
 
@@ -75,12 +80,15 @@ class DashboardFragment : Fragment(), DashboardContract.View {
     override fun hideSkeleton() {
     }
 
-    override fun showError(message: String) {
+    override fun showMessage(message: String) {
+        Log.d("DashboardFragment", message)
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
-    override fun loadUserInfo(name: String, email: String) {
-        binding.greeting.text = "Greetings, $name"
-        binding.welcomeText.text = "Welcome, $email"
+    override fun loadUserInfo(user: User) {
+        val name: String? = user.name?.split(" ")[0]
+        binding.greeting.text = "Greetings, ${name}"
+        binding.welcomeText.text = "Welcome, ${name}"
     }
 
     override fun showBins(bins: List<TrashBin>) {

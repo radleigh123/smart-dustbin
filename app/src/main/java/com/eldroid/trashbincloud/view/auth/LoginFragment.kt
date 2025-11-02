@@ -14,6 +14,7 @@ import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.contract.auth.AuthContract
 import com.eldroid.trashbincloud.databinding.FragmentAuthLoginBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.auth.AuthPresenter
 
 class LoginFragment : Fragment(), AuthContract.View {
@@ -34,7 +35,7 @@ class LoginFragment : Fragment(), AuthContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = AuthPresenter(this, AuthRepository())
+        presenter = AuthPresenter(this, AuthRepository(), UserRepository())
 
         setupListeners()
     }

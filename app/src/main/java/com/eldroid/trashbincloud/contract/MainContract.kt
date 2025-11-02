@@ -1,13 +1,15 @@
 package com.eldroid.trashbincloud.contract
 
+import com.eldroid.trashbincloud.model.entity.User
+
 interface MainContract {
     interface View {
-        fun showLogoutSuccess()
         fun navigateToLogin()
+        fun showMessage(message: String)
     }
 
     interface Presenter {
-        fun checkUser()
+        fun checkAuth()
         fun logout()
     }
 }

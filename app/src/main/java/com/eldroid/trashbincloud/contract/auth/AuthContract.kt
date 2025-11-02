@@ -10,7 +10,7 @@ interface AuthContract {
 
     interface Presenter {
         fun login(email: String, password: String)
-        fun register(email: String, password: String)
+        fun register(email: String, password: String, name: String, contactNumber: String)
         fun sendResetPasswordEmail(email: String)
     }
 }

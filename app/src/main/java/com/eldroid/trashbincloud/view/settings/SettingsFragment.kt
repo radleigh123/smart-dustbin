@@ -6,27 +6,20 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
-import com.eldroid.trashbincloud.view.ProfileActivity
+import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.eldroid.trashbincloud.view.auth.AuthActivity
-import com.google.android.material.snackbar.Snackbar
 
 class SettingsFragment : Fragment(), SettingsContract.View {
-    private var _binding: FragmentSettingsBinding?=null
+    private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var presenter: SettingsContract.Presenter
-
-    private lateinit var name: TextView
-
-    private lateinit var auth: AuthRepository
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,18 +32,14 @@ class SettingsFragment : Fragment(), SettingsContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = SettingsPresenter(this, AuthRepository())
+        presenter = SettingsPresenter(this, UserRepository(), AuthRepository())
         presenter.getUserInfo()
-
-        auth = AuthRepository()
-
 
         setupListeners()
     }
 
     private fun setupListeners() {
         binding.itemLogOut.setOnClickListener {
-            // Toast.makeText(context, "Log out Clicked", Toast.LENGTH_SHORT).show()
             presenter.logout()
         }
         binding.constraintProfile.setOnClickListener {
@@ -66,8 +55,9 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         requireActivity().finish()
     }
 
-    override fun showError(message: String) {
-        TODO("Not yet implemented")
+    override fun showMessage(message: String) {
+        Log.d("SettingsFragment", message)
+        Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     override fun loadUserInfo(name: String, email: String) {

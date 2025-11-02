@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
 

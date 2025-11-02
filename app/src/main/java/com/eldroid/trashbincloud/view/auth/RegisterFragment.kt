@@ -13,6 +13,7 @@ import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.contract.auth.AuthContract
 import com.eldroid.trashbincloud.databinding.FragmentAuthRegisterBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.auth.AuthPresenter
 
 class RegisterFragment : Fragment(), AuthContract.View {
@@ -33,7 +34,7 @@ class RegisterFragment : Fragment(), AuthContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = AuthPresenter(this, AuthRepository())
+        presenter = AuthPresenter(this, AuthRepository(), UserRepository())
 
         setupListeners()
     }
@@ -47,6 +48,7 @@ class RegisterFragment : Fragment(), AuthContract.View {
             val firstName = binding.fNameEt.editText?.text.toString().trim()
             val lastName = binding.lNameEt.editText?.text.toString().trim()
             val email = binding.emailEt.editText?.text.toString().trim()
+            val contactNumber = binding.contactNumEt.editText?.text.toString().trim()
             val password = binding.passEt.editText?.text.toString()
             val confirmPassword = binding.pass2Et.editText?.text.toString().trim()
             val isChecked = binding.checkboxMeat.isChecked
@@ -93,7 +95,7 @@ class RegisterFragment : Fragment(), AuthContract.View {
                 return@setOnClickListener
             }
 
-            presenter.register(email, password)
+            presenter.register(email, password, "$firstName $lastName", contactNumber)
         }
     }
 

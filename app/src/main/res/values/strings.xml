@@ -11,6 +11,7 @@
     <string name="login">Login</string>
     <string name="login_details">Enter your email and password</string>
     <string name="email">Email</string>
+    <string name="contact_number">Contact Number</string>
     <string name="password">Password</string>
     <string name="forgot_password">Forgot Password?</string>
     <string name="account_question">Don\'t have an account?</string>

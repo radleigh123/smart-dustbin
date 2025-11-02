@@ -9,6 +9,8 @@ class AuthRepository(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
         return auth.currentUser
     }
 
+    fun currentUserId(): String? = auth.currentUser?.uid
+
     fun login(email: String, password: String, callback: (Boolean, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
