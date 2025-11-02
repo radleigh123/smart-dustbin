@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.eldroid.trashbincloud.contract.settings.SettingsContract
@@ -22,6 +23,11 @@ class SettingsFragment : Fragment(), SettingsContract.View {
 
     private lateinit var presenter: SettingsContract.Presenter
 
+    private lateinit var name: TextView
+
+    private lateinit var auth: AuthRepository
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -34,8 +40,11 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         super.onViewCreated(view, savedInstanceState)
 
         presenter = SettingsPresenter(this, AuthRepository())
-
         presenter.getUserInfo()
+
+        auth = AuthRepository()
+
+
         setupListeners()
     }
 
@@ -62,7 +71,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
     }
 
     override fun loadUserInfo(name: String, email: String) {
-        binding.topCardDetailsName.text = if (name.isEmpty()) name else "UNKNOWN"
+        binding.topCardDetailsName.text = name
         binding.topCardDetailsEmail.text = email
     }
 

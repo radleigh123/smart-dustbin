@@ -41,16 +41,24 @@ class DashboardFragment : Fragment(), DashboardContract.View {
         presenter = DashboardPresenter(this, AuthRepository(), TrashBinRepository())
         presenter.getUserInfo()
 
+
         setupClickListeners()
         /*binding.buttonFirst.setOnClickListener {
             findNavController().navigate(R.id.action_DashboardFragment_to_SecondFragment)
         }*/
     }
 
+
     private fun setupClickListeners() {
         binding.addBinBtn.setOnClickListener {
             // startActivity(Intent(requireContext(), AddBinActivity::class.java))
             val intent = Intent(requireContext(), AddBinActivity::class.java)
+            startActivity(intent)
+            requireActivity().finish()
+        }
+
+        binding.notificationIcon.setOnClickListener {
+            val intent = Intent(requireContext(), Notification::class.java)
             startActivity(intent)
             requireActivity().finish()
         }

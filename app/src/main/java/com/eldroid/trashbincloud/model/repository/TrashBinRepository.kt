@@ -1,6 +1,5 @@
 package com.eldroid.trashbincloud.model.repository
 
-import android.util.Log
 import com.eldroid.trashbincloud.model.entity.TrashBin
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -25,7 +24,6 @@ class TrashBinRepository(
             override fun onDataChange(snapshot: DataSnapshot) {
                 val binsList = mutableListOf<TrashBin>()
                 for (binSnapshot in snapshot.children) {
-                    Log.d("TrashBinRepository", binSnapshot.toString())
                     val bin = binSnapshot.getValue(TrashBin::class.java)
                     bin?.let {
                         it.binId = binSnapshot.key ?: ""

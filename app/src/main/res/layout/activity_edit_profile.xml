@@ -5,6 +5,7 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     tools:context=".view.EditProfileActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -125,7 +126,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter your first name"
-                    android:text="Sir Sir Rocky naa nay uyab T T"
+
                     android:textColor="#000000"
                     android:textSize="14sp"
                     android:inputType="textPersonName"
@@ -163,7 +164,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter your last name"
-                    android:text="Sir Sir Rocky naa nay uyab T T"
                     android:textColor="#000000"
                     android:textSize="14sp"
                     android:inputType="textPersonName"
@@ -183,6 +183,7 @@
                 android:textStyle="bold" />
 
             <!-- Email Input -->
+
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -200,10 +201,10 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etEmail"
+                    android:enabled="false"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter your email"
-                    android:text="nurserocky@gmail.com"
                     android:textColor="#000000"
                     android:textSize="14sp"
                     android:inputType="textEmailAddress"
@@ -242,7 +243,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="Enter your contact number"
-                    android:text="(+69) 933-123-6789"
                     android:textColor="#000000"
                     android:textSize="14sp"
                     android:inputType="phone"
