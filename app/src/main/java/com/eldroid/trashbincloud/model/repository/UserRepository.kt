@@ -1,5 +1,6 @@
 package com.eldroid.trashbincloud.model.repository
 
+import android.util.Log
 import com.eldroid.trashbincloud.model.entity.User
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -26,16 +27,18 @@ class UserRepository(private val database: FirebaseDatabase = FirebaseDatabase.g
     }
 
     fun getUser(userUid: String, callback: (User?, String?) -> Unit) {
-        usersRef.child(userUid).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(User::class.java)
+        usersRef.child(userUid).get().addOnSuccessListener { snapshot ->
+            Log.i("UserRepository", "getUserInfo:success")
+            val user = snapshot.getValue(User::class.java)
+            if (user != null) {
                 callback(user, null)
+            } else {
+                callback(null, "User not found")
             }
-
-            override fun onCancelled(error: DatabaseError) {
-                callback(null, error.message)
-            }
-        })
+        }.addOnFailureListener { e ->
+            Log.e("UserRepository", "getUserInfo:failed", e)
+            callback(null, e.message)
+        }
     }
 
     fun getUsers(callback: (List<User>?, String?) -> Unit) {
@@ -55,8 +58,18 @@ class UserRepository(private val database: FirebaseDatabase = FirebaseDatabase.g
         })
     }
 
-    fun updateUser(userUid: String, user: User, callback: (Boolean, String?) -> Unit) {
-        usersRef.child(userUid).setValue(user)
+    fun updateUser(
+        userUid: String,
+        name: String,
+        contactNumber: String,
+        callback: (Boolean, String?) -> Unit
+    ) {
+        val updates = mapOf(
+            "name" to name,
+            "contactNumber" to contactNumber
+        )
+
+        usersRef.child(userUid).updateChildren(updates)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     callback(true, null)
@@ -65,6 +78,7 @@ class UserRepository(private val database: FirebaseDatabase = FirebaseDatabase.g
                 }
             }
     }
+
 
     fun deleteUser(userUid: String, callback: (Boolean, String?) -> Unit) {
         usersRef.child(userUid).removeValue()

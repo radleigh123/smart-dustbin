@@ -18,8 +18,8 @@ class SettingsPresenter(
                 if (user != null) {
                     val name = user.name ?: return@getUser
                     val email = user.email ?: return@getUser
-
-                    view.loadUserInfo(name, email)
+                    val contactNumber = user.contactNumber ?: return@getUser
+                    view.loadUserInfo(name, email, contactNumber)
                 } else view.showMessage(message ?: "SETTINGS: User info retrieval error")
             }
         }

@@ -60,7 +60,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         Toast.makeText(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
-    override fun loadUserInfo(name: String, email: String) {
+    override fun loadUserInfo(name: String, email: String, contactNumber: String) {
         binding.topCardDetailsName.text = name
         binding.topCardDetailsEmail.text = email
     }

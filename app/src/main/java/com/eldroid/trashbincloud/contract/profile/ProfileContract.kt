@@ -7,7 +7,7 @@ interface ProfileContract {
         fun showLoading()
         fun hideLoading()
         fun showMessage(message: String)
-        fun showUserDetails(name: String, email: String)
+        fun showUserDetails(name: String, email: String, contactNumber: String)
         fun showProfilePicture()
         fun navigateBack()
     }
