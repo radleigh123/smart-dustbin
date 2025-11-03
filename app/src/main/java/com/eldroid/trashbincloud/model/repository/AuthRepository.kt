@@ -2,6 +2,8 @@ package com.eldroid.trashbincloud.model.repository
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.messaging.FirebaseMessaging
 
 class AuthRepository(private val auth: FirebaseAuth = FirebaseAuth.getInstance()) {
 
@@ -15,6 +17,7 @@ class AuthRepository(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
         auth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    updateFCMToken()
                     callback(true, null)
                 } else {
                     callback(false, task.exception?.message)
@@ -26,6 +29,7 @@ class AuthRepository(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
         auth.createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
+                    updateFCMToken()
                     callback(true, null)
                 } else {
                     callback(false, task.exception?.message)
@@ -46,5 +50,15 @@ class AuthRepository(private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 
     fun logout() {
         auth.signOut()
+    }
+
+    private fun updateFCMToken() {
+        val currentUser = auth.currentUser ?: return
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+            if (!task.isSuccessful) return@addOnCompleteListener
+            val token = task.result
+            val ref = FirebaseDatabase.getInstance().getReference("users").child(currentUser.uid)
+            ref.child("fcmToken").setValue(token)
+        }
     }
 }

@@ -11,7 +11,8 @@ import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.model.entity.Notification
 
 class NotificationAdapter(
-    private var notificationList: List<Notification>
+    private var notificationList: List<Notification>,
+    private val onItemClick: (Notification) -> Unit
 ) : RecyclerView.Adapter<NotificationAdapter.NotifViewHolder>() {
 
     inner class NotifViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -30,13 +31,11 @@ class NotificationAdapter(
 
     override fun onBindViewHolder(holder: NotifViewHolder, position: Int) {
         val notif = notificationList[position]
-
         holder.tvTitle.text = notif.title
         holder.tvBody.text = notif.body
         holder.tvTime.text = notif.getFormattedTimestamp()
         holder.tvType.text = notif.type ?: "Info"
 
-        // Change badge color by type
         val context = holder.itemView.context
         when (notif.type?.lowercase()) {
             "info" -> {
@@ -55,6 +54,19 @@ class NotificationAdapter(
                 holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.button_close))
                 holder.ivIcon.setImageResource(R.drawable.notification_icon)
             }
+        }
+
+        // Dim the text if already read
+        if (notif.isRead == true) {
+            holder.tvTitle.alpha = 0.5f
+            holder.tvBody.alpha = 0.5f
+        } else {
+            holder.tvTitle.alpha = 1f
+            holder.tvBody.alpha = 1f
+        }
+
+        holder.itemView.setOnClickListener {
+            onItemClick(notif)
         }
     }
 

@@ -11,7 +11,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eldroid.trashbincloud.R
-import androidx.activity.OnBackPressedCallback
 import com.eldroid.trashbincloud.adapter.NotificationAdapter
 import com.eldroid.trashbincloud.contract.NotifContract
 import com.eldroid.trashbincloud.model.entity.Notification
@@ -19,42 +18,44 @@ import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.NotifRepository
 import com.eldroid.trashbincloud.presenter.notif.NotifPresenter
 
-
 class Notification : AppCompatActivity(), NotifContract.View {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: NotificationAdapter
     private lateinit var notif: NotifPresenter
     private lateinit var auth: AuthRepository
     private lateinit var progressBar: ProgressBar
-
     private lateinit var back: ImageButton
     private var isActive = false
-
+    private var userId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_notification)
         isActive = true
+
         recyclerView = findViewById(R.id.recyclerViewNotifications)
         recyclerView.layoutManager = LinearLayoutManager(this)
-        adapter = NotificationAdapter(emptyList())
-        recyclerView.adapter = adapter
 
-
-        progressBar = findViewById(R.id.progressBar)
         auth = AuthRepository()
         notif = NotifPresenter(this, NotifRepository())
+        progressBar = findViewById(R.id.progressBar)
         back = findViewById(R.id.back_btn)
+        userId = auth.currentUser()?.uid
 
-        val userId = auth.currentUser()?.uid
-        notif.getNotifications(userId ?: "")
-        notif.getUnreadNotif(userId ?: "")
+        adapter = NotificationAdapter(emptyList()) { notifItem ->
+            userId?.let { uid ->
+                notif.markAsRead(uid, notifItem.notifId ?: "")
+                notif.getUnreadNotif(uid) // refresh badge
+            }
+        }
 
-        setupListeners()
+        recyclerView.adapter = adapter
 
-    }
+        userId?.let {
+            notif.getNotifications(it)
+            notif.getUnreadNotif(it)
+        }
 
-    private fun setupListeners() {
         back.setOnClickListener {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
@@ -79,14 +80,13 @@ class Notification : AppCompatActivity(), NotifContract.View {
     }
 
     override fun showNotifications(notifications: List<Notification>) {
-        if (!isActive) return  // Prevent crash if activity is closed
+        if (!isActive) return
         adapter.updateList(notifications)
     }
 
     override fun unreadNotifications(unreadCount: Int) {
-        if (!isActive) return  // Prevent crash if activity is closed
+        if (!isActive) return
         val unreadBadge = findViewById<TextView>(R.id.unread)
-
         if (unreadCount > 0) {
             unreadBadge.text = unreadCount.toString()
             unreadBadge.visibility = View.VISIBLE
@@ -94,6 +94,4 @@ class Notification : AppCompatActivity(), NotifContract.View {
             unreadBadge.visibility = View.GONE
         }
     }
-
-
 }

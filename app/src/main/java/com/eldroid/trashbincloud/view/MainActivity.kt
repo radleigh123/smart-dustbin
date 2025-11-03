@@ -1,6 +1,9 @@
 package com.eldroid.trashbincloud.view
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import com.google.android.material.snackbar.Snackbar
@@ -8,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.eldroid.trashbincloud.R
@@ -17,6 +22,7 @@ import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.presenter.MainPresenter
 import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.eldroid.trashbincloud.view.settings.SettingsFragment
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity(), MainContract.View {
 
@@ -38,6 +44,15 @@ class MainActivity : AppCompatActivity(), MainContract.View {
 
     private var currentSelectedTab = 0
 
+    private val requestPermissionLauncher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                Toast.makeText(this, "Notifications enabled 🎉", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "Notifications disabled 🚫", Toast.LENGTH_SHORT).show()
+            }
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -53,6 +68,10 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         // Default tab: Dashboard
         selectTab(0)
         loadFragment(DashboardFragment())
+
+        if (FirebaseAuth.getInstance().currentUser != null) {
+            askNotificationPermissionOnce()
+        }
     }
 
     private fun initViews() {
@@ -149,6 +168,24 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
+    }
+
+    private fun askNotificationPermissionOnce() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val prefs = getSharedPreferences("app_prefs", MODE_PRIVATE)
+            val asked = prefs.getBoolean("notif_permission_asked", false)
+
+            if (!asked) {
+                if (ContextCompat.checkSelfPermission(
+                        this,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                }
+                prefs.edit().putBoolean("notif_permission_asked", true).apply()
+            }
+        }
     }
 
 }
