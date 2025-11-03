@@ -1,3 +1,7 @@
 package com.eldroid.trashbincloud.model.entity
 
-class User{}
+data class User(
+    var uid: String? = null,
+    var email: String? = null,
+    var displayName: String? = null
+)

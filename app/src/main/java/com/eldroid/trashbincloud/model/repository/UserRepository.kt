@@ -1,35 +1,54 @@
 package com.eldroid.trashbincloud.model.repository
 
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FieldValue
-import com.google.firebase.firestore.FirebaseFirestore
+import android.util.Log
+import com.eldroid.trashbincloud.model.entity.User
+import com.google.firebase.database.FirebaseDatabase
 
-/**
- * TEMP: For a more richer metadata, Firestore is need
- */
 class UserRepository(
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val firestore: FirebaseFirestore = FirebaseFirestore.getInstance()
+    private val database: FirebaseDatabase = FirebaseDatabase.getInstance()
 ) {
+    private val usersRef = database.getReference("users")
 
-    private val usersCollection = firestore.collection("users")
+    fun getUserInfo(userUid: String, callback: (User?, String?) -> Unit) {
+        usersRef.child(userUid).get().addOnSuccessListener { snapshot ->
+            Log.i("UserRepository", "getUserInfo:success")
+            val user = snapshot.getValue(User::class.java)
+            if (user != null) {
+                callback(user, null)
+            } else {
+                callback(null, "User not found")
+            }
+        }.addOnFailureListener { e ->
+            Log.e("UserRepository", "getUserInfo:failed", e)
+            callback(null, e.message)
+        }
+    }
 
-    fun getCurrentUserId(): String? = auth.currentUser?.uid
 
-    /**
-     * Add bin
-     */
-    fun registerBin(binId: String, callback: (Boolean, String?) -> Unit) {
-        val userId = getCurrentUserId() ?: return callback(false, "User not authenticated")
+    fun addUserInfo(user: User) {
+        if (user.uid == null) {
+            Log.e("UserRepository", "addUserInfo: failed, uid is null")
+            return
+        }
 
-        usersCollection.document(userId)
-            .update("bins", FieldValue.arrayUnion(binId))
+        usersRef.child(user.uid!!).setValue(user)
             .addOnSuccessListener {
-                callback(true, null)
+                Log.i("UserRepository", "addUserInfo:success")
             }
             .addOnFailureListener { e ->
-                callback(false, e.message)
+                Log.e("UserRepository", "addUserInfo:failed", e)
             }
     }
 
+    fun updateUserInfo(userUid: String, newDisplayName: String, callback: (Boolean, String?) -> Unit) {
+        usersRef.child(userUid).child("displayName").setValue(newDisplayName)
+            .addOnSuccessListener {
+                Log.i("UserRepository", "updateUserInfo:success")
+                callback(true, null)
+            }
+            .addOnFailureListener { e ->
+                Log.e("UserRepository", "updateUserInfo:failed", e)
+                callback(false, e.message)
+            }
+    }
 }

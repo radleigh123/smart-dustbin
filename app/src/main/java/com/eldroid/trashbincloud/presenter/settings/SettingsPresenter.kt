@@ -14,9 +14,6 @@ class SettingsPresenter(
             user.let {
                 val name = it.displayName.toString()
                 val email = it.email.toString()
-                val photoUrl = it.photoUrl
-
-                val emailVerified = it.isEmailVerified
 
                 view.loadUserInfo(name, email)
             }
