@@ -28,6 +28,7 @@ uiTest = "1.9.2"
 androidxNavigationSafeargsKotlinGradlePlugin = "2.9.5"
 ble = "2.10.1"
 bleKtx = "2.10.1"
+firebaseMessaging = "25.0.1"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -56,6 +57,7 @@ androidx-ui-test = { group = "androidx.compose.ui", name = "ui-test", version.re
 androidx-androidx-navigation-safeargs-kotlin-gradle-plugin = { group = "androidx.navigation.safeargs.kotlin", name = "androidx.navigation.safeargs.kotlin.gradle.plugin", version.ref = "androidxNavigationSafeargsKotlinGradlePlugin" }
 ble = { group = "no.nordicsemi.android", name = "ble", version.ref = "ble" }
 ble-ktx = { group = "no.nordicsemi.android", name = "ble-ktx", version.ref = "bleKtx" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

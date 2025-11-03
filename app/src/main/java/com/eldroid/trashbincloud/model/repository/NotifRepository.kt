@@ -2,40 +2,75 @@ package com.eldroid.trashbincloud.model.repository
 
 import android.util.Log
 import com.eldroid.trashbincloud.model.entity.Notification
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.*
+import kotlin.time.Duration.Companion.seconds
 
-class NotifRepository (private val db: FirebaseFirestore = FirebaseFirestore.getInstance()){
+class NotifRepository(
+    private val db: DatabaseReference = FirebaseDatabase.getInstance().getReference("notifications")
+) {
 
     fun getNotifications(userId: String, callback: (List<Notification>, String?) -> Unit) {
-        db.collection("notifications")
-            .whereEqualTo("userId", userId)
-            .get()
-            .addOnSuccessListener { documents ->
-                if (!documents.isEmpty) {
-                    val notifications = documents.map { it.toObject(Notification::class.java) }
-                    callback(notifications, null)
-                } else {
-                    callback(emptyList(), null)
+        db.child(userId)
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val notifications = mutableListOf<Notification>()
+                    for (notifSnap in snapshot.children) {
+                        val notif = notifSnap.getValue(Notification::class.java)
+                        notif?.let { notifications.add(it) }
+                    }
+//                    callback(notifications.sortedByDescending { it.createdAt?.seconds }, null)
+                    callback(notifications.sortedByDescending { it.createdAt }, null)
                 }
-            }
-            .addOnFailureListener { exception ->
-                Log.e("NotifRepository", "Error getting notifications", exception)
-                callback(emptyList(), exception.message)
-            }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(emptyList(), error.message)
+                }
+            })
     }
 
 
     fun getUnreadNotif(userId: String, callback: (Int, String?) -> Unit) {
-        db.collection("notifications")
-            .whereEqualTo("userId", userId)
-            .whereEqualTo("isRead", false)
-            .get()
-            .addOnSuccessListener { documents ->
-                val unreadCount = documents.size()
-                callback(unreadCount, null)
+        db.child(userId)
+            .orderByChild("isRead")
+            .equalTo(false)
+            .addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    callback(snapshot.childrenCount.toInt(), null)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    callback(0, error.message)
+                }
+            })
+    }
+
+    fun markAsRead(userId: String, notifId: String) {
+        db.child(userId).child(notifId).child("isRead").setValue(true)
+            .addOnSuccessListener {
+                Log.d("NotifRepository", "Notification $notifId marked as read.")
             }
-            .addOnFailureListener { exception ->
-                callback(0, exception.message)
+            .addOnFailureListener {
+                Log.e("NotifRepository", "Failed to mark as read: ${it.message}")
+            }
+    }
+
+    fun saveNotificationToRealtimeDatabase(
+        userId: String,
+        notification: Notification,
+        callback: (Boolean, String?) -> Unit
+    ) {
+        val notifId = notification.notifId ?: return callback(false, "Notification ID is null")
+
+        db.child(userId)
+            .child(notifId)
+            .setValue(notification)
+            .addOnSuccessListener {
+                Log.d("NotifRepository", "✅ Notification saved: $notifId")
+                callback(true, null)
+            }
+            .addOnFailureListener { e ->
+                Log.e("NotifRepository", "❌ Failed to save notification: ${e.message}")
+                callback(false, e.message)
             }
     }
 }

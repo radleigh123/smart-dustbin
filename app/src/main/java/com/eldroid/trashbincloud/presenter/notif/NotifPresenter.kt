@@ -21,14 +21,16 @@ class NotifPresenter(
     }
 
     override fun getUnreadNotif(userId: String) {
-        view.showLoading()
         repository.getUnreadNotif(userId) { unreadCount, error ->
-            view.hideLoading()
             if (error != null) {
-                view.showError(error) // Let the View handle the error message
+                view.showError(error)
             } else {
                 view.unreadNotifications(unreadCount)
             }
         }
+    }
+
+    fun markAsRead(userId: String, notifId: String) {
+        repository.markAsRead(userId, notifId)
     }
 }
