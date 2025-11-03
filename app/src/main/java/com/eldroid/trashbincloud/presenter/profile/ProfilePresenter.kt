@@ -17,10 +17,11 @@ class ProfilePresenter(
         uid?.let {
             userRepository.getUser(it) { user, message ->
                 if (user != null) {
-                    val name = user.name ?: return@getUser
-                    val email = user.email ?: return@getUser
+                    val name = user.name ?: ""
+                    val email = user.email ?: ""
+                    val contactNumber = user.contactNumber ?: ""
 
-                    view.showUserDetails(name, email)
+                    view.showUserDetails(name, email, contactNumber)
                 } else {
                     view.showMessage(message ?: "PROFILE: User info retrieval error")
                 }

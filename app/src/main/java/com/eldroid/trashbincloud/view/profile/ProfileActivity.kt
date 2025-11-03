@@ -15,6 +15,7 @@ import com.eldroid.trashbincloud.databinding.ActivityProfileBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.profile.ProfilePresenter
+import com.eldroid.trashbincloud.view.ChangePassword
 import com.eldroid.trashbincloud.view.MainActivity
 import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.eldroid.trashbincloud.view.settings.SettingsFragment
@@ -29,6 +30,9 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     private lateinit var menuEditProfile: LinearLayout
     private lateinit var auth: AuthRepository
     private lateinit var menuLogout: LinearLayout
+
+    private lateinit var menuChangePassword: LinearLayout
+
     private lateinit var textVName: TextView
     private lateinit var textVEmail: TextView
 
@@ -41,7 +45,6 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         binding = ActivityProfileBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        setContentView(R.layout.activity_profile)
         auth = AuthRepository()
         btnBack = findViewById(R.id.btnBack)
         menuEditProfile = findViewById(R.id.menuEditProfile)
@@ -50,6 +53,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         textVEmail = findViewById(R.id.tvEmail)
 
         menuLogout = findViewById(R.id.menuLogout)
+        menuChangePassword = findViewById(R.id.menuChangePassword)
 
         val username = auth.currentUser()?.displayName
         val email = auth.currentUser()?.email
@@ -71,6 +75,11 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
             )
         }
 
+        menuChangePassword.setOnClickListener {
+            startActivity(Intent(this, ChangePassword::class.java))
+            finish()
+        }
+
         menuLogout.setOnClickListener {
             auth.logout()
             startActivity(Intent(this, AuthActivity::class.java))
@@ -90,7 +99,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
         Log.d("ProfileActivity", message)
     }
 
-    override fun showUserDetails(name: String, email: String) {
+    override fun showUserDetails(name: String, email: String, contactNumber: String) {
         binding.tvName.text = name
         binding.tvEmail.text = email
     }

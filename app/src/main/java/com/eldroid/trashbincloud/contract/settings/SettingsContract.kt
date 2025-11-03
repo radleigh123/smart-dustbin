@@ -4,7 +4,7 @@ interface SettingsContract {
     interface View {
         fun navigateToLogin()
         fun showMessage(message: String)
-        fun loadUserInfo(name: String, email: String)
+        fun loadUserInfo(name: String, email: String, contactNumber: String)
     }
 
     interface Presenter {
