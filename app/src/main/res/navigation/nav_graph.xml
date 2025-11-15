@@ -25,4 +25,5 @@
             android:id="@+id/action_SecondFragment_to_DashboardFragment"
             app:destination="@id/DashboardFragment" />
     </fragment>
+
 </navigation>

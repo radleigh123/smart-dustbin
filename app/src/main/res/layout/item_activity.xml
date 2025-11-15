@@ -9,8 +9,8 @@
 
     <ImageView
         android:id="@+id/activityIcon"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="29dp"
+        android:layout_height="40dp"
         android:src="@drawable/ic_auto_open"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

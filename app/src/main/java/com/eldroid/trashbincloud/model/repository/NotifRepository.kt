@@ -73,4 +73,64 @@ class NotifRepository(
                 callback(false, e.message)
             }
     }
+
+    fun markAllAsRead(userId: String, callback: (Boolean, String?) -> Unit) {
+        val notificationsRef = FirebaseDatabase.getInstance()
+            .getReference("notifications")
+            .child(userId)
+
+        notificationsRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val updates = mutableMapOf<String, Any>()
+                snapshot.children.forEach { notifSnapshot ->
+                    val notifId = notifSnapshot.key
+                    if (notifId != null) {
+                        updates["$notifId/isRead"] = true
+                    }
+                }
+
+                if (updates.isNotEmpty()) {
+                    notificationsRef.updateChildren(updates)
+                        .addOnSuccessListener { callback(true, null) }
+                        .addOnFailureListener { callback(false, it.message) }
+                } else {
+                    callback(true, null)
+                }
+            } else {
+                callback(true, null)
+            }
+        }.addOnFailureListener {
+            callback(false, it.message)
+        }
+    }
+
+    fun markAllAsUnread(userId: String, callback: (Boolean, String?) -> Unit) {
+        val notificationsRef = FirebaseDatabase.getInstance()
+            .getReference("notifications")
+            .child(userId)
+
+        notificationsRef.get().addOnSuccessListener { snapshot ->
+            if (snapshot.exists()) {
+                val updates = mutableMapOf<String, Any>()
+                snapshot.children.forEach { notifSnapshot ->
+                    val notifId = notifSnapshot.key
+                    if (notifId != null) {
+                        updates["$notifId/isRead"] = false
+                    }
+                }
+
+                if (updates.isNotEmpty()) {
+                    notificationsRef.updateChildren(updates)
+                        .addOnSuccessListener { callback(true, null) }
+                        .addOnFailureListener { callback(false, it.message) }
+                } else {
+                    callback(true, null)
+                }
+            } else {
+                callback(true, null)
+            }
+        }.addOnFailureListener {
+            callback(false, it.message)
+        }
+    }
 }

@@ -38,7 +38,10 @@ class DashboardFragment : Fragment(), DashboardContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TrashBinAdapter(emptyList())
+        adapter = TrashBinAdapter(emptyList()) { selectedBin ->
+            openBinDetails(selectedBin)
+        }
+
         binding.recyclerViewBins.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewBins.adapter = adapter
 
@@ -47,10 +50,8 @@ class DashboardFragment : Fragment(), DashboardContract.View {
         presenter.attachView(this)
 
         setupClickListeners()
-        /*binding.buttonFirst.setOnClickListener {
-            findNavController().navigate(R.id.action_DashboardFragment_to_SecondFragment)
-        }*/
     }
+
 
 
     private fun setupClickListeners() {
@@ -67,6 +68,13 @@ class DashboardFragment : Fragment(), DashboardContract.View {
             requireActivity().finish()
         }
     }
+
+    private fun openBinDetails(bin: TrashBin) {
+        val intent = Intent(requireContext(), BinDetailsFragment::class.java)
+        intent.putExtra("BIN_ID", bin.binId) // or any field you want to pass
+        startActivity(intent)
+    }
+
 
     override fun onDestroyView() {
         super.onDestroyView()

@@ -5,10 +5,13 @@ interface SettingsContract {
         fun navigateToLogin()
         fun showMessage(message: String)
         fun loadUserInfo(name: String, email: String, contactNumber: String)
+        fun updateThemeSwitch(isDarkMode: Boolean)
     }
 
     interface Presenter {
         fun getUserInfo()
         fun logout()
+        fun loadThemePreference()
+        fun toggleTheme(enabled: Boolean)
     }
 }

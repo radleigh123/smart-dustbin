@@ -1,25 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Base Colors -->
     <color name="black">#FF000000</color>
-
     <color name="white">#FFFFFFFF</color>
     <color name="white_20">#33FFFFFF</color>
     <color name="white_50">#80FFFFFF</color>
+    <color name="transparent">#00FFFFFF</color>
+
+    <!-- ============================================ -->
+    <!-- LIGHT THEME COLORS -->
+    <!-- ============================================ -->
+
+    <!-- Light Backgrounds -->
+    <color name="light_bg_primary">#FFFFFF</color>
+    <color name="light_bg_secondary">#F8F9FA</color>
+    <color name="light_bg_tertiary">#003844</color>
+    <color name="light_bg_main_background">#E5E7EB</color>
+    <color name="light_bg_fill_status_red">#FEE2E2</color>
+    <color name="light_bg_fill_status_orange">#FEEDE2</color>
+    <color name="light_bg_fill_status_green">#E2FEE4</color>
+    <color name="light_bg_status_green">#10B981</color>
+    <color name="light_bg_status_orange">#F59E0B</color>
+    <color name="light_bg_status_red">#EF4444</color>
+    <color name="light_bg_status_blue">#3B82F6</color>
+    <color name="light_bg_status_gray">#9CA3AF</color>
+
+    <!-- Light Text Colors -->
+    <color name="light_txt_primary">#1F2937</color>
+    <color name="light_txt_secondary">#6B7280</color>
+    <color name="light_txt_tertiary">#35B6BC</color>
+    <color name="light_txt_section_header">#003844</color>
+    <color name="light_txt_green">#28A745</color>
+    <color name="light_txt_blue">#007BFF</color>
+    <color name="light_txt_red">#DC3545</color>
+    <color name="light_txt_orange">#FD7E14</color>
+    <color name="light_txt_nav_selected">#14B8A6</color>
+    <color name="light_txt_hint">#ADB5BD</color>
+    <color name="light_txt_caption">#6B7280</color>
+    <color name="light_txt_label">#9CA3AF</color>
+    <color name="light_txt_fill_status_red">#991B1B</color>
+    <color name="light_txt_fill_status_orange">#EA5F08</color>
+    <color name="light_txt_fill_status_green">#15AE27</color>
+
+    <!-- Light Buttons -->
+    <color name="light_btn_primary">#2D5A5B</color>
+    <color name="light_btn_secondary">#006C67</color>
+    <color name="light_btn_tertiary">#00B8A9</color>
+    <color name="light_btn_status_green">#10B981</color>
+    <color name="light_btn_status_orange">#F59E0B</color>
+    <color name="light_btn_status_red">#EF4444</color>
+    <color name="light_btn_status_blue">#3B82F6</color>
+    <color name="light_btn_status_gray">#9CA3AF</color>
+    <color name="light_btn_fill_status_red">#FEE2E2</color>
+    <color name="light_btn_fill_status_orange">#FEEDE2</color>
+    <color name="light_btn_fill_status_green">#E2FEE4</color>
+    <color name="light_btn_profile">#1C274C</color>
+
+    <!-- ============================================ -->
+    <!-- DARK THEME COLORS -->
+    <!-- ============================================ -->
+
+    <!-- Dark Backgrounds -->
+    <color name="dark_bg_primary">#0F2829</color>
+    <color name="dark_bg_secondary">#0C554D</color>
+    <color name="dark_bg_tertiary">#8CFEDA</color>
+    <color name="dark_bg_main_background">#1A1A1A</color>
+    <color name="dark_bg_status_green">#22C55E</color>
+    <color name="dark_bg_status_yellow">#EAB308</color>
+    <color name="dark_bg_status_red">#EF4444</color>
+    <color name="dark_bg_status_blue">#60A5FA</color>
+    <color name="dark_bg_status_gray">#9CA3AF</color>
+    <color name="dark_btn_profile">#0C554D</color>
+
+    <!-- Dark Text Colors -->
+    <color name="dark_txt_primary">#FFFFFF</color>
+    <color name="dark_txt_secondary">#E0E0E0</color>
+    <color name="dark_txt_tertiary">#35B6BC</color>
+    <color name="dark_txt_section_header">#35B6BC</color>
+    <color name="dark_txt_green">#34D399</color>
+    <color name="dark_txt_blue">#60A5FA</color>
+    <color name="dark_txt_red">#F87171</color>
+    <color name="dark_txt_orange">#FBBF24</color>
+    <color name="dark_txt_nav_selected">#14B8A6</color>
+    <color name="dark_txt_hint">#6B7280</color>
+    <color name="dark_txt_caption">#9CA3AF</color>
+    <color name="dark_txt_label">#9CA3AF</color>
+    <color name="dark_txt_status_green">#22C55E</color>
+    <color name="dark_txt_status_yellow">#EAB308</color>
+    <color name="dark_txt_status_red">#EF4444</color>
+    <color name="dark_txt_status_blue">#60A5FA</color>
+    <color name="dark_txt_status_gray">#9CA3AF</color>
+
+    <!-- Dark Text Box Colors -->
+    <color name="dark_txtbx_background">#343535</color>
+    <color name="dark_txtbx_border">#8C9292</color>
+    <color name="dark_txtbx_label">#35B6BC</color>
+
+    <!-- Dark Buttons -->
+    <color name="dark_btn_primary">#064E4B</color>
+    <color name="dark_btn_secondary">#CCCDCF</color>
+    <color name="dark_btn_tertiary">#8CFEDA</color>
+    <color name="dark_btn_choices">#E5E7EB</color>
+    <color name="dark_btn_status_green">#22C55E</color>
+    <color name="dark_btn_status_yellow">#EAB308</color>
+    <color name="dark_btn_status_red">#EF4444</color>
+    <color name="dark_btn_status_blue">#60A5FA</color>
+    <color name="dark_btn_status_gray">#9CA3AF</color>
+
+    <!-- ============================================ -->
+    <!-- LEGACY COLORS (for backward compatibility) -->
+    <!-- ============================================ -->
 
     <color name="primary">#00B8A9</color>
     <color name="secondary">#006C67</color>
     <color name="tertiary">#003844</color>
     <color name="background_color">#EFF9F0</color>
-
-    <color name="transparent">#00FFFFFF</color>
+    <color name="main_background">#E5E7EB</color>
 
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
-
     <color name="teal_50">#E0F2F1</color>
+
     <color name="gray_100">#F5F5F5</color>
     <color name="gray_500">#9E9E9E</color>
     <color name="gray_700">#616161</color>
+
     <color name="nav_selected">#FF018786</color>
     <color name="nav_unselected">#9E9E9E</color>
 
@@ -34,14 +139,12 @@
     <color name="card_background">#FFFFFF</color>
 
     <color name="text_hint">#ADB5BD</color>
-
     <color name="green">#28A745</color>
     <color name="blue">#007BFF</color>
     <color name="red">#DC3545</color>
     <color name="orange">#FD7E14</color>
 
     <color name="background_light">#F8FAFC</color>
-
     <color name="text_primary">#1F2937</color>
     <color name="text_secondary">#6B7280</color>
     <color name="text_light">#9CA3AF</color>
@@ -63,6 +166,7 @@
     <color name="fill_status_text_red">#991B1B</color>
     <color name="fill_status_text_orange">#EA5F08</color>
     <color name="fill_status_text_green">#15AE27</color>
+
     <color name="button_open">#2D5A5B</color>
     <color name="button_close">#6B7280</color>
     <color name="button_hold">#F59E0B</color>
@@ -70,5 +174,109 @@
     <color name="progress_background">#E5E7EB</color>
     <color name="progress_red">#EF4444</color>
     <color name="card_shadow">#1F29371A</color>
+
+    <!-- Dark Mode Legacy Colors -->
+    <color name="dark_background">#121212</color>
+    <color name="dark_surface">#1E1E1E</color>
+    <color name="dark_surface_variant">#2C2C2C</color>
+    <color name="dark_surface_elevated">#252525</color>
+    <color name="dark_surface_container">#1A1A1A</color>
+
+    <color name="dark_text_primary">#E5E7EB</color>
+    <color name="dark_text_secondary">#9CA3AF</color>
+    <color name="dark_text_tertiary">#6B7280</color>
+    <color name="dark_text_disabled">#4B5563</color>
+    <color name="dark_text_hint">#6B7280</color>
+
+    <color name="dark_card_background">#282828</color>
+    <color name="dark_card_elevated">#252525</color>
+    <color name="dark_divider">#3A3A3A</color>
+    <color name="dark_border">#3A3A3A</color>
+
+    <color name="dark_primary">#00D4C3</color>
+    <color name="dark_secondary">#008A82</color>
+    <color name="dark_tertiary">#005A6B</color>
+    <color name="dark_primary_variant">#00E5D0</color>
+
+    <color name="dark_status_green">#34D399</color>
+    <color name="dark_status_orange">#FBBF24</color>
+    <color name="dark_status_red">#F87171</color>
+    <color name="dark_status_blue">#60A5FA</color>
+    <color name="dark_status_gray">#9CA3AF</color>
+
+    <color name="dark_green">#34D399</color>
+    <color name="dark_green_success">#22C55E</color>
+    <color name="dark_green_dark">#10B981</color>
+    <color name="dark_blue">#3B82F6</color>
+    <color name="dark_blue_light">#93C5FD</color>
+    <color name="dark_red">#EF4444</color>
+    <color name="dark_red_error">#F87171</color>
+    <color name="dark_orange">#FB923C</color>
+
+    <color name="dark_fill_status_red_bg">#3F1F1F</color>
+    <color name="dark_fill_status_orange_bg">#3F2A1F</color>
+    <color name="dark_fill_status_green_bg">#1F3F22</color>
+    <color name="dark_fill_status_red_text">#FCA5A5</color>
+    <color name="dark_fill_status_orange_text">#FDBA74</color>
+    <color name="dark_fill_status_green_text">#86EFAC</color>
+
+    <color name="dark_alert_background">#3F1F1F</color>
+    <color name="dark_alert_text">#FCA5A5</color>
+    <color name="dark_alert_border">#7F1D1D</color>
+
+    <color name="dark_nav_selected">#00D4C3</color>
+    <color name="dark_nav_unselected">#6B6B6B</color>
+    <color name="dark_nav_background">#1E1E1E</color>
+
+    <color name="dark_button_primary">#00D4C3</color>
+    <color name="dark_button_secondary">#3A3A3A</color>
+    <color name="dark_button_open">#4A9A9B</color>
+    <color name="dark_button_close">#6B7280</color>
+    <color name="dark_button_hold">#FBBF24</color>
+    <color name="dark_button_disabled">#2C2C2C</color>
+
+    <color name="dark_icon_primary">#E5E7EB</color>
+    <color name="dark_icon_secondary">#9CA3AF</color>
+    <color name="dark_icon_disabled">#4B5563</color>
+    <color name="dark_icon_tint">#D0D0D0</color>
+
+    <color name="dark_progress_background">#2C2C2C</color>
+    <color name="dark_progress_red">#F87171</color>
+    <color name="dark_progress_green">#34D399</color>
+    <color name="dark_progress_orange">#FBBF24</color>
+
+    <color name="dark_gray_100">#2C2C2C</color>
+    <color name="dark_gray_200">#3A3A3A</color>
+    <color name="dark_gray_300">#4B5563</color>
+    <color name="dark_gray_400">#6B7280</color>
+    <color name="dark_gray_500">#9CA3AF</color>
+    <color name="dark_gray_600">#B0B0B0</color>
+    <color name="dark_gray_700">#D0D0D0</color>
+    <color name="dark_gray_800">#E5E7EB</color>
+
+    <color name="dark_shadow">#00000066</color>
+    <color name="dark_overlay">#00000080</color>
+    <color name="dark_scrim">#000000CC</color>
+    <color name="dark_ripple">#FFFFFF1A</color>
+
+    <color name="dark_teal_primary">#4A9A9B</color>
+    <color name="dark_teal_light">#6BBCBD</color>
+    <color name="dark_teal_dark">#14B8A6</color>
+
+    <color name="dark_background_security_notice">#1A2332</color>
+    <color name="dark_background_blue_tint">#1E293B</color>
+    <color name="dark_background_elevated_1">#1E1E1E</color>
+    <color name="dark_background_elevated_2">#252525</color>
+    <color name="dark_background_elevated_3">#2C2C2C</color>
+
+    <color name="dark_input_background">#252525</color>
+    <color name="dark_input_border">#3A3A3A</color>
+    <color name="dark_input_border_focused">#00D4C3</color>
+    <color name="dark_input_text">#E5E7EB</color>
+    <color name="dark_input_hint">#6B7280</color>
+
+    <color name="dark_notification_badge">#DC2626</color>
+    <color name="dark_notification_background">#252525</color>
+    <color name="dark_notification_border">#3A3A3A</color>
 
 </resources>

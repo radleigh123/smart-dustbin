@@ -1,5 +1,7 @@
 package com.eldroid.trashbincloud.view
 
+import android.animation.ValueAnimator
+import android.app.DatePickerDialog
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,29 +9,40 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AlertDialog
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.animation.doOnEnd
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.contract.HistoryContract
 import com.eldroid.trashbincloud.model.entity.ActivityEvent
-import com.eldroid.trashbincloud.model.entity.EventType
 import com.eldroid.trashbincloud.presenter.HistoryPresenter
 import java.time.LocalDate
-import java.time.LocalTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.View {
 
     private lateinit var presenter: HistoryPresenter
     private lateinit var filterButton: ImageView
+    private lateinit var filterSection: ConstraintLayout
     private lateinit var allEventsButton: TextView
     private lateinit var autoOpenButton: TextView
-    private lateinit var manualOpenButton: TextView
-//    private lateinit var binSpinner: Spinner
-    private lateinit var dateEditText: EditText
-    //private lateinit var weeklyChart: BarChart
+    private lateinit var autoCloseButton: TextView
+    private lateinit var binFullButton: TextView
+    private lateinit var binDropdown: ConstraintLayout
+    private lateinit var binDropdownText: TextView
+    private lateinit var dateInput: ConstraintLayout
+    private lateinit var dateInputText: TextView
     private lateinit var activityRecyclerView: RecyclerView
     private lateinit var activityAdapter: HistoryAdapter
+
+    private lateinit var noActivityTextView: TextView
+
+    private var selectedBin: String = "All Bins"
+    private var selectedDate: LocalDate? = null
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
@@ -37,124 +50,44 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_history, container, false)
-//        initViews(view)
-//        setupRecyclerView()
-//        setupPresenter()
-//        //setupChart()
-//        setupListeners()
-        return view
+        return inflater.inflate(R.layout.fragment_history, container, false)
     }
 
-//    class HistoryFragment : Fragment(R.layout.fragment_history) {
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-//        private lateinit var recyclerView: RecyclerView
-//        private lateinit var adapter: HistoryAdapter
-
-        @RequiresApi(Build.VERSION_CODES.O)
-        override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-            super.onViewCreated(view, savedInstanceState)
-
-            initViews(view)
-            setupRecyclerView()
-            setupPresenter()
-            //setupChart()
-            setupListeners()
-
-//            recyclerView = view.findViewById(R.id.activityRecyclerView)
-//            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-
-            //sample data only
-            val sampleActivities = mutableListOf(
-                ActivityEvent(
-                    type = EventType.AUTO_OPEN,
-                    iconResource = R.drawable.ic_auto_open,
-                    time = LocalTime.of(14, 34),
-                    detail = "Motion detected",
-                    description = "Kitchen Bin opened automatically",
-                    title = "Auto Open",
-                    date = LocalDate.now()
-                ),
-                ActivityEvent(
-                    type = EventType.MANUAL_OPEN,
-                    iconResource = R.drawable.ic_manual_open,
-                    time = LocalTime.of(15, 10),
-                    detail = "Button pressed",
-                    description = "Kitchen Bin opened manually",
-                    title = "Manual Open",
-                    date = LocalDate.now()
-                ),
-                ActivityEvent(
-                    type = EventType.BIN_FULL,
-                    iconResource = R.drawable.ic_bin_full,
-                    time = LocalTime.of(16, 20),
-                    detail = "Bin is full",
-                    description = "Kitchen Bin needs emptying",
-                    title = "Bin Full Alert",
-                    date = LocalDate.now()
-                ),
-                ActivityEvent(
-                    type = EventType.HOLD_MODE,
-                    iconResource = R.drawable.ic_hold_mode,
-                    time = LocalTime.of(17, 45),
-                    detail = "Hold mode active",
-                    description = "Bin will not open automatically",
-                    title = "Hold Mode",
-                    date = LocalDate.now()
-                )
-            )
-            activityAdapter = HistoryAdapter(sampleActivities)
-            activityRecyclerView.adapter = activityAdapter
-        }
-//    }
-
+        initViews(view)
+        setupRecyclerView()
+        setupPresenter()
+        setupListeners()
+    }
 
     private fun initViews(view: View) {
         filterButton = view.findViewById(R.id.filterButton)
+        filterSection = view.findViewById(R.id.filterSection)
         allEventsButton = view.findViewById(R.id.allEventsButton)
         autoOpenButton = view.findViewById(R.id.autoOpenButton)
-        manualOpenButton = view.findViewById(R.id.manualOpenButton)
-        //ako sani gi comment ang spinner kay di niya ma detect sa history fragment kay wala daw sa xml.
-        //wako kahibaw asa e butang ang spinner
-//        binSpinner = view.findViewById(R.id.binSpinner)
-        dateEditText = view.findViewById(R.id.dateEditText)
-        //weeklyChart = view.findViewById(R.id.weeklyChart)
+        autoCloseButton = view.findViewById(R.id.autoCloseButton)
+        binFullButton = view.findViewById(R.id.binFullButton)
+        binDropdown = view.findViewById(R.id.binDropdown)
+        binDropdownText = view.findViewById(R.id.binDropdownText)
+        dateInput = view.findViewById(R.id.dateInput)
+        dateInputText = view.findViewById(R.id.dateInputText)
         activityRecyclerView = view.findViewById(R.id.activityRecyclerView)
+        noActivityTextView = view.findViewById(R.id.noActivityTextView)
+
+        // Initially hide filter section
+        filterSection.visibility = View.GONE
+
+        // Set initial dropdown text
+        binDropdownText.text = selectedBin
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupPresenter() {
         presenter = HistoryPresenter()
         presenter.attachView(this)
-    }
-
-    //for the bar chart ni siya
-    private fun setupChart() {
-//        weeklyChart.apply {
-//            description.isEnabled = false
-//            legend.isEnabled = false
-//            setTouchEnabled(false)
-//            isDragEnabled = false
-//            setScaleEnabled(false)
-//            axisRight.isEnabled = false
-//
-//            axisLeft.apply {
-//                setDrawGridLines(false)
-//                axisMinimum = 0f
-//                axisMaximum = 20f
-//                setLabelCount(3, true)
-//                textColor = resources.getColor(R.color.text_secondary, null)
-//            }
-//
-//            xAxis.apply {
-//                position = XAxis.XAxisPosition.BOTTOM
-//                setDrawGridLines(false)
-//                textColor = resources.getColor(R.color.text_secondary, null)
-//                valueFormatter = IndexAxisValueFormatter(
-//                    arrayOf("Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun")
-//                )
-//            }
-//        }
     }
 
     private fun setupRecyclerView() {
@@ -167,56 +100,185 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun setupListeners() {
-        filterButton.setOnClickListener { presenter.onFilterClicked() }
-        allEventsButton.setOnClickListener { presenter.onEventTypeSelected("all") }
-        autoOpenButton.setOnClickListener { presenter.onEventTypeSelected("auto") }
-        manualOpenButton.setOnClickListener { presenter.onEventTypeSelected("manual") }
+        // Filter button - toggles filter section
+        filterButton.setOnClickListener {
+            presenter.onFilterClicked()
+        }
 
-//        binSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-//            override fun onItemSelected(
-//                parent: AdapterView<*>?,
-//                view: View?,
-//                position: Int,
-//                id: Long
-//            ) {
-//                val selectedBin = parent?.getItemAtPosition(position) as String
-//                presenter.onBinSelected(selectedBin)
-//            }
-//
-//            override fun onNothingSelected(parent: AdapterView<*>?) {}
-//        }
+        // Event type filter buttons
+        allEventsButton.setOnClickListener {
+            presenter.onEventTypeSelected("all")
+        }
+
+        autoOpenButton.setOnClickListener {
+            presenter.onEventTypeSelected("open")
+        }
+
+        autoCloseButton.setOnClickListener {
+            presenter.onEventTypeSelected("close")
+        }
+
+        binFullButton.setOnClickListener {
+            presenter.onEventTypeSelected("full")
+        }
+
+        // Bin dropdown
+        binDropdown.setOnClickListener {
+            showBinSelectionDialog()
+        }
+
+        // Date picker
+        dateInput.setOnClickListener {
+            showDatePicker()
+        }
     }
 
-    //for the bar chart ni siya
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showBinSelectionDialog() {
+        val bins = arrayOf("All Bins", "Kitchen Bin", "Bathroom Bin", "Bedroom Bin", "Living Room Bin")
+
+        AlertDialog.Builder(requireContext())
+            .setTitle("Select Bin")
+            .setItems(bins) { dialog, which ->
+                selectedBin = bins[which]
+                binDropdownText.text = selectedBin
+                presenter.onBinSelected(selectedBin)
+                dialog.dismiss()
+            }
+            .show()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun showDatePicker() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        // Detect if night mode is active
+        val isNightMode = (resources.configuration.uiMode and
+                android.content.res.Configuration.UI_MODE_NIGHT_MASK) ==
+                android.content.res.Configuration.UI_MODE_NIGHT_YES
+
+        // Choose theme based on mode
+        val datePickerTheme = if (isNightMode) {
+            R.style.DatePickerTheme_Dark
+        } else {
+            R.style.DatePickerTheme_Light
+        }
+
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            datePickerTheme,
+            { _, year, month, dayOfMonth ->
+                selectedDate = LocalDate.of(year, month + 1, dayOfMonth)
+                val formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy")
+                dateInputText.text = selectedDate!!.format(formatter)
+                dateInputText.setTextColor(
+                    if (isNightMode) resources.getColor(R.color.white, null)
+                    else resources.getColor(R.color.black, null)
+                )
+                presenter.onDateSelected(selectedDate)
+            },
+            year,
+            month,
+            day
+        )
+        datePickerDialog.datePicker.maxDate = System.currentTimeMillis()
+
+        // Clear button
+        datePickerDialog.setButton(DatePickerDialog.BUTTON_NEUTRAL, "Clear") { _, _ ->
+            selectedDate = null
+            dateInputText.text = "mm/dd/yyyy"
+            dateInputText.setTextColor(
+                if (isNightMode) resources.getColor(R.color.white, null)
+                else resources.getColor(R.color.black, null)
+            )
+            presenter.onDateSelected(null)
+        }
+
+        datePickerDialog.show()
+    }
+
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    override fun toggleFilterSection(show: Boolean) {
+        if (show) {
+            filterSection.expand()
+        } else {
+            filterSection.collapse()
+
+            // Reset filters
+            selectedDate = null
+            selectedBin = "All Bins"
+            dateInputText.text = "mm/dd/yyyy"
+            dateInputText.setTextColor(resources.getColor(R.color.white_50, null))
+            binDropdownText.text = selectedBin
+
+            // Reset filter buttons in UI
+            updateFilterButtons("all")
+
+            // Notify presenter to reset filters
+            presenter.onEventTypeSelected("all")  // resets type filter
+            presenter.onBinSelected(selectedBin)   // resets bin filter
+            presenter.onDateSelected(null)         // resets date filter
+        }
+    }
+
+
     override fun showWeeklyData(data: List<Int>) {
-//        val entries = data.mapIndexed { index, value ->
-//            BarEntry(index.toFloat(), value.toFloat())
-//        }
-//
-//        val dataSet = BarDataSet(entries, "Weekly Activity").apply {
-//            color = resources.getColor(R.color.primary_teal, null)
-//            setDrawValues(false)
-//        }
-//
-//        weeklyChart.data = BarData(dataSet).apply {
-//            barWidth = 0.6f
-//        }
-//        weeklyChart.invalidate()
+        // Bar chart implementation (already in layout)
     }
 
     override fun showActivityList(activities: List<ActivityEvent>) {
-        activityAdapter.updateActivities(activities)
+        if (activities.isEmpty()) {
+            activityRecyclerView.visibility = View.GONE
+            noActivityTextView.visibility = View.VISIBLE
+        } else {
+            activityRecyclerView.visibility = View.VISIBLE
+            noActivityTextView.visibility = View.GONE
+            activityAdapter.updateActivities(activities)
+        }
     }
 
     override fun updateFilterButtons(selectedFilter: String) {
-        // TODO: same code as before to highlight buttons
+        // Reset all buttons to inactive state
+        allEventsButton.setBackgroundResource(R.drawable.button_filter_inactive)
+        allEventsButton.setTextColor(resources.getColor(R.color.text_secondary, null))
+
+        autoOpenButton.setBackgroundResource(R.drawable.button_filter_inactive)
+        autoOpenButton.setTextColor(resources.getColor(R.color.text_secondary, null))
+
+        autoCloseButton.setBackgroundResource(R.drawable.button_filter_inactive)
+        autoCloseButton.setTextColor(resources.getColor(R.color.text_secondary, null))
+
+        binFullButton.setBackgroundResource(R.drawable.button_filter_inactive)
+        binFullButton.setTextColor(resources.getColor(R.color.text_secondary, null))
+
+
+        // Set active state for selected button
+        when (selectedFilter) {
+            "all" -> {
+                allEventsButton.setBackgroundResource(R.drawable.button_filter_active)
+                allEventsButton.setTextColor(resources.getColor(R.color.white, null))
+            }
+            "open" -> {
+                autoOpenButton.setBackgroundResource(R.drawable.button_filter_active)
+                autoOpenButton.setTextColor(resources.getColor(R.color.white, null))
+            }
+            "close" -> {
+                autoCloseButton.setBackgroundResource(R.drawable.button_filter_active)
+                autoCloseButton.setTextColor(resources.getColor(R.color.white, null))
+            }
+            "full" -> {
+                binFullButton.setBackgroundResource(R.drawable.button_filter_active)
+                binFullButton.setTextColor(resources.getColor(R.color.white, null))
+            }
+        }
     }
 
-    //Ako sa gi comment kay mao ni naka cause og error nga di ma acccess ni nga fragment
     override fun setupBinSpinner(bins: List<String>) {
-//        val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_item, bins)
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-//        binSpinner.adapter = adapter
+        // Already handled by dialog
     }
 
     override fun showLoading() { /* TODO */ }
@@ -227,12 +289,45 @@ class HistoryFragment : Fragment(R.layout.fragment_history), HistoryContract.Vie
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
-    override fun setTouchEnabled(bool: Boolean) {
-        TODO("Not yet implemented")
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         presenter.detachView()
     }
+}
+
+// Extension functions for smooth animations
+fun View.expand(duration: Long = 300) {
+    visibility = View.VISIBLE
+
+    measure(
+        View.MeasureSpec.makeMeasureSpec((parent as View).width, View.MeasureSpec.EXACTLY),
+        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+    )
+    val targetHeight = measuredHeight
+
+    layoutParams.height = 0
+
+    val animator = ValueAnimator.ofInt(0, targetHeight)
+    animator.addUpdateListener { animation ->
+        layoutParams.height = animation.animatedValue as Int
+        requestLayout()
+    }
+    animator.duration = duration
+    animator.start()
+}
+
+fun View.collapse(duration: Long = 300) {
+    val initialHeight = measuredHeight
+
+    val animator = ValueAnimator.ofInt(initialHeight, 0)
+    animator.addUpdateListener { animation ->
+        layoutParams.height = animation.animatedValue as Int
+        requestLayout()
+    }
+    animator.doOnEnd {
+        visibility = View.GONE
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT
+    }
+    animator.duration = duration
+    animator.start()
 }

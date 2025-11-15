@@ -20,6 +20,7 @@ import com.eldroid.trashbincloud.contract.MainContract
 import com.eldroid.trashbincloud.databinding.ActivityMainBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.presenter.MainPresenter
+import com.eldroid.trashbincloud.utils.ThemePreferences
 import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.eldroid.trashbincloud.view.settings.SettingsFragment
 import com.google.firebase.auth.FirebaseAuth
@@ -27,7 +28,6 @@ import com.google.firebase.auth.FirebaseAuth
 class MainActivity : AppCompatActivity(), MainContract.View {
 
     private lateinit var binding: ActivityMainBinding
-
     private lateinit var presenter: MainContract.Presenter
 
     private lateinit var navDashboard: LinearLayout
@@ -54,6 +54,7 @@ class MainActivity : AppCompatActivity(), MainContract.View {
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemePreferences.applyTheme(this)
         super.onCreate(savedInstanceState)
 
         presenter = MainPresenter(this, AuthRepository())
@@ -112,44 +113,17 @@ class MainActivity : AppCompatActivity(), MainContract.View {
     }
 
     private fun selectTab(tabIndex: Int) {
-        resetAllTabs()
-        currentSelectedTab = tabIndex
-
-        val selectedColor = ContextCompat.getColor(this, R.color.teal_700)
-
-        when (tabIndex) {
-            0 -> {
-                navDashboard.isSelected = true
-                iconDashboard.setColorFilter(selectedColor)
-                textDashboard.setTextColor(selectedColor)
-            }
-            1 -> {
-                navHistory.isSelected = true
-                iconHistory.setColorFilter(selectedColor)
-                textHistory.setTextColor(selectedColor)
-            }
-            2 -> {
-                navSettings.isSelected = true
-                iconSettings.setColorFilter(selectedColor)
-                textSettings.setTextColor(selectedColor)
-            }
-        }
-    }
-
-    private fun resetAllTabs() {
-        val unselectedColor = ContextCompat.getColor(this, R.color.gray_500)
-
         navDashboard.isSelected = false
         navHistory.isSelected = false
         navSettings.isSelected = false
 
-        iconDashboard.setColorFilter(unselectedColor)
-        iconHistory.setColorFilter(unselectedColor)
-        iconSettings.setColorFilter(unselectedColor)
+        currentSelectedTab = tabIndex
 
-        textDashboard.setTextColor(unselectedColor)
-        textHistory.setTextColor(unselectedColor)
-        textSettings.setTextColor(unselectedColor)
+        when (tabIndex) {
+            0 -> navDashboard.isSelected = true
+            1 -> navHistory.isSelected = true
+            2 -> navSettings.isSelected = true
+        }
     }
 
     private fun loadFragment(fragment: Fragment) {
@@ -187,5 +161,4 @@ class MainActivity : AppCompatActivity(), MainContract.View {
             }
         }
     }
-
 }

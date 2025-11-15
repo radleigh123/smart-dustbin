@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Navigation colors that respond to theme -->
+    <color name="nav_background">@color/light_bg_primary</color>
+    <color name="nav_text_unselected">@color/light_txt_secondary</color>
+    <color name="nav_text_selected">@color/light_txt_nav_selected</color>
+    <color name="nav_icon_unselected">@color/light_txt_secondary</color>
+    <color name="nav_icon_selected">@color/light_txt_nav_selected</color>
+</resources>

@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="horizontal"
     android:padding="12dp"
     android:gravity="center_vertical">
@@ -45,7 +46,7 @@
         android:layout_width="16dp"
         android:layout_height="16dp"
         android:src="@drawable/ic_time"
-        android:tint="#B0B0B0"
+        app:tint="#B0B0B0"
         android:layout_marginStart="8dp" />
 
 </LinearLayout>

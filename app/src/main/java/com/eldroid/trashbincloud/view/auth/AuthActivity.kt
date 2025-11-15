@@ -7,6 +7,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.databinding.ActivityAuthBinding
+import com.eldroid.trashbincloud.utils.ThemePreferences
 
 class AuthActivity : AppCompatActivity() {
 
@@ -14,6 +15,7 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var binding: ActivityAuthBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemePreferences.applyTheme(this)
         super.onCreate(savedInstanceState)
 
         binding = ActivityAuthBinding.inflate(layoutInflater)

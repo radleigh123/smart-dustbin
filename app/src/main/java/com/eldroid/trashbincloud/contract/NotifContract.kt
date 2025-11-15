@@ -13,11 +13,15 @@ interface NotifContract {
         fun hideLoading()
 
         fun showError(message: String)
+
+        fun showSuccess(message: String)
     }
 
     interface Presenter {
         fun getNotifications(userId: String)
 
         fun getUnreadNotif(userId: String)
+        fun markAllAsUnread(uid: String)
+        fun markAllAsRead(uid: String)
     }
 }

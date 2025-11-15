@@ -30,6 +30,30 @@ class NotifPresenter(
         }
     }
 
+    override fun markAllAsRead(userId: String) {
+        repository.markAllAsRead(userId) { success, error ->
+            if (success) {
+                view.showSuccess("All notifications marked as read")
+                getNotifications(userId) // Refresh list
+                getUnreadNotif(userId) // Update badge
+            } else {
+                view.showError(error ?: "Failed to mark all as read")
+            }
+        }
+    }
+
+    override fun markAllAsUnread(userId: String) {
+        repository.markAllAsUnread(userId) { success, error ->
+            if (success) {
+                view.showSuccess("All notifications marked as unread")
+                getNotifications(userId) // Refresh list
+                getUnreadNotif(userId) // Update badge
+            } else {
+                view.showError(error ?: "Failed to mark all as unread")
+            }
+        }
+    }
+
     fun markAsRead(userId: String, notifId: String) {
         repository.markAsRead(userId, notifId)
     }

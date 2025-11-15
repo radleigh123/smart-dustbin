@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BottomCornersRounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">16dp</item>
+        <item name="cornerSizeBottomLeft">16dp</item>
+    </style>
+
+    <style name="BottomHeaderRounded" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">0dp</item>
+        <item name="cornerSizeTopRight">0dp</item>
+        <item name="cornerSizeBottomRight">24dp</item>
+        <item name="cornerSizeBottomLeft">24dp</item>
+        <item name="backgroundTint">@color/primary</item>
+    </style>
+
+    <style name="UserGuideCard">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">12dp</item>
+        <item name="cardCornerRadius">12dp</item>
+        <item name="cardBackgroundColor">@color/white</item>
+        <item name="android:elevation">2dp</item>
+    </style>
+
+    <style name="UserGuideCardContent">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="UserGuideIcon">
+        <item name="android:layout_width">32dp</item>
+        <item name="android:layout_height">32dp</item>
+        <item name="android:layout_marginEnd">12dp</item>
+        <item name="android:tint">@color/black</item>
+    </style>
+
+    <style name="UserGuideTextContainer">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+    </style>
+
+    <style name="UserGuideTitle">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="UserGuideSubtitle">
+        <item name="android:textSize">13sp</item>
+        <item name="android:textColor">@color/gray_100</item>
+    </style>
+
+    <style name="PrimaryButton">
+        <item name="android:backgroundTint">@color/primary</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Dark DatePicker Theme -->
+    <style name="DatePickerTheme.Dark" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="android:colorBackground">@color/black</item>
+        <item name="colorOnSurface">@color/white</item><!-- affects unselected day numbers -->
+        <item name="colorSurface">@color/black</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <item name="android:textColorPrimary">@color/white</item>
+        <item name="android:calendarTextColor">@color/white</item>
+    </style>
+
+    <!-- Light DatePicker Theme -->
+    <style name="DatePickerTheme.Light" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="android:colorBackground">@color/white</item>
+        <item name="android:textColorPrimary">@color/black</item>
+        <item name="android:calendarTextColor">@color/black</item>
+        <item name="colorPrimary">#003844</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <!-- Light Mode Popup Menu -->
+    <style name="CustomPopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@drawable/popup_menu_background</item>
+        <item name="android:popupElevation">8dp</item>
+    </style>
+
+    <!-- Dark Mode Popup Menu -->
+    <style name="DarkCustomPopupMenu" parent="Widget.Material3.PopupMenu">
+        <item name="android:popupBackground">@drawable/dark_popup_menu_background</item>
+        <item name="android:popupElevation">8dp</item>
+    </style>
+</resources>

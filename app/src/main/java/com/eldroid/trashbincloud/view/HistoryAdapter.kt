@@ -118,25 +118,6 @@ class HistoryAdapter(
             timeTextView.text = activity.time.format(timeFormatter)
 
             iconImageView.setImageResource(activity.iconResource)
-
-            when (activity.type) {
-                EventType.AUTO_OPEN -> {
-                    iconImageView.setBackgroundResource(R.drawable.circle_green)
-                    detailTextView.setTextColor(itemView.context.getColor(R.color.green))
-                }
-                EventType.MANUAL_OPEN -> {
-                    iconImageView.setBackgroundResource(R.drawable.circle_blue)
-                    detailTextView.setTextColor(itemView.context.getColor(R.color.blue))
-                }
-                EventType.BIN_FULL -> {
-                    iconImageView.setBackgroundResource(R.drawable.circle_red)
-                    detailTextView.setTextColor(itemView.context.getColor(R.color.red))
-                }
-                EventType.HOLD_MODE -> {
-                    iconImageView.setBackgroundResource(R.drawable.circle_orange)
-                    detailTextView.setTextColor(itemView.context.getColor(R.color.orange))
-                }
-            }
         }
     }
 

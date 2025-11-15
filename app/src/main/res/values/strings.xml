@@ -145,4 +145,31 @@
     <string name="back">Back</string>
     <string name="bin_details">Bin Details</string>
     <string name="more_options">More options</string>
+
+    <string name="user_guide">User Guide</string>
+    <string name="getting_started">Getting Started</string>
+    <string name="five_steps">5 Steps</string>
+    <string name="back_button">Back button</string>
+
+    <!-- Steps -->
+    <string name="step_1_title">Step 1: Connect to Network</string>
+    <string name="step_1_subtitle">Wi-Fi or Bluetooth setup</string>
+
+    <string name="step_2_title">Step 2: Add SmartBin</string>
+    <string name="step_2_subtitle">Register your smart dustbin</string>
+
+    <string name="step_3_title">Step 3: View Bin Status</string>
+    <string name="step_3_subtitle">Monitor fill levels and activity</string>
+
+    <string name="step_4_title">Step 4: Manage Alerts</string>
+    <string name="step_4_subtitle">Set up notifications and alerts</string>
+
+    <string name="step_5_title">Step 5: Remote Lid Control</string>
+    <string name="step_5_subtitle">Control your bin remotely</string>
+
+    <!-- Help Section -->
+    <string name="need_more_help">Need More Help?</string>
+    <string name="support_message">Can\'t find what you\'re looking for? Our support team is here to help you.</string>
+    <string name="contact_support">Contact Support</string>
+    <string name="view_faqs">View FAQs</string>
 </resources>

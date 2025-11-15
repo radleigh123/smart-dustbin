@@ -8,12 +8,12 @@
     <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- For Android 10+ -->
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
-    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" /> <!-- For Android 12+ -->
+    <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADVERTISE" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
@@ -25,7 +25,7 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Base.Theme.TrashbinCloud">
+        android:theme="@style/Theme.TrashbinCloud">
         <activity
             android:name=".view.ChangePassword"
             android:exported="false" />
@@ -45,9 +45,12 @@
             android:name=".view.bin.AddBinActivity"
             android:exported="false" />
         <activity
+            android:name=".view.userguide.UserGuideActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MainActivity"
             android:exported="true"
-            android:theme="@style/Base.Theme.TrashbinCloud">
+            android:theme="@style/Theme.TrashbinCloud">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

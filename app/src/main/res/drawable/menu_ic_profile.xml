@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="117dp"
+    android:height="125dp"
+    android:viewportWidth="512"
+    android:viewportHeight="512">
+
+    <!-- Person icon (circle + body) -->
+    <path
+        android:fillColor="#00D7D7"
+        android:pathData="M256,128a64,64 0 1,1 0,128a64,64 0 1,1 0,-128zM128,384c0,-70.7 57.3,-128 128,-128s128,57.3 128,128H128z" />
+
+    <!-- Pencil icon -->
+    <path
+        android:fillColor="#00D7D7"
+        android:pathData="M368,176l32,32l-128,128h-32v-32zM384,160l32,-32l32,32l-32,32z" />
+</vector>
