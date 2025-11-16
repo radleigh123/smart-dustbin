@@ -11,8 +11,7 @@
         android:id="@+id/main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:padding="@dimen/padding_small"
-        >
+        android:padding="@dimen/padding_small">
 
         <!-- Vertical Guidelines -->
         <androidx.constraintlayout.widget.Guideline
@@ -44,18 +43,17 @@
             android:orientation="vertical"
             app:layout_constraintTop_toTopOf="@id/guideline_top"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
-            app:layout_constraintEnd_toEndOf="@id/guideline_end"
-            >
+            app:layout_constraintEnd_toEndOf="@id/guideline_end">
 
             <ImageView
                 android:id="@+id/imageView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="147dp"
+                android:layout_height="180dp"
                 android:src="@drawable/logo_full"
+                android:layout_marginBottom="15dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/app_name"
-                android:paddingVertical="20dp"
-                />
+                android:paddingVertical="20dp" />
 
             <TextView
                 android:id="@+id/title2_tv"
@@ -88,48 +86,70 @@
             app:layout_constraintTop_toBottomOf="@id/titleLinear"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
-            android:paddingVertical="@dimen/margin_large"
-            >
+            android:paddingVertical="@dimen/margin_large">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Email"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:layout_marginBottom="7dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
                 android:id="@+id/email_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/email"
-                android:textColorHint="@color/white"
                 android:layout_marginBottom="@dimen/margin_default"
                 app:boxStrokeColor="@color/secondary"
+                app:startIconDrawable="@drawable/ic_email"
+                app:startIconTint="@color/gray_100"
+                app:hintEnabled="false"
                 app:boxStrokeWidth="2dp"
-                app:boxBackgroundColor="@color/white_20"
-                >
+                app:boxBackgroundColor="@color/white_20">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
-                    android:inputType="textEmailAddress" />
+                    android:inputType="textEmailAddress"
+                    android:hint="Enter your email"
+                    android:textColorHint="@color/gray_100"
+                    android:textColor="@color/white"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Password"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                android:layout_marginTop="15dp"
+                android:layout_marginBottom="7dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 app:shapeAppearance="?attr/shapeAppearanceCornerMedium"
                 android:id="@+id/pass_et"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/password"
-                android:textColorHint="@color/white"
                 android:layout_marginBottom="@dimen/margin_small"
+                app:startIconDrawable="@drawable/ic_lock"
+                app:startIconTint="@color/gray_100"
+                app:hintEnabled="false"
                 app:boxStrokeColor="@color/secondary"
                 app:boxStrokeWidth="2dp"
-                app:boxBackgroundColor="@color/white_20"
-                >
+                app:boxBackgroundColor="@color/white_20">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
-                    android:inputType="textPassword" />
+                    android:inputType="textPassword"
+                    android:hint="Enter your password"
+                    android:textColorHint="@color/gray_100"
+                    android:textColor="@color/white"/>
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -152,37 +172,60 @@
             app:layout_constraintTop_toBottomOf="@+id/inputLinear"
             app:layout_constraintStart_toStartOf="@id/guideline_start"
             app:layout_constraintEnd_toEndOf="@id/guideline_end"
-            android:layout_marginTop="@dimen/margin_large"
-            >
+            android:layout_marginTop="@dimen/margin_large">
 
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/login_btn"
+            <!-- Button with loading state -->
+            <FrameLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/button_height"
-                android:layout_marginHorizontal="@dimen/margin_large"
-                android:background="@drawable/gradient_button_bg"
-                android:fontFamily="@font/montserrat_bold"
-                android:text="@string/login"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_large"
-                />
+                android:layout_marginHorizontal="0dp">
 
-            <ProgressBar
-                style="?android:attr/progressBarStyleLarge"
-                android:id="@+id/progressBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:layout_gravity="center"
-                />
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/login_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/ic_rounded_button_bg"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/login"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_large" />
+
+                <LinearLayout
+                    android:id="@+id/buttonContent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="horizontal"
+                    android:gravity="center">
+
+                    <ProgressBar
+                        android:id="@+id/progressBar"
+                        style="?android:attr/progressBarStyleSmall"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginEnd="12dp"
+                        android:indeterminateTint="@color/white"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/buttonText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="@string/login"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/text_large" />
+
+                </LinearLayout>
+
+            </FrameLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="center"
-                android:layout_marginTop="@dimen/margin_default"
-                >
+                android:layout_marginTop="@dimen/margin_default">
 
                 <TextView
                     android:id="@+id/already_tv"

@@ -15,7 +15,6 @@ data class ActivityEvent(
 
 enum class EventType {
     AUTO_OPEN,
-    MANUAL_OPEN,
-    BIN_FULL,
-    HOLD_MODE
+    AUTO_CLOSE,
+    BIN_FULL
 }

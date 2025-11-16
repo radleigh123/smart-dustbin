@@ -1,19 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Base application theme. -->
-    <style name="Base.Theme.TrashbinCloud" parent="Theme.Material3Expressive.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    <!-- Base application theme (Light Mode) -->
+    <style name="Base.Theme.TrashbinCloud" parent="Theme.Material3.Light.NoActionBar">
+        <!-- Primary Colors -->
+        <item name="colorPrimary">@color/light_bg_tertiary</item>
+        <item name="colorPrimaryVariant">@color/light_btn_secondary</item>
+        <item name="colorOnPrimary">@color/white</item>
+
+
+        <!-- Surface & Background -->
+        <item name="colorSurface">@color/light_bg_primary</item>
+        <item name="colorOnSurface">@color/light_txt_primary</item>
+        <item name="android:colorBackground">@color/light_bg_main_background</item>
+        <item name="colorOnBackground">@color/light_txt_primary</item>
+
+        <!-- Status Bar -->
+        <item name="android:statusBarColor">@color/light_btn_primary</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Text Colors -->
+        <item name="android:textColorPrimary">@color/light_txt_primary</item>
+        <item name="android:textColorSecondary">@color/light_txt_secondary</item>
+        <item name="android:textColorHint">@color/light_txt_hint</item>
+
+        <!-- Component Styles -->
+        <item name="textInputStyle">@style/Widget.TrashbinCloud.TextInputLayout</item>
     </style>
-    
+
+    <style name="Widget.TrashbinCloud.TextInputLayout" parent="Widget.Material3.TextInputLayout.OutlinedBox">
+        <item name="boxStrokeColor">@color/light_btn_primary</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxCornerRadiusTopStart">8dp</item>
+        <item name="boxCornerRadiusTopEnd">8dp</item>
+        <item name="boxCornerRadiusBottomStart">8dp</item>
+        <item name="boxCornerRadiusBottomEnd">8dp</item>
+        <item name="hintTextColor">@color/light_txt_hint</item>
+        <item name="android:textColorHint">@color/light_txt_hint</item>
+    </style>
+
     <style name="Base.Theme.TrashbinCloud.Switch" parent="Widget.Material3.CompoundButton.MaterialSwitch">
-        <item name="trackTint">@color/tertiary</item>
-        <item name="colorPrimary">@color/tertiary</item>
-        <item name="colorSurfaceContainerHighest">@color/gray_500</item>
+        <item name="trackTint">@color/gray_500</item>
+        <item name="colorPrimary">@color/gray_500</item>
     </style>
 
     <style name="Widget.TrashbinCloud.Button" parent="Widget.Material3.Button">
-        <item name="backgroundTint">@color/secondary</item>
+        <item name="backgroundTint">@color/light_btn_secondary</item>
         <item name="cornerRadius">16dp</item>
         <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">16sp</item>

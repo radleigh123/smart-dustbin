@@ -7,11 +7,12 @@ import com.eldroid.trashbincloud.databinding.ItemBinBinding
 import com.eldroid.trashbincloud.model.entity.TrashBin
 
 class TrashBinAdapter(
-    private var bins: List<TrashBin>
+    private var bins: List<TrashBin>,
+    private val onBinClick: (TrashBin) -> Unit = {}
 ): RecyclerView.Adapter<TrashBinAdapter.TrashBinViewHolder>() {
 
     inner class TrashBinViewHolder(val binding: ItemBinBinding) :
-            RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrashBinViewHolder {
         val binding = ItemBinBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -31,6 +32,11 @@ class TrashBinAdapter(
                 else -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.gradient_button_bg)
             }
             progressBar.progress = bin.fillLevel ?: 0
+
+            // Set click listener on the entire card
+            root.setOnClickListener {
+                onBinClick(bin)
+            }
         }
     }
 
@@ -40,5 +46,4 @@ class TrashBinAdapter(
         bins = newBins
         notifyDataSetChanged()
     }
-
 }

@@ -2,55 +2,55 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/background_color">
+        android:background="@color/main_background">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/headerSection"
-            android:layout_width="0dp"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/top_card"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/header_background"
+            android:layout_marginBottom="24dp"
+            app:cardBackgroundColor="@color/tertiary"
+            app:shapeAppearanceOverlay="@style/BottomHeaderRounded"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
-            <TextView
-                android:id="@+id/titleText"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="History"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toStartOf="@id/filterButton" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="72dp"
+                android:padding="17dp">
 
-            <ImageView
-                android:id="@+id/filterButton"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:src="@drawable/ic_filter"
-                android:layout_marginEnd="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                <!-- Title centered horizontally -->
+                <TextView
+                    android:id="@+id/titleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="History"
+                    android:textColor="@color/white"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-            <Space
-                android:id="@+id/headerBottomSpace"
-                android:layout_width="0dp"
-                android:layout_height="16dp"
-                app:layout_constraintTop_toBottomOf="@id/titleText"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                <!-- Filter button aligned to the end -->
+                <ImageView
+                    android:id="@+id/filterButton"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_filter"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/filterSection"
@@ -59,80 +59,108 @@
             android:background="@color/white"
             android:paddingTop="16dp"
             android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/headerSection"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <TextView
-                android:id="@+id/allEventsButton"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@drawable/button_filter_active"
-                android:text="All Events"
-                android:textColor="@color/white"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_marginStart="16dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
-
-            <TextView
-                android:id="@+id/autoOpenButton"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@drawable/button_filter_inactive"
-                android:text="Auto Open"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_marginStart="12dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/allEventsButton" />
-
-            <TextView
-                android:id="@+id/manualOpenButton"
-                android:layout_width="wrap_content"
-                android:layout_height="32dp"
-                android:background="@drawable/button_filter_inactive"
-                android:text="Manual Open"
-                android:textColor="@color/text_secondary"
-                android:textSize="14sp"
-                android:gravity="center"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:layout_marginStart="12dp"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@id/autoOpenButton" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/controlsSection"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
             android:paddingStart="16dp"
             android:paddingEnd="16dp"
-            android:paddingBottom="16dp"
-            app:layout_constraintTop_toBottomOf="@id/filterSection"
+            android:visibility="visible"
+            app:layout_constraintTop_toBottomOf="@id/top_card"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
+            <!-- Filter Buttons Row -->
+            <HorizontalScrollView
+                android:id="@+id/filterButtonsScroll"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:scrollbars="none"
+                android:descendantFocusability="blocksDescendants"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/allEventsButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@drawable/button_filter_active"
+                        android:text="All Events"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="12dp"/>
+
+                    <TextView
+                        android:id="@+id/autoOpenButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@drawable/button_filter_inactive"
+                        android:text="Auto Open"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="12dp"/>
+
+                    <TextView
+                        android:id="@+id/autoCloseButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@drawable/button_filter_inactive"
+                        android:text="Auto Close"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="12dp"/>
+
+                    <TextView
+                        android:id="@+id/binFullButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="32dp"
+                        android:background="@drawable/button_filter_inactive"
+                        android:text="Bin Full"
+                        android:textColor="@color/text_secondary"
+                        android:textSize="14sp"
+                        android:gravity="center"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:layout_marginEnd="12dp"/>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+            <!-- Bin Dropdown and Date Input Row -->
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/binDropdown"
                 android:layout_width="0dp"
                 android:layout_height="48dp"
                 android:background="@drawable/dropdown_background"
                 android:layout_marginEnd="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toBottomOf="@+id/filterButtonsScroll"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/dateInput">
 
                 <TextView
+                    android:id="@+id/binDropdownText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="Kitchen Bin"
@@ -158,19 +186,23 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/dateInput"
-                android:layout_width="120dp"
+                android:layout_width="140dp"
                 android:layout_height="48dp"
                 android:background="@drawable/dropdown_background"
                 android:layout_marginStart="8dp"
-                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                app:layout_constraintTop_toBottomOf="@+id/filterButtonsScroll"
                 app:layout_constraintEnd_toEndOf="parent">
 
                 <TextView
+                    android:id="@+id/dateInputText"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:text="mm/dd/yyyy"
-                    android:textColor="@color/text_hint"
-                    android:textSize="16sp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
                     android:gravity="center"
                     app:layout_constraintTop_toTopOf="parent"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -181,6 +213,7 @@
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/weeklyActivityCard"
             android:layout_width="0dp"
@@ -188,9 +221,9 @@
             android:background="@drawable/card_background"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="21dp"
             android:padding="16dp"
-            app:layout_constraintTop_toBottomOf="@id/controlsSection"
+            app:layout_constraintTop_toBottomOf="@id/filterSection"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent">
 
@@ -419,13 +452,12 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="27dp"
             app:layout_constraintTop_toBottomOf="@id/weeklyActivityCard"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent">
+            app:layout_constraintEnd_toEndOf="parent">
 
-
-        <TextView
+            <TextView
                 android:id="@+id/recentActivityTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -438,25 +470,54 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/activityRecyclerView"
+            <com.google.android.material.card.MaterialCardView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
                 android:layout_marginEnd="16dp"
-                android:padding="16dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:clipToPadding="false"
-                android:background="@color/background_light_gray"
                 android:layout_marginTop="8dp"
+                app:cardCornerRadius="16dp"
+                app:cardBackgroundColor="@color/white"
+                app:strokeWidth="0dp"
                 app:layout_constraintTop_toBottomOf="@id/recentActivityTitle"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                app:layout_constraintEnd_toEndOf="parent">
 
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/activityRecyclerView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:clipToPadding="false"
+                        android:paddingTop="7dp"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <TextView
+                        android:id="@+id/noActivityTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="No recent activity"
+                        android:textColor="@color/black"
+                        android:textSize="16sp"
+                        android:gravity="center"
+                        android:visibility="gone"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"/>
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </com.google.android.material.card.MaterialCardView>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

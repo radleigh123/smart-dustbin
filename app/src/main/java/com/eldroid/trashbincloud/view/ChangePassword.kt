@@ -2,11 +2,13 @@ package com.eldroid.trashbincloud.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.utils.ThemePreferences
 import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.textfield.TextInputEditText
@@ -14,17 +16,21 @@ import com.google.android.material.textfield.TextInputEditText
 class ChangePassword : AppCompatActivity() {
 
     private lateinit var btnSaveChanges: MaterialButton
+
+    private lateinit var btnBack: ImageView
     private lateinit var eTextNewPassword: TextInputEditText
     private lateinit var eTextConfirmNewPassword: TextInputEditText
     private lateinit var auth: AuthRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemePreferences.applyTheme(this)
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_change_password)
 
         auth = AuthRepository()
 
+        btnBack = findViewById(R.id.back_btn)
         btnSaveChanges = findViewById(R.id.btnSave)
         eTextNewPassword = findViewById(R.id.etNewPassword)
         eTextConfirmNewPassword = findViewById(R.id.etConfirmNewPassword)
@@ -33,6 +39,9 @@ class ChangePassword : AppCompatActivity() {
     }
 
     private fun setupListeners() {
+        btnBack.setOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
         btnSaveChanges.setOnClickListener {
             val currentUser = auth.currentUser()
             val newPassword = eTextNewPassword.text.toString().trim()
@@ -73,7 +82,8 @@ class ChangePassword : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // ✅ Check if user is logged in
+            setLoadingState(true)
+
             if (currentUser == null) {
                 Toast.makeText(this, "User not logged in. Please log in again.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
@@ -83,6 +93,8 @@ class ChangePassword : AppCompatActivity() {
                 if (reloadTask.isSuccessful) {
                     currentUser.updatePassword(newPassword)
                         .addOnCompleteListener { task ->
+                            setLoadingState(false)
+
                             if (task.isSuccessful) {
                                 Toast.makeText(this, "Password updated successfully!", Toast.LENGTH_SHORT).show()
                                 startActivity(Intent(this, ProfileActivity::class.java))
@@ -92,10 +104,15 @@ class ChangePassword : AppCompatActivity() {
                             }
                         }
                 } else {
+                    setLoadingState(false)
                     Toast.makeText(this, "Failed to refresh session. Please log in again.", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
 
+    private fun setLoadingState(isLoading: Boolean) {
+        btnSaveChanges.isEnabled = !isLoading
+        btnSaveChanges.text = if (isLoading) "Saving..." else "Save Changes"
+    }
 }

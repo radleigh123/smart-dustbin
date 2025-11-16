@@ -1,7 +1,7 @@
 package com.eldroid.trashbincloud.contract
 
-import android.widget.TextView
 import com.eldroid.trashbincloud.model.entity.ActivityEvent
+import java.time.LocalDate
 
 interface HistoryContract {
     interface View {
@@ -12,7 +12,7 @@ interface HistoryContract {
         fun showLoading()
         fun hideLoading()
         fun showError(message: String)
-        fun setTouchEnabled(bool: Boolean)
+        fun toggleFilterSection(show: Boolean) // Add this
     }
 
     interface Presenter {
@@ -21,7 +21,7 @@ interface HistoryContract {
         fun onFilterClicked()
         fun onEventTypeSelected(type: String)
         fun onBinSelected(binName: String)
-        fun onDateSelected(date: String)
+        fun onDateSelected(date: LocalDate?)
         fun loadWeeklyData()
         fun loadActivityData()
     }

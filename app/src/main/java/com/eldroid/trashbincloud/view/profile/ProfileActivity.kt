@@ -15,6 +15,7 @@ import com.eldroid.trashbincloud.databinding.ActivityProfileBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.profile.ProfilePresenter
+import com.eldroid.trashbincloud.utils.ThemePreferences
 import com.eldroid.trashbincloud.view.ChangePassword
 import com.eldroid.trashbincloud.view.MainActivity
 import com.eldroid.trashbincloud.view.auth.AuthActivity
@@ -37,6 +38,7 @@ class ProfileActivity : AppCompatActivity(), ProfileContract.View {
     private lateinit var textVEmail: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        ThemePreferences.applyTheme(this)
         super.onCreate(savedInstanceState)
 
         presenter = ProfilePresenter(this, AuthRepository(), UserRepository())

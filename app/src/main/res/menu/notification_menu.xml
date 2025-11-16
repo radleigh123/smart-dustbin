@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_mark_all_read"
+        android:title="Mark All as Read" />
+    <item
+        android:id="@+id/menu_mark_all_unread"
+        android:title="Mark All as Unread" />
+</menu>
