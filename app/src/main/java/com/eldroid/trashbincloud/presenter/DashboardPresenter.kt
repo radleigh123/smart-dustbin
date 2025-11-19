@@ -2,6 +2,7 @@ package com.eldroid.trashbincloud.presenter
 
 import android.util.Log
 import com.eldroid.trashbincloud.contract.DashboardContract
+import com.eldroid.trashbincloud.model.entity.Commands
 import com.eldroid.trashbincloud.model.entity.TrashBin
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.TrashBinRepository
@@ -29,28 +30,35 @@ class DashboardPresenter(
                 if (this.view === null) return@getUser
                 if (user != null) {
                     view?.loadUserInfo(user)
-                    getUserBins(uid)
+//                    getUserBins(uid)
+                    trashBinRepository.getUserBins(uid) { bins, error ->
+                        if (bins.isNotEmpty()) view?.showBins(bins)
+                        else view?.showNoBins()
+                    }
                 } else view?.showMessage(message ?: "User info retrieval error")
             }
         }
     }
 
-    private fun getUserBins(userUid: String) {
-        view?.showSkeleton()
-        trashBinRepository.getUserBins(userUid) { bins, error ->
-            if (this.view === null) return@getUserBins
-            view?.hideSkeleton()
-            if (error != null) {
-                view?.showMessage(error)
-            } else if (bins.isEmpty()) {
-                view?.showNoBins()
-            } else {
-                view?.showBins(bins)
-            }
-        }
-    }
+    override fun updateBinCommand(bin: TrashBin, cmd: String) {
+        val userUid = authRepository.currentUserId().toString()
 
-    override fun commandBin(bin: TrashBin) {
+        // NOTE: Each trash bins has commands:
+        // - mode (AUTO or MANUAL)
+        // - command (AUTO | OPEN | CLOSE)
+        // - task (NORMAL | UNPAIR | DESTROY)
+        if (cmd == "open" || cmd == "close") {
+            bin.commands?.command = cmd
+            bin.commands?.mode = "manual" // Automatically to state device is on manual
+        } else {
+            bin.commands?.command = "auto"
+            bin.commands?.mode = "auto" // Same as above, to state device is on auto open/close mode
+        }
+
+        trashBinRepository.updateBinCommand(userUid, bin.binId ?: "", bin.commands ?: Commands()) { success, error ->
+            if (success) view?.showMessage("Bin ${bin.name} commands changed")
+            else view?.showMessage(error ?: "Command failed")
+        }
     }
 
 }

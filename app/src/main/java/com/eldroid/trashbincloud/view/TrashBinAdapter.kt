@@ -6,75 +6,69 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.eldroid.trashbincloud.databinding.ItemBinBinding
 import com.eldroid.trashbincloud.model.entity.TrashBin
-import com.eldroid.trashbincloud.model.repository.TrashBinRepository
 
 class TrashBinAdapter(
     private var bins: List<TrashBin>,
-    private val onBinClick: (TrashBin) -> Unit
+    private val onBinClick: (TrashBin) -> Unit,
+    private val onOpenBtnClick: (TrashBin) -> Unit,
+    private val onCloseBtnClick: (TrashBin) -> Unit,
+    private val onHoldBtnClick: (TrashBin) -> Unit
 ): RecyclerView.Adapter<TrashBinAdapter.TrashBinViewHolder>() {
 
     private lateinit var binding: ItemBinBinding
-    private lateinit var trashBinRepository: TrashBinRepository
 
     inner class TrashBinViewHolder(val binding: ItemBinBinding) :
-        RecyclerView.ViewHolder(binding.root)
-        /*{
-            init {
-                itemView.setOnClickListener {
-                    val position = bindingAdapterPosition
-                    if (position != RecyclerView.NO_POSITION) {
-                        onItemClick(bins[position])
-                    }
+        RecyclerView.ViewHolder(binding.root) {
+            fun bind(bin: TrashBin) {
+                binding.tvBinName.text = bin.name ?: "UNNAMED BIN"
+                binding.tvBinLocation.text = bin.location ?: "UNKNOWN XYZ"
+                binding.tvFillLevel.text = "${bin.fillLevel ?: 0}%"
+                binding.tvBinStatus.background = when (bin.status) {
+                    0 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.background_text)
+                    1 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_orange)
+                    2 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_red)
+                    else -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.gradient_button_bg)
                 }
+                binding.progressBar.progress = bin.fillLevel ?: 0
+
+                // Setup click listeners
+                setupClickListeners(bin)
             }
-        }*/
+        }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrashBinViewHolder {
         binding = ItemBinBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        trashBinRepository = TrashBinRepository()
         return TrashBinViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: TrashBinViewHolder, position: Int) {
-        val bin = bins[position]
-        with(holder.binding) {
-            tvBinName.text = bin.name ?: "UNNAMED BIN"
-            tvBinLocation.text = bin.location ?: "UNKNOWN XYZ"
-            tvFillLevel.text = "${bin.fillLevel ?: 0}%"
-            tvBinStatus.background = when (bin.status) {
-                0 -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.background_text)
-                1 -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_orange)
-                2 -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_red)
-                else -> tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.gradient_button_bg)
-            }
-            progressBar.progress = bin.fillLevel ?: 0
-
-            setupClickListeners(bin)
-            // Set click listener on the entire card
-            root.setOnClickListener {
-                onBinClick(bin)
-            }
-        }
+        holder.bind(bins[position])
     }
 
     private fun setupClickListeners(bin: TrashBin) {
+        // Listener on the entire card
+        binding.root.setOnClickListener { onBinClick(bin) }
+
         binding.btnOpen.setOnClickListener {
             Log.d("TrashBinAdapter", "OPEN clicked!")
+            onOpenBtnClick(bin)
         }
 
         binding.btnClose.setOnClickListener {
             Log.d("TrashBinAdapter", "CLOSE clicked!")
+            onCloseBtnClick(bin)
         }
 
         binding.btnHold.setOnClickListener {
             Log.d("TrashBinAdapter", "HOLD clicked!")
+            onHoldBtnClick(bin)
         }
     }
-
-    override fun getItemCount(): Int = bins.size
 
     fun updateBins(newBins: List<TrashBin>) {
         bins = newBins
         notifyDataSetChanged()
     }
+
+    override fun getItemCount(): Int = bins.size
 }

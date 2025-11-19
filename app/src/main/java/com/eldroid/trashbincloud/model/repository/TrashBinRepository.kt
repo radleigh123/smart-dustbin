@@ -1,5 +1,6 @@
 package com.eldroid.trashbincloud.model.repository
 
+import com.eldroid.trashbincloud.model.entity.Commands
 import com.eldroid.trashbincloud.model.entity.TrashBin
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -39,45 +40,62 @@ class TrashBinRepository(
         })
     }
 
+    // TODO: Kotlin DOCS
     /**
      * Get a specific trash bin by ID
      */
-    fun getBin(binId: String, callback: (TrashBin?, String?) -> Unit) {
-        binsRef.child(binId).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val bin = snapshot.getValue(TrashBin::class.java)
-                callback(bin, null)
-            }
+    fun getBin(userUid: String, binId: String, callback: (TrashBin?, String?) -> Unit) {
+        binsRef.child(userUid).child(binId)
+            .addListenerForSingleValueEvent(object: ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val bin = snapshot.getValue(TrashBin::class.java)
+                    callback(bin, null)
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                callback(null, error.message)
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    callback(null, error.message)
+                }
+            })
     }
 
     /**
      * Update a trash bin data
      */
     fun updateBin(userUid: String, bin: TrashBin, callback: (Boolean, String?) -> Unit) {
-        binsRef.child(userUid).child(bin.binId.toString()).setValue(bin)
+        binsRef.child(userUid).child(bin.binId ?: "")
+            .setValue(bin)
+            .addOnSuccessListener { callback(true, null) }
+            .addOnFailureListener { e -> callback(false, e.message) }
+    }
+
+    /**
+     * Update only the commands of the trash bin
+     */
+    fun updateBinCommand(userUid: String, binId: String, commands: Commands, callback: (Boolean, String?) -> Unit) {
+        binsRef.child(userUid).child(binId).child("commands")
+            .setValue(commands)
             .addOnSuccessListener { callback(true, null) }
             .addOnFailureListener { e -> callback(false, e.message) }
     }
 
     /**
      * Add a new trash bin
+     * MAY NOT BE USED, since device will be the one who should add trash bin.
      */
     fun addBin(userUid: String, bin: TrashBin, callback: (Boolean, String?) -> Unit) {
-        binsRef.child(userUid).child(bin.binId.toString()).setValue(bin)
+        binsRef.child(userUid).child(bin.binId ?: "")
+            .setValue(bin)
             .addOnSuccessListener { callback(true, null) }
             .addOnFailureListener { e -> callback(false, e.message) }
     }
 
     /**
      * Delete a trash bin
+     * MAY NOT BE USED, since device will be the one who should delete trash bin.
      */
     fun deleteBin(userUid: String, binId: String, callback: (Boolean, String?) -> Unit) {
-        binsRef.child(userUid).child(binId).removeValue()
+        binsRef.child(userUid).child(binId)
+            .removeValue()
             .addOnSuccessListener { callback(true, null) }
             .addOnFailureListener { e -> callback(false, e.message) }
     }

@@ -5,6 +5,7 @@ import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class TrashBin(
+    var commands: Commands? = null,
     var binId: String? = null,
     var name: String? = null,
     var location: String? = null,
@@ -35,3 +36,10 @@ data class TrashBin(
         }
     }
 }
+
+@Parcelize
+data class Commands(
+    var command: String? = "auto",
+    var mode: String? = "auto",
+    var task: String? = "normal"
+) : Parcelable

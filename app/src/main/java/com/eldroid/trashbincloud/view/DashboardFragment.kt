@@ -39,10 +39,13 @@ class DashboardFragment : Fragment(), DashboardContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter = TrashBinAdapter(emptyList()) { selectedBin ->
-            openBinDetails(selectedBin)
-        }
-
+        adapter = TrashBinAdapter(
+            emptyList(),
+            onBinClick = { selectedBin -> openBinDetails(selectedBin) },
+            onOpenBtnClick = { selectedBin -> presenter.updateBinCommand(selectedBin, "open") },
+            onCloseBtnClick = { selectedBin -> presenter.updateBinCommand(selectedBin, "close") },
+            onHoldBtnClick = { selectedBin -> presenter.updateBinCommand(selectedBin, "auto") }
+        )
         binding.recyclerViewBins.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerViewBins.adapter = adapter
 
@@ -72,7 +75,6 @@ class DashboardFragment : Fragment(), DashboardContract.View {
             .actionDashboardFragmentToBinDetailsFragment(bin)
         findNavController().navigate(action)
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
