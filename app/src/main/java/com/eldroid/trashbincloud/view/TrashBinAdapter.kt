@@ -1,21 +1,37 @@
 package com.eldroid.trashbincloud.view
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.eldroid.trashbincloud.databinding.ItemBinBinding
 import com.eldroid.trashbincloud.model.entity.TrashBin
+import com.eldroid.trashbincloud.model.repository.TrashBinRepository
 
 class TrashBinAdapter(
     private var bins: List<TrashBin>,
-    private val onBinClick: (TrashBin) -> Unit = {}
+    private val onBinClick: (TrashBin) -> Unit
 ): RecyclerView.Adapter<TrashBinAdapter.TrashBinViewHolder>() {
+
+    private lateinit var binding: ItemBinBinding
+    private lateinit var trashBinRepository: TrashBinRepository
 
     inner class TrashBinViewHolder(val binding: ItemBinBinding) :
         RecyclerView.ViewHolder(binding.root)
+        /*{
+            init {
+                itemView.setOnClickListener {
+                    val position = bindingAdapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        onItemClick(bins[position])
+                    }
+                }
+            }
+        }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TrashBinViewHolder {
-        val binding = ItemBinBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        binding = ItemBinBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        trashBinRepository = TrashBinRepository()
         return TrashBinViewHolder(binding)
     }
 
@@ -33,10 +49,25 @@ class TrashBinAdapter(
             }
             progressBar.progress = bin.fillLevel ?: 0
 
+            setupClickListeners(bin)
             // Set click listener on the entire card
             root.setOnClickListener {
                 onBinClick(bin)
             }
+        }
+    }
+
+    private fun setupClickListeners(bin: TrashBin) {
+        binding.btnOpen.setOnClickListener {
+            Log.d("TrashBinAdapter", "OPEN clicked!")
+        }
+
+        binding.btnClose.setOnClickListener {
+            Log.d("TrashBinAdapter", "CLOSE clicked!")
+        }
+
+        binding.btnHold.setOnClickListener {
+            Log.d("TrashBinAdapter", "HOLD clicked!")
         }
     }
 

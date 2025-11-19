@@ -2,6 +2,7 @@ package com.eldroid.trashbincloud.presenter
 
 import android.util.Log
 import com.eldroid.trashbincloud.contract.DashboardContract
+import com.eldroid.trashbincloud.model.entity.TrashBin
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.TrashBinRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
@@ -47,6 +48,9 @@ class DashboardPresenter(
                 view?.showBins(bins)
             }
         }
+    }
+
+    override fun commandBin(bin: TrashBin) {
     }
 
 }

@@ -14,7 +14,17 @@
         <action
             android:id="@+id/action_DashboardFragment_to_SecondFragment"
             app:destination="@id/SecondFragment" />
+        <action
+            android:id="@+id/action_DashboardFragment_to_BinDetailsFragment"
+            app:destination="@id/BinDetailsFragment" />
+        <action
+            android:id="@+id/action_DashboardFragment_to_SettingsFragment"
+            app:destination="@id/SettingsFragment" />
+        <action
+            android:id="@+id/action_DashboardFragment_to_HistoryFragment"
+            app:destination="@id/HistoryFragment" />
     </fragment>
+
     <fragment
         android:id="@+id/SecondFragment"
         android:name="com.eldroid.trashbincloud.view.SecondFragment"
@@ -23,6 +33,45 @@
 
         <action
             android:id="@+id/action_SecondFragment_to_DashboardFragment"
+            app:destination="@id/DashboardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/BinDetailsFragment"
+        android:name="com.eldroid.trashbincloud.view.BinDetailsFragment"
+        android:label="Bin Details"
+        tools:layout="@layout/fragment_bin_details">
+
+        <argument
+            android:name="bin"
+            app:argType="com.eldroid.trashbincloud.model.entity.TrashBin"
+            />
+
+        <action
+            android:id="@+id/action_BinDetailsFragment_to_DashboardFragment"
+            app:destination="@id/DashboardFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SettingsFragment"
+        android:name="com.eldroid.trashbincloud.view.settings.SettingsFragment"
+        android:label="Settings Fragment"
+        tools:layout="@layout/fragment_settings"
+        >
+        <action
+            android:id="@+id/action_Settings_to_DashboardFragment"
+            app:destination="@id/DashboardFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/HistoryFragment"
+        android:name="com.eldroid.trashbincloud.view.HistoryFragment"
+        android:label="History Fragment"
+        tools:layout="@layout/fragment_history"
+        >
+        <action
+            android:id="@+id/action_History_to_DashboardFragment"
             app:destination="@id/DashboardFragment" />
     </fragment>
 

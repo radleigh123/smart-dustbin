@@ -1,5 +1,9 @@
 package com.eldroid.trashbincloud.model.entity
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class TrashBin(
     var binId: String? = null,
     var name: String? = null,
@@ -13,7 +17,7 @@ data class TrashBin(
     var lastEmptied: String? = null,
     var daysToFill: Double? = null
 
-) {
+): Parcelable {
     // Helper function to get formatted timestamp
     fun getFormattedTimestamp(): String {
         if (lastUpdated == 0L) return "Never"

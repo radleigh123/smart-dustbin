@@ -2,6 +2,7 @@ package com.eldroid.trashbincloud.view.bin
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -50,6 +51,12 @@ class AddBinSetupFragment : Fragment(), AddBinSetupContract.View {
         loadBinFromArguments()
     }
 
+
+    private fun loadBinFromArguments() {
+        // Get the selected bin from Safe Args
+        val selectedBin = args.selectedBin
+        presenter.loadBinData(selectedBin)
+    }
     private fun setupRecyclerView() {
         binding.recyclerWifi.apply {
             layoutManager = LinearLayoutManager(context)
@@ -63,6 +70,7 @@ class AddBinSetupFragment : Fragment(), AddBinSetupContract.View {
         }
 
         binding.refreshBtn.setOnClickListener {
+            Log.d("AddBinSetupFragment", "Refresh button clicked!")
             presenter.onRefreshNetworks()
         }
 
@@ -73,12 +81,6 @@ class AddBinSetupFragment : Fragment(), AddBinSetupContract.View {
 
         // Disable connect button initially
         binding.connectBtn.isEnabled = false
-    }
-
-    private fun loadBinFromArguments() {
-        // Get the selected bin from Safe Args
-        val selectedBin = args.selectedBin
-        presenter.loadBinData(selectedBin)
     }
 
     // View Interface Implementation
@@ -98,7 +100,6 @@ class AddBinSetupFragment : Fragment(), AddBinSetupContract.View {
 
     override fun showLoading() {
         binding.connectBtn.isEnabled = false
-        binding.refreshBtn.isEnabled = false
     }
 
     override fun hideLoading() {

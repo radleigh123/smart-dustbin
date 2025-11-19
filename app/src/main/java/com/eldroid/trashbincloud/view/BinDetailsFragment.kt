@@ -7,26 +7,34 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.navArgs
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.contract.BinDetailsContract
 import com.eldroid.trashbincloud.databinding.FragmentBinDetailsBinding
 import com.eldroid.trashbincloud.model.entity.TrashBin
 import com.eldroid.trashbincloud.presenter.BinDetailsPresenter
+import kotlin.getValue
 
 class BinDetailsFragment : Fragment(), BinDetailsContract.View {
 
     private var _binding: FragmentBinDetailsBinding? = null
     private val binding get() = _binding!!
-
-    private val presenter: BinDetailsContract.Presenter = BinDetailsPresenter()
+    private lateinit var presenter: BinDetailsContract.Presenter
+    private val args: BinDetailsFragmentArgs by navArgs() // Receive navigation arguments using Safe Args
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentBinDetailsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        presenter = BinDetailsPresenter(requireContext())
         presenter.attachView(this)
-        presenter.loadBinData()
 
         // Setup menu button click listener
         setupMenuButton()
@@ -37,7 +45,13 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
             requireActivity().onBackPressedDispatcher.onBackPressed()
         }
 
-        return binding.root
+        // Load bin data from arguments
+        loadBinFromArguments()
+    }
+
+    private fun loadBinFromArguments() {
+        val bin = args.bin
+        presenter.loadBinData(bin)
     }
 
     private fun setupMenuButton() {

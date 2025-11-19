@@ -8,16 +8,7 @@
     android:background="@color/main_background">
 
     <!-- Main content area -->
-    <FrameLayout
-        android:id="@+id/fragment_container"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:background="@color/main_background"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/bottom_navigation"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
-    <!-- FIXME: Flexible Medium App Bar not working -->
+    <include layout="@layout/content_main" />
 <!--    <com.google.android.material.appbar.MaterialToolbar-->
 <!--        android:id="@+id/topAppBar"-->
 <!--        style="@style/Widget.Material3.CollapsingToolbar.Medium"-->
@@ -131,7 +122,5 @@
                 android:textSize="12sp" />
         </LinearLayout>
     </LinearLayout>
-
-    <!--    <include layout="@layout/content_main" />-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

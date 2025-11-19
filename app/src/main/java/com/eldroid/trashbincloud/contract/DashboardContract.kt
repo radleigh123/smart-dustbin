@@ -17,5 +17,6 @@ interface DashboardContract {
         fun attachView(view: View)
         fun detachView()
         fun getUserInfo()
+        fun commandBin(bin: TrashBin)
     }
 }

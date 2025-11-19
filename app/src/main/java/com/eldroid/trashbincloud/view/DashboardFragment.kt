@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.contract.DashboardContract
 import com.eldroid.trashbincloud.databinding.FragmentMainDashboardBinding
 import com.eldroid.trashbincloud.model.entity.TrashBin
@@ -23,7 +25,6 @@ class DashboardFragment : Fragment(), DashboardContract.View {
 
     private var _binding: FragmentMainDashboardBinding? = null
     private val binding get() = _binding!!
-
     private lateinit var presenter: DashboardContract.Presenter
     private lateinit var adapter: TrashBinAdapter
 
@@ -46,17 +47,14 @@ class DashboardFragment : Fragment(), DashboardContract.View {
         binding.recyclerViewBins.adapter = adapter
 
         presenter = DashboardPresenter(this, AuthRepository(), UserRepository(), TrashBinRepository())
-        presenter.getUserInfo()
         presenter.attachView(this)
+        presenter.getUserInfo()
 
         setupClickListeners()
     }
 
-
-
     private fun setupClickListeners() {
         binding.addBinBtn.setOnClickListener {
-            // startActivity(Intent(requireContext(), AddBinActivity::class.java))
             val intent = Intent(requireContext(), AddBinActivity::class.java)
             startActivity(intent)
             requireActivity().finish()
@@ -70,9 +68,9 @@ class DashboardFragment : Fragment(), DashboardContract.View {
     }
 
     private fun openBinDetails(bin: TrashBin) {
-        val intent = Intent(requireContext(), BinDetailsFragment::class.java)
-        intent.putExtra("BIN_ID", bin.binId) // or any field you want to pass
-        startActivity(intent)
+        val action = DashboardFragmentDirections
+            .actionDashboardFragmentToBinDetailsFragment(bin)
+        findNavController().navigate(action)
     }
 
 
@@ -110,11 +108,6 @@ class DashboardFragment : Fragment(), DashboardContract.View {
         binding.sectionDefault.visibility = View.VISIBLE
         binding.sectionSuccess.visibility = View.GONE
         binding.binCount.text = "No bins connected"
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
     }
 
 }

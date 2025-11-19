@@ -18,6 +18,6 @@ interface BinDetailsContract {
     interface Presenter {
         fun attachView(view: View)
         fun detachView()
-        fun loadBinData()
+        fun loadBinData(bin: TrashBin)
     }
 }
