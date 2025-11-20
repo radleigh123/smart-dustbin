@@ -29,3 +29,6 @@ This project explores **Mobile Cloud Computing** by:
 - Francine Duarte  
 - Jacob Mary Tapere  
 - John Michael Eborda
+
+## Related Projects
+- ESP32 Project (PlatformIO): [Smart Dustbin -- ESP32 Firmware](https://github.com/radleigh123/smart_dustbin_esp32)
