@@ -29,29 +29,81 @@ class NotificationAdapter(
         return NotifViewHolder(view)
     }
 
+//    override fun onBindViewHolder(holder: NotifViewHolder, position: Int) {
+//        val notif = notificationList[position]
+//        holder.tvTitle.text = notif.title
+//        holder.tvBody.text = notif.body
+//        holder.tvTime.text = notif.getFormattedTimestamp()
+//        holder.tvType.text = notif.type ?: "Info"
+//
+//        val context = holder.itemView.context
+//        when (notif.type?.lowercase()) {
+//            "info" -> {
+//                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.teal_700))
+//                holder.ivIcon.setImageResource(R.drawable.hold_bg)
+//            }
+//            "urgent" -> {
+//                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
+//                holder.ivIcon.setImageResource(R.drawable.circle_red)
+//            }
+//            "warning" -> {
+//                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.button_hold))
+//                holder.ivIcon.setImageResource(R.drawable.ic_auto_open)
+//            }
+//            else -> {
+//                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.button_close))
+//                holder.ivIcon.setImageResource(R.drawable.notification_icon)
+//            }
+//        }
+//
+//        // Dim the text if already read
+//        if (notif.isRead == true) {
+//            holder.tvTitle.alpha = 0.5f
+//            holder.tvBody.alpha = 0.5f
+//        } else {
+//            holder.tvTitle.alpha = 1f
+//            holder.tvBody.alpha = 1f
+//        }
+//
+//        holder.itemView.setOnClickListener {
+//            onItemClick(notif)
+//        }
+//    }
+
     override fun onBindViewHolder(holder: NotifViewHolder, position: Int) {
         val notif = notificationList[position]
+
         holder.tvTitle.text = notif.title
         holder.tvBody.text = notif.body
         holder.tvTime.text = notif.getFormattedTimestamp()
-        holder.tvType.text = notif.type ?: "Info"
 
         val context = holder.itemView.context
-        when (notif.type?.lowercase()) {
-            "info" -> {
-                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.teal_700))
-                holder.ivIcon.setImageResource(R.drawable.hold_bg)
+
+        // 🔥 New: Determine label+color based on notif.color
+        val colorKey = notif.color?.lowercase() ?: "Info"
+
+        when (colorKey) {
+            "green" -> {
+                holder.tvType.text = "Info"
+                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
+                holder.ivIcon.setImageResource(R.drawable.ic_notification)
+                holder.ivIcon.setColorFilter(ContextCompat.getColor(context, R.color.green))
             }
-            "urgent" -> {
+            "yellow" -> {
+                holder.tvType.text = "Warning"
+                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
+                holder.ivIcon.setImageResource(R.drawable.ic_warning)
+                holder.ivIcon.setColorFilter(ContextCompat.getColor(context, R.color.yellow))
+            }
+            "red" -> {
+                holder.tvType.text = "Critical"
                 holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
-                holder.ivIcon.setImageResource(R.drawable.circle_red)
-            }
-            "warning" -> {
-                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.button_hold))
-                holder.ivIcon.setImageResource(R.drawable.ic_auto_open)
+                holder.ivIcon.setImageResource(R.drawable.ic_warning)
+                holder.ivIcon.setColorFilter(ContextCompat.getColor(context, R.color.red))
             }
             else -> {
-                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.button_close))
+                holder.tvType.text = "Info"
+                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
                 holder.ivIcon.setImageResource(R.drawable.notification_icon)
             }
         }
@@ -60,15 +112,18 @@ class NotificationAdapter(
         if (notif.isRead == true) {
             holder.tvTitle.alpha = 0.5f
             holder.tvBody.alpha = 0.5f
+            holder.tvType.alpha = 0.5f
         } else {
             holder.tvTitle.alpha = 1f
             holder.tvBody.alpha = 1f
+            holder.tvType.alpha = 1f
         }
 
         holder.itemView.setOnClickListener {
             onItemClick(notif)
         }
     }
+
 
     override fun getItemCount() = notificationList.size
 
