@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
@@ -17,6 +18,7 @@ import com.eldroid.trashbincloud.view.ChangePassword
 import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.eldroid.trashbincloud.view.profile.EditProfileActivity
 import com.eldroid.trashbincloud.view.userguide.UserGuideActivity
+import com.eldroid.trashbincloud.R
 
 class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding? = null
@@ -106,7 +108,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         }
 
         binding.menuTermsConditions.setOnClickListener {
-            showMessage("Terms & Conditions - Coming soon")
+            findNavController().navigate(R.id.action_Settings_to_SecondFragment)
         }
     }
 

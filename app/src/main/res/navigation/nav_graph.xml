@@ -36,6 +36,8 @@
             app:destination="@id/DashboardFragment" />
     </fragment>
 
+
+
     <fragment
         android:id="@+id/BinDetailsFragment"
         android:name="com.eldroid.trashbincloud.view.BinDetailsFragment"
@@ -57,11 +59,15 @@
         android:id="@+id/SettingsFragment"
         android:name="com.eldroid.trashbincloud.view.settings.SettingsFragment"
         android:label="Settings Fragment"
-        tools:layout="@layout/fragment_settings"
-        >
+        tools:layout="@layout/fragment_settings">
+
         <action
             android:id="@+id/action_Settings_to_DashboardFragment"
             app:destination="@id/DashboardFragment" />
+
+        <action
+            android:id="@+id/action_Settings_to_SecondFragment"
+            app:destination="@id/SecondFragment" />
     </fragment>
 
     <fragment

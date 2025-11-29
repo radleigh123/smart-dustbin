@@ -241,8 +241,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/montserrat_medium"
-                    android:text="Agree to terms and conditions" />
-
+                     />
+                <TextView
+                    android:id="@+id/termsandConditions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/terms_text"
+                    android:fontFamily="@font/montserrat_medium"
+                    android:textColor="@color/white"
+                    />
             </LinearLayout>
 
         </LinearLayout>
