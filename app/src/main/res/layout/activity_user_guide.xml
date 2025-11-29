@@ -1,0 +1,577 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.settings.UserGuideActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background_color"
+        >
+        <RelativeLayout
+            android:id="@+id/rlHeader"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="@dimen/padding_large"
+            android:paddingHorizontal="@dimen/margin_default"
+            android:background="@color/white"
+            >
+
+            <RelativeLayout
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="@dimen/padding_small">
+
+                <ImageButton
+                    android:id="@+id/back_btn"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:src="@drawable/ic_arrow_back"
+                    android:scaleType="centerInside"
+                    android:background="@android:color/transparent"
+                    app:tint="@color/black"
+                    android:contentDescription="Back button" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="User Guide"
+                    android:textColor="@color/text_primary"
+                    android:textSize="@dimen/text_xlarge"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:layout_centerInParent="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/body"
+                android:layout_below="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="16dp">
+
+                <TextView
+                    android:id="@+id/tvGetStarted"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Getting Started"
+                    android:textColor="@color/text_primary"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textSize="@dimen/text_default" />
+
+                <TextView
+                    android:id="@+id/tvFiveSteps"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="5 Steps"
+                    android:textColor="@color/text_default"
+                    android:layout_alignParentEnd="true"
+                    android:fontFamily="@font/montserrat_medium" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="10dp"
+                    android:layout_below="@+id/tvGetStarted"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/border_round"
+                    android:backgroundTint="#006C67" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rlBody"
+            android:layout_below="@+id/rlHeader"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/background_color"
+            android:padding="@dimen/margin_large">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_step_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                app:strokeColor="@android:color/transparent"
+                app:cardElevation="2dp">
+
+                <RelativeLayout
+                    android:id="@+id/rlStepOne"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/padding_default"
+                    android:paddingHorizontal="@dimen/padding_default">
+
+                    <ImageView
+                        android:id="@+id/ic_step_one_icon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="Step 1 icon"
+                        android:src="@drawable/ic_wifi"
+                        android:background="@drawable/circle_bg" />
+
+                    <LinearLayout
+                        android:id="@+id/container_step_one"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/ic_step_one_icon"
+                        android:layout_toStartOf="@id/btn_step_one"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_default"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/title_step_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary"
+                            android:text="Step 1: Connect to Network"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <TextView
+                            android:id="@+id/subtitle_step_one"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary"
+                            android:text="Wi-Fi or Bluetooth setup"
+                            android:textSize="@dimen/text_default"
+                            android:fontFamily="@font/montserrat" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btn_step_one"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="Expand button"
+                        android:src="@drawable/back_arrow"
+                        android:scaleType="centerCrop"
+                        android:rotation="270" />
+
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_step_two"
+                android:layout_below="@+id/card_step_one"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:backgroundTint="@color/white"
+                app:cardElevation="2dp"
+                app:strokeColor="@android:color/transparent"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rlStepTwo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/padding_default"
+                    android:paddingHorizontal="@dimen/padding_default">
+
+                    <LinearLayout
+                        android:id="@+id/ic_step_two_container"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:background="@drawable/border_round"
+                        android:backgroundTint="#1A006C67"
+                        android:padding="@dimen/padding_xsmall">
+
+                        <ImageView
+                            android:id="@+id/ic_step_two_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="Step 2 icon"
+                            android:src="@drawable/ic_add"
+                            android:background="@drawable/circle_bg" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/container_step_two"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/ic_step_two_container"
+                        android:layout_toStartOf="@id/btn_step_two"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_default"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/title_step_two"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Step 2: Add SmartBin"
+                            android:textColor="@color/text_primary"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <TextView
+                            android:id="@+id/subtitle_step_two"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary"
+                            android:text="Register your smart dustbin"
+                            android:textSize="@dimen/text_default"
+                            android:fontFamily="@font/montserrat" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btn_step_two"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="Expand button"
+                        android:src="@drawable/back_arrow"
+                        android:scaleType="centerCrop"
+                        android:rotation="270" />
+
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_step_three"
+                android:layout_below="@+id/card_step_two"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:backgroundTint="@color/white"
+                app:cardElevation="2dp"
+                app:strokeColor="@android:color/transparent"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rlStepThree"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/padding_default"
+                    android:paddingHorizontal="@dimen/padding_default">
+
+                    <LinearLayout
+                        android:id="@+id/ic_step_three_container"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:background="@drawable/border_round"
+                        android:backgroundTint="#1A006C67"
+                        android:padding="@dimen/padding_xsmall">
+
+                        <ImageView
+                            android:id="@+id/ic_step_three_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="Step 3 icon"
+                            android:src="@drawable/stats"
+                            android:background="@drawable/circle_bg" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/container_step_three"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/ic_step_three_container"
+                        android:layout_toStartOf="@id/btn_step_three"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_default"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/title_step_three"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary"
+                            android:text="Step 3: View Bin Status"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <TextView
+                            android:id="@+id/subtitle_step_three"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary"
+                            android:text="Monitor fill levels and activity"
+                            android:textSize="@dimen/text_default"
+                            android:fontFamily="@font/montserrat" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btn_step_three"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="Expand button"
+                        android:src="@drawable/back_arrow"
+                        android:scaleType="centerCrop"
+                        android:rotation="270" />
+
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_step_four"
+                android:layout_below="@+id/card_step_three"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:backgroundTint="@color/white"
+                app:cardElevation="2dp"
+                app:strokeColor="@android:color/transparent"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rlStepFour"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/padding_default"
+                    android:paddingHorizontal="@dimen/padding_default">
+
+                    <LinearLayout
+                        android:id="@+id/ic_step_four_container"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:background="@drawable/border_round"
+                        android:backgroundTint="#1A006C67"
+                        android:padding="@dimen/padding_xsmall">
+
+                        <ImageView
+                            android:id="@+id/ic_step_four_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="Step 4 icon"
+                            android:src="@drawable/ic_chart"
+                            android:background="@drawable/circle_bg" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/container_step_four"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/ic_step_four_container"
+                        android:layout_toStartOf="@id/btn_step_four"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_default"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/title_step_four"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/text_primary"
+                            android:text="Step 4: Analyze Reports"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <TextView
+                            android:textColor="@color/text_primary"
+                            android:id="@+id/subtitle_step_four"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Check usage statistics"
+                            android:textSize="@dimen/text_default"
+                            android:fontFamily="@font/montserrat" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btn_step_four"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="Expand button"
+                        android:src="@drawable/back_arrow"
+                        android:scaleType="centerCrop"
+                        android:rotation="270" />
+
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_step_five"
+                android:layout_below="@+id/card_step_four"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:backgroundTint="@color/white"
+                app:cardElevation="2dp"
+                app:strokeColor="@android:color/transparent"
+                >
+
+                <RelativeLayout
+                    android:id="@+id/rlStepFive"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingVertical="@dimen/padding_default"
+                    android:paddingHorizontal="@dimen/padding_default">
+
+                    <LinearLayout
+                        android:id="@+id/ic_step_five_container"
+                        android:layout_width="42dp"
+                        android:layout_height="42dp"
+                        android:gravity="center"
+                        android:orientation="horizontal"
+                        android:background="@drawable/border_round"
+                        android:backgroundTint="#1A006C67"
+                        android:padding="@dimen/padding_xsmall">
+
+                        <ImageView
+                            android:id="@+id/ic_step_five_icon"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:contentDescription="Step 5 icon"
+                            android:src="@drawable/smartphone"
+                            android:background="@drawable/circle_bg" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/container_step_five"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@id/ic_step_five_container"
+                        android:layout_toStartOf="@id/btn_step_five"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/margin_default"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:textColor="@color/text_primary"
+                            android:id="@+id/title_step_five"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Step 5: Complete Setup"
+                            android:textSize="@dimen/text_large"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <TextView
+                            android:textColor="@color/text_primary"
+                            android:id="@+id/subtitle_step_five"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="You're ready to go!"
+                            android:textSize="@dimen/text_default"
+                            android:fontFamily="@font/montserrat" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:id="@+id/btn_step_five"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="Expand button"
+                        android:src="@drawable/back_arrow"
+                        android:scaleType="centerCrop"
+                        android:rotation="270" />
+
+                </RelativeLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/card_step_six"
+                android:layout_below="@+id/card_step_five"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_default"
+                android:backgroundTint="@color/white"
+                app:cardElevation="2dp"
+                app:strokeColor="@android:color/transparent"
+                >
+
+                <LinearLayout
+                    android:id="@+id/llNeedHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:gravity="center_horizontal"
+                    android:paddingVertical="@dimen/padding_default"
+                    android:paddingHorizontal="@dimen/padding_default">
+
+                    <LinearLayout
+                        android:id="@+id/ic_step_six_container"
+                        android:layout_width="62dp"
+                        android:layout_height="62dp"
+                        android:gravity="center"
+                        android:background="@drawable/circle_background"
+                        android:backgroundTint="#1A006C67"
+                        android:padding="@dimen/padding_xsmall">
+                        <ImageView
+                            android:id="@+id/ic_step_six_icon"
+                            android:layout_width="28dp"
+                            android:layout_height="28dp"
+                            android:src="@drawable/question_mark" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/container_need_help"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:orientation="vertical"
+                        android:gravity="center_horizontal">
+
+                        <TextView
+                            android:id="@+id/title_step_six"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Need More Help?"
+                            android:textSize="@dimen/text_xlarge"
+                            android:textColor="@color/text_primary"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat_bold" />
+
+                        <TextView
+                            android:textColor="@color/text_primary"
+                            android:id="@+id/subtitle_step_six"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAlignment="center"
+                            android:layout_marginTop="4dp"
+                            android:text="Can't find what you're looking for? Our support team is here to help you."
+                            android:textSize="@dimen/text_default"
+                            android:fontFamily="@font/montserrat" />
+                    </LinearLayout>
+
+                    <com.google.android.material.button.MaterialButton
+                        app:strokeColor="@android:color/transparent"
+                        android:layout_below="@+id/container_need_help"
+                        android:id="@+id/contactSupport"
+                        android:layout_width="match_parent"
+                        android:layout_height="56dp"
+                        android:layout_marginTop="12dp"
+                        android:text="Contact Support"
+                        style="@style/Widget.TrashbinCloud.Button"
+                        android:elevation="0dp"
+                        android:stateListAnimator="@null" />
+                    <TextView
+                        android:id="@+id/tvFaqs"
+                        android:layout_marginTop="@dimen/margin_default"
+                        android:layout_below="@+id/contactSupport"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/text_primary"
+                        android:fontFamily="@font/montserrat_bold"
+                        android:text="View FAQs"
+                        />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

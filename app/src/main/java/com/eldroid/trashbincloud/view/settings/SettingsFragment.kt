@@ -13,8 +13,10 @@ import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
+import com.eldroid.trashbincloud.view.MainActivity
 import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.eldroid.trashbincloud.view.auth.AuthActivity
+
 
 class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding? = null
@@ -35,6 +37,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         presenter = SettingsPresenter(this, UserRepository(), AuthRepository())
         presenter.getUserInfo()
 
+
         setupListeners()
     }
 
@@ -42,10 +45,21 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         binding.itemLogOut.setOnClickListener {
             presenter.logout()
         }
+
+        binding.backArrow.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), MainActivity::class.java)
+            )
+        }
+
+
         binding.constraintProfile.setOnClickListener {
             startActivity(
                 Intent(requireContext(), ProfileActivity::class.java)
             )
+        }
+        binding.llUserGuide.setOnClickListener {
+            startActivity(Intent(requireContext(), UserGuideActivity::class.java))
         }
     }
 

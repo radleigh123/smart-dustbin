@@ -73,7 +73,7 @@ class ChangePassword : AppCompatActivity() {
                 return@setOnClickListener
             }
 
-            // ✅ Check if user is logged in
+
             if (currentUser == null) {
                 Toast.makeText(this, "User not logged in. Please log in again.", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
