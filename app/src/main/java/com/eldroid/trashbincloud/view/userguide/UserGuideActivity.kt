@@ -98,17 +98,18 @@ class UserGuideActivity : AppCompatActivity(), UserGuideContract.View {
     }
 }
 
-// Step item helper
 data class StepItem(
     val header: View,
     val content: View,
     val arrow: View
 )
-
 fun View.expand(duration: Long = 250) {
     measure(
-        ViewGroup.LayoutParams.MATCH_PARENT,
-        View.MeasureSpec.UNSPECIFIED
+        View.MeasureSpec.makeMeasureSpec(
+            (parent as ViewGroup).width - (parent as ViewGroup).paddingStart - (parent as ViewGroup).paddingEnd,
+            View.MeasureSpec.EXACTLY
+        ),
+        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
     )
     val targetHeight = measuredHeight
     layoutParams.height = 0

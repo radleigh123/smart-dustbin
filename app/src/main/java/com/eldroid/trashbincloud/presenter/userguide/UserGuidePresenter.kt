@@ -27,7 +27,6 @@ class UserGuidePresenter(
             expandedStepIndex = stepIndex
         }
     }
-
     override fun onBackPressed() {
         view.finishActivity()
     }
