@@ -15,6 +15,7 @@ import com.eldroid.trashbincloud.databinding.FragmentAuthRegisterBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.auth.AuthPresenter
+import android.text.Html
 
 class RegisterFragment : Fragment(), AuthContract.View {
 
@@ -37,11 +38,18 @@ class RegisterFragment : Fragment(), AuthContract.View {
         presenter = AuthPresenter(this, AuthRepository(), UserRepository())
 
         setupListeners()
+        binding.termsandConditions?.text = Html.fromHtml(getString(R.string.terms_text), Html.FROM_HTML_MODE_LEGACY)
     }
 
+
+
     private fun setupListeners() {
+        binding.termsandConditions?.setOnClickListener {
+            findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToSecondFragment())
+        }
+
         binding.loginLinkTv.setOnClickListener {
-            findNavController().navigate(R.id.action_registerFragment_to_loginFragment)
+            findNavController().navigate(RegisterFragmentDirections.actionRegisterFragmentToLoginFragment())
         }
 
         binding.registerBtn.setOnClickListener {

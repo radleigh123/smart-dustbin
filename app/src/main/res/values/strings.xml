@@ -16,8 +16,13 @@
     <string name="forgot_password">Forgot Password?</string>
     <string name="account_question">Don\'t have an account?</string>
     <string name="register">Register</string>
-
-    <string name="lorem_ipsum">
+    <string name="terms_conditions">Terms &amp; Conditions</string>
+    <string name="terms_and_conditions_content">
+        By using SmartDustbin, you agree to comply with and be bound by the following terms and conditions.\n\n
+        SmartDustbin is designed to help you manage waste efficiently through smart technology. You are responsible for using the app in accordance with local waste management regulations.\n\n
+        We reserve the right to modify these terms at any time. Continued use of the app constitutes acceptance of any changes.
+    </string>
+    <string name="terms_text">Agree to <font color="#006C67"><i>terms</i></font> and <font color="#006C67"><i>conditions</i></font></string>    <string name="lorem_ipsum">
         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris
         volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus
         dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad

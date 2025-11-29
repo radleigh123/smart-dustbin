@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.databinding.FragmentSecondBinding
 
 /**
@@ -33,8 +32,8 @@ class SecondFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSecond.setOnClickListener {
-            findNavController().navigate(R.id.action_SecondFragment_to_DashboardFragment)
+        binding.backButton?.setOnClickListener {
+            findNavController().navigateUp()
         }
     }
 
