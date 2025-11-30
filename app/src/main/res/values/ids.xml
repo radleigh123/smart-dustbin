@@ -3,4 +3,5 @@
     <item name="binSpinner" type="id" />
     <item name="dateEditText" type="id" />
     <item name="weeklyChart" type="id" />
+    <item name="action_termsConditionsFragment_to_homeFragment" type="id" />
 </resources>

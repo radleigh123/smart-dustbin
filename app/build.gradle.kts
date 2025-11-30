@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.ble)
     implementation(libs.ble.ktx)
     implementation(libs.firebase.messaging)
+    implementation(libs.ui.test)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

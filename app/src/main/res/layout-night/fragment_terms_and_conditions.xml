@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/main_background"
+    android:background="@color/dark_bg_main_background"
     android:fitsSystemWindows="true">
 
     <!-- Fixed Top Header Card -->
@@ -12,7 +12,9 @@
         android:id="@+id/top_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="?attr/colorPrimary"
+        app:cardBackgroundColor="@color/dark_bg_primary"
+        app:strokeColor="@android:color/transparent"
+        app:strokeWidth="0dp"
         app:cardElevation="4dp"
         app:shapeAppearanceOverlay="@style/BottomHeaderRounded"
         app:layout_constraintTop_toTopOf="parent"
@@ -76,8 +78,9 @@
                 android:layout_width="88dp"
                 android:layout_height="88dp"
                 app:cardCornerRadius="44dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/white"
+                app:strokeColor="@android:color/transparent"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="@color/dark_btn_primary"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -88,7 +91,7 @@
                     android:layout_height="48dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_shield"
-                    app:tint="?attr/colorPrimary"
+                    app:tint="@color/white"
                     android:contentDescription="@string/shield_icon"/>
 
             </com.google.android.material.card.MaterialCardView>
@@ -102,7 +105,7 @@
                 android:text="@string/app_Name"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_primary"
+                android:textColor="@color/dark_txt_tertiary"
                 app:layout_constraintTop_toBottomOf="@id/shield_bg"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -115,7 +118,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/terms_subtitle"
                 android:textSize="14sp"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/white_50"
                 android:gravity="center"
                 android:layout_marginTop="8dp"
                 app:layout_constraintTop_toBottomOf="@id/app_name"
@@ -130,7 +133,9 @@
                 android:layout_marginTop="24dp"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="2dp"
-                app:cardBackgroundColor="@color/white"
+                app:strokeColor="@android:color/transparent"
+                app:strokeWidth="0dp"
+                app:cardBackgroundColor="@color/dark_card_background"
                 app:layout_constraintTop_toBottomOf="@id/subtitle"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent">
@@ -139,7 +144,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:padding="20dp">
+                    android:padding="25dp">
 
                     <!-- Terms Header -->
                     <LinearLayout
@@ -152,7 +157,7 @@
                             android:layout_width="24dp"
                             android:layout_height="24dp"
                             android:src="@drawable/ic_terms_settings"
-                            app:tint="?attr/colorPrimary"
+                            app:tint="@color/white"
                             android:contentDescription="@string/terms_icon"/>
 
                         <TextView
@@ -161,7 +166,7 @@
                             android:text="@string/terms_of_use"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="@color/text_primary"
+                            android:textColor="@color/white"
                             android:layout_marginStart="12dp"/>
 
                     </LinearLayout>
@@ -173,7 +178,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/terms_content_1"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/white_50"
                         android:lineSpacingExtra="4dp"
                         android:layout_marginTop="16dp"/>
 
@@ -183,7 +188,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/terms_content_2"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/white_50"
                         android:lineSpacingExtra="4dp"
                         android:layout_marginTop="16dp"/>
 
@@ -193,7 +198,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/terms_content_3"
                         android:textSize="14sp"
-                        android:textColor="@color/text_secondary"
+                        android:textColor="@color/white_50"
                         android:lineSpacingExtra="4dp"
                         android:layout_marginTop="16dp"/>
 
@@ -211,7 +216,7 @@
                 android:textStyle="bold"
                 android:textColor="@color/white"
                 app:cornerRadius="12dp"
-                app:backgroundTint="?attr/colorPrimary"
+                app:backgroundTint="@color/dark_btn_primary"
                 android:layout_marginTop="24dp"
                 app:layout_constraintTop_toBottomOf="@id/terms_card"
                 app:layout_constraintStart_toStartOf="parent"
@@ -225,10 +230,10 @@
                 android:text="@string/decline"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:textColor="@color/text_secondary"
+                android:textColor="@color/white_50"
                 app:cornerRadius="12dp"
                 app:strokeWidth="1dp"
-                app:strokeColor="@color/text_secondary"
+                app:strokeColor="@color/white_50"
                 style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="24dp"

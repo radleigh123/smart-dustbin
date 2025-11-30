@@ -9,7 +9,6 @@ interface UserGuideContract {
     }
 
     interface Presenter {
-        // Renamed for clarity
         fun onStepClicked(stepIndex: Int, currentlyExpanded: Boolean)
         fun onBackPressed()
         fun onContactSupportClicked()

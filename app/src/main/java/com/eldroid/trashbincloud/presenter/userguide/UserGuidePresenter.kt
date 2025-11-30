@@ -10,19 +10,15 @@ class UserGuidePresenter(
 
     override fun onStepClicked(stepIndex: Int, currentlyExpanded: Boolean) {
         if (currentlyExpanded) {
-            // Step is currently expanded, so collapse it
             view.toggleStep(stepIndex, false)
             expandedStepIndex = null
         } else {
-            // Step is currently collapsed, so expand it
-            // First collapse the previously expanded step
             expandedStepIndex?.let {
                 if (it != stepIndex) {
                     view.toggleStep(it, false)
                 }
             }
 
-            // Then expand the new step
             view.toggleStep(stepIndex, true)
             expandedStepIndex = stepIndex
         }

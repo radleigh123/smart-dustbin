@@ -663,12 +663,8 @@
 
                         <com.google.android.material.materialswitch.MaterialSwitch
                             android:id="@+id/switch_dark_mode"
-                            style="@style/Base.Theme.TrashbinCloud.Switch"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:scaleX="0.8"
-                            android:scaleY="0.8"
-                            android:layout_gravity="center_vertical"/>
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 

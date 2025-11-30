@@ -48,6 +48,9 @@
             android:name=".view.userguide.UserGuideActivity"
             android:exported="false" />
         <activity
+            android:name=".view.ContactSupportActivity"
+            android:exported="false" />
+        <activity
             android:name=".view.MainActivity"
             android:exported="true"
             android:theme="@style/Theme.TrashbinCloud">

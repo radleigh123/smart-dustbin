@@ -172,4 +172,17 @@
     <string name="support_message">Can\'t find what you\'re looking for? Our support team is here to help you.</string>
     <string name="contact_support">Contact Support</string>
     <string name="view_faqs">View FAQs</string>
+
+    <!-- Terms and Conditions -->
+    <string name="back_Button">Back button</string>
+    <string name="shield_icon">Shield icon</string>
+    <string name="terms_icon">Terms icon</string>
+    <string name="app_Name">Smart Dustbin</string>
+    <string name="terms_subtitle">Please review and agree to continue using\nSmartDustbin.</string>
+    <string name="terms_of_use">Terms of Use</string>
+    <string name="terms_content_1">By using SmartDustbin, you agree to comply with and be bound by the following terms and conditions.</string>
+    <string name="terms_content_2">SmartDustbin is designed to help you manage waste efficiently through smart technology. You are responsible for using the app in accordance with local waste management regulations.</string>
+    <string name="terms_content_3">We reserve the right to modify these terms at any time. Continued use of the app constitutes acceptance of any changes.</string>
+    <string name="agree_continue">Agree &amp; Continue</string>
+    <string name="decline">Decline</string>
 </resources>

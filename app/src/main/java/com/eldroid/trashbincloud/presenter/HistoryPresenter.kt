@@ -60,7 +60,6 @@ class HistoryPresenter : HistoryContract.Presenter {
     private fun applyFilters() {
         var filteredActivities = allActivities
 
-        // Filter by event type
         if (currentFilterType != "all") {
             val desiredType = when (currentFilterType) {
                 "open" -> EventType.AUTO_OPEN
@@ -70,28 +69,21 @@ class HistoryPresenter : HistoryContract.Presenter {
             }
             filteredActivities = filteredActivities.filter { it.type == desiredType }
         }
-
-        // Filter by bin
         if (currentBin != "All Bins") {
             filteredActivities = filteredActivities.filter {
                 it.description.contains(currentBin, ignoreCase = true)
             }
         }
-
-        // Filter by date
         currentDate?.let { selected ->
             filteredActivities = filteredActivities.filter { it.date == selected }
         }
-
-        // Sort by date and time descending (most recent first)
         filteredActivities = filteredActivities.sortedWith(
             compareByDescending<ActivityEvent> { it.date }.thenByDescending { it.time }
         )
 
-        // Limit to 10 recent activities
         filteredActivities = filteredActivities.take(10)
 
-        // Show in view
+
         view?.showActivityList(filteredActivities)
     }
 

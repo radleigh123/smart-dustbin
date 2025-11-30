@@ -42,17 +42,12 @@ class DashboardPresenter(
 
     override fun updateBinCommand(bin: TrashBin, cmd: String) {
         val userUid = authRepository.currentUserId().toString()
-
-        // NOTE: Each trash bins has commands:
-        // - mode (AUTO or MANUAL)
-        // - command (AUTO | OPEN | CLOSE)
-        // - task (NORMAL | UNPAIR | DESTROY)
         if (cmd == "open" || cmd == "close") {
             bin.commands?.command = cmd
-            bin.commands?.mode = "manual" // Automatically to state device is on manual
+            bin.commands?.mode = "manual"
         } else {
             bin.commands?.command = "auto"
-            bin.commands?.mode = "auto" // Same as above, to state device is on auto open/close mode
+            bin.commands?.mode = "auto"
         }
 
         trashBinRepository.updateBinCommand(userUid, bin.binId ?: "", bin.commands ?: Commands()) { success, error ->

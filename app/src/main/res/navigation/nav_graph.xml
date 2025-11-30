@@ -75,4 +75,17 @@
             app:destination="@id/DashboardFragment" />
     </fragment>
 
+    <fragment
+        android:id="@+id/termsConditionsFragment"
+        android:name="com.eldroid.trashbincloud.view.TermsConditionsFragment"
+        android:label="Terms &amp; Conditions">
+
+        <action
+            android:id="@+id/action_termsConditionsFragment_to_dashboardFragment"
+            app:destination="@id/DashboardFragment"
+            app:popUpTo="@id/termsConditionsFragment"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
 </navigation>

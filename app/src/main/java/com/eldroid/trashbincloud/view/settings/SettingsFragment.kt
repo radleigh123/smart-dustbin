@@ -14,6 +14,8 @@ import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
 import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
 import com.eldroid.trashbincloud.view.ChangePassword
+import com.eldroid.trashbincloud.view.ContactSupportActivity
+import com.eldroid.trashbincloud.view.TermsConditionsFragment
 import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.eldroid.trashbincloud.view.profile.EditProfileActivity
 import com.eldroid.trashbincloud.view.userguide.UserGuideActivity
@@ -98,7 +100,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
 
 
         binding.menuContactSupport.setOnClickListener {
-            showMessage("Contact Support - Coming soon")
+            startActivity(Intent(requireContext(), ContactSupportActivity::class.java))
         }
 
         binding.menuPrivacyPolicy.setOnClickListener {
@@ -106,7 +108,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         }
 
         binding.menuTermsConditions.setOnClickListener {
-            showMessage("Terms & Conditions - Coming soon")
+            startActivity(Intent(requireContext(), TermsConditionsFragment::class.java))
         }
     }
 
