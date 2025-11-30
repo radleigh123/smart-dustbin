@@ -32,5 +32,4 @@ class ProfilePresenter(
     override fun onBackPressed() {
         view.navigateBack()
     }
-
 }

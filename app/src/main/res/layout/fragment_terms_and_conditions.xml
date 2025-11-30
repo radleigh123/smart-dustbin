@@ -1,66 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    android:background="@color/main_background"
-    tools:context=".view.ChangePassword">
+    tools:context=".view.SecondFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingBottom="24dp">
+        android:layout_height="match_parent"
+        >
 
-        <!-- Top Header Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/top_card"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
             app:cardBackgroundColor="?attr/colorPrimary"
-            app:shapeAppearanceOverlay="@style/BottomHeaderRounded"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent">
+            app:layout_constraintEnd_toEndOf="parent"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="72dp"
                 android:padding="17dp">
 
-                <!-- Back button pinned left -->
-                <ImageButton
-                    android:id="@+id/back_btn"
-                    android:layout_width="28dp"
-                    android:layout_height="28dp"
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:contentDescription="@string/back_button"
                     android:src="@drawable/ic_arrow_back"
-                    android:scaleType="centerInside"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="Back button"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:clickable="true"
+                    android:focusable="true"
                     app:tint="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
 
-                <!-- Centered Title -->
                 <TextView
                     android:id="@+id/titleText"
-                    android:layout_width="0dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Terms &amp; Conditions"
+                    android:text="@string/terms_conditions"
                     android:textColor="@color/white"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:gravity="center"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
-
+                    app:layout_constraintVertical_bias="0.545" />
             </androidx.constraintlayout.widget.ConstraintLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <LinearLayout
+            android:id="@+id/logo"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/circle_background"
+            android:backgroundTint="@color/white"
+            app:layout_constraintTop_toBottomOf="@id/top_card"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
+            <ImageView
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/privacy"
+                android:layout_gravity="center" />
 
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/appName"
+            android:layout_marginTop="24dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/logo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            >
+            <TextView
+                android:id="@+id/smartdustbin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="SmartDustbin"
+                android:layout_gravity="center"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="@dimen/text_xlarge"
+                />
+            <TextView
+                android:id="@+id/belowSmart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textAlignment="center"
+                android:text="Please review and agree to continue using SmartDustbin."
+                android:fontFamily="@font/montserrat_medium"
+                android:textSize="@dimen/text_default"
+                app:layout_constraintTop_toBottomOf="@id/smartdustbin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"/>
+        </LinearLayout>
+        <LinearLayout
+            app:layout_constraintTop_toBottomOf="@id/appName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="24dp"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_card"
+            android:paddingVertical="24dp"
+            android:paddingHorizontal="24dp"
+            >
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                >
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="24dp"
+                    android:src="@drawable/ic_file"
+                    android:layout_marginEnd="8dp"
+                    />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_xlarge"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="Terms Of Use"
+                    />
+            </LinearLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_default"
+                android:layout_marginTop="16dp"
+                android:lineHeight="26dp"
+                android:fontFamily="@font/montserrat"
+                android:text="@string/terms_and_conditions_content"
+                />
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.core.widget.NestedScrollView>

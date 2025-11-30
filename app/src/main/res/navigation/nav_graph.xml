@@ -29,7 +29,7 @@
         android:id="@+id/SecondFragment"
         android:name="com.eldroid.trashbincloud.view.SecondFragment"
         android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
+        tools:layout="@layout/fragment_terms_and_conditions">
 
         <action
             android:id="@+id/action_SecondFragment_to_DashboardFragment"

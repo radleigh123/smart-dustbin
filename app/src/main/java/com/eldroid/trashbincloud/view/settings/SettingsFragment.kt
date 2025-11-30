@@ -22,6 +22,7 @@ import com.eldroid.trashbincloud.view.profile.EditProfileActivity
 import com.eldroid.trashbincloud.view.userguide.UserGuideActivity
 import com.eldroid.trashbincloud.R
 
+
 class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -49,6 +50,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
 
         presenter.getUserInfo()
         presenter.loadThemePreference()
+
 
         setupListeners()
     }
