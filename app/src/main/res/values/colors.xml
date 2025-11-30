@@ -143,6 +143,8 @@
     <color name="blue">#007BFF</color>
     <color name="red">#DC3545</color>
     <color name="orange">#FD7E14</color>
+    <color name="yellow">#FFC107</color>
+    <color name="gray">#B5B5B5</color>
 
     <color name="background_light">#F8FAFC</color>
     <color name="text_primary">#1F2937</color>
