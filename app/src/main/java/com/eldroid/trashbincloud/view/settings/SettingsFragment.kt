@@ -56,15 +56,15 @@ class SettingsFragment : Fragment(), SettingsContract.View {
     }
 
     private fun setupListeners() {
-        binding.menuEditProfile.setOnClickListener {
+        binding.menuEditProfile?.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
-        binding.menuChangePassword.setOnClickListener {
+        binding.menuChangePassword?.setOnClickListener {
             startActivity(Intent(requireContext(), ChangePassword::class.java))
         }
 
-        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchDarkMode?.setOnCheckedChangeListener { _, isChecked ->
             if (isUserInteraction) {
                 presenter.toggleTheme(isChecked)
             }
@@ -74,59 +74,59 @@ class SettingsFragment : Fragment(), SettingsContract.View {
             showLogoutConfirmation()
         }
 
-        binding.backArrow.setOnClickListener {
+        binding.backArrow?.setOnClickListener {
             startActivity(
                 Intent(requireContext(), MainActivity::class.java)
             )
         }
 
-        binding.constraintProfile.setOnClickListener {
+        binding.constraintProfile?.setOnClickListener {
             startActivity(
                 Intent(requireContext(), ProfileActivity::class.java)
             )
         }
-        binding.llUserGuide.setOnClickListener {
+        binding.llUserGuide?.setOnClickListener {
             startActivity(Intent(requireContext(), UserGuideActivity::class.java))
         }
 
-        binding.menuWifiConnection.setOnClickListener {
+        binding.menuWifiConnection?.setOnClickListener {
             showMessage("WiFi Connection - Coming soon")
         }
 
-        binding.menuAddNewDevice.setOnClickListener {
+        binding.menuAddNewDevice?.setOnClickListener {
             showMessage("Add New Device - Coming soon")
         }
 
-        binding.menuLinkedBins.setOnClickListener {
+        binding.menuLinkedBins?.setOnClickListener {
             showMessage("Linked Bins - Coming soon")
         }
 
-        binding.menuLanguage.setOnClickListener {
+        binding.menuLanguage?.setOnClickListener {
             showMessage("Language selection - Coming soon")
         }
 
-        binding.menuNotifications.setOnClickListener {
+        binding.menuNotifications?.setOnClickListener {
             showMessage("Notifications - Coming soon")
         }
 
-        binding.menuFaq.setOnClickListener {
+        binding.menuFaq?.setOnClickListener {
             showMessage("FAQ - Coming soon")
         }
 
-        binding.menuUserGuide.setOnClickListener {
+        binding.menuUserGuide?.setOnClickListener {
             startActivity(Intent(requireContext(), UserGuideActivity::class.java))
         }
 
 
-        binding.menuContactSupport.setOnClickListener {
+        binding.menuContactSupport?.setOnClickListener {
             showMessage("Contact Support - Coming soon")
         }
 
-        binding.menuPrivacyPolicy.setOnClickListener {
+        binding.menuPrivacyPolicy?.setOnClickListener {
             showMessage("Privacy Policy - Coming soon")
         }
 
-        binding.menuTermsConditions.setOnClickListener {
+        binding.menuTermsConditions?.setOnClickListener {
             findNavController().navigate(R.id.action_Settings_to_SecondFragment)
         }
     }
@@ -162,7 +162,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
     override fun updateThemeSwitch(isDarkMode: Boolean) {
         _binding?.let {
             isUserInteraction = false
-            it.switchDarkMode.isChecked = isDarkMode
+            it.switchDarkMode?.isChecked = isDarkMode
             isUserInteraction = true
         }
     }

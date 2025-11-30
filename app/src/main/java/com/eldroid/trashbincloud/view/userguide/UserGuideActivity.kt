@@ -28,11 +28,11 @@ class UserGuideActivity : AppCompatActivity(), UserGuideContract.View {
 
         presenter = UserGuidePresenter(this)
 
-        steps.add(StepItem(binding.step1Header, binding.step1Content, binding.step1Arrow))
-        steps.add(StepItem(binding.step2Header, binding.step2Content, binding.step2Arrow))
-        steps.add(StepItem(binding.step3Header, binding.step3Content, binding.step3Arrow))
-        steps.add(StepItem(binding.step4Header, binding.step4Content, binding.step4Arrow))
-        steps.add(StepItem(binding.step5Header, binding.step5Content, binding.step5Arrow))
+//        steps.add(StepItem(binding.step1Header, binding.step1Content, binding.step1Arrow))
+//        steps.add(StepItem(binding.step2Header, binding.step2Content, binding.step2Arrow))
+//        steps.add(StepItem(binding.step3Header, binding.step3Content, binding.step3Arrow))
+//        steps.add(StepItem(binding.step4Header, binding.step4Content, binding.step4Arrow))
+//        steps.add(StepItem(binding.step5Header, binding.step5Content, binding.step5Arrow))
 
         setupListeners()
     }
@@ -40,7 +40,7 @@ class UserGuideActivity : AppCompatActivity(), UserGuideContract.View {
 
     private fun setupListeners() {
         // Back button
-        binding.backButton.setOnClickListener {
+        binding.backButton?.setOnClickListener {
             presenter.onBackPressed()
         }
 
@@ -53,12 +53,12 @@ class UserGuideActivity : AppCompatActivity(), UserGuideContract.View {
         }
 
         // Contact support button
-        binding.btnContactSupport.setOnClickListener {
+        binding.btnContactSupport?.setOnClickListener {
             presenter.onContactSupportClicked()
         }
 
         // View FAQs button
-        binding.btnViewFaqs.setOnClickListener {
+        binding.btnViewFaqs?.setOnClickListener {
             presenter.onViewFAQsClicked()
         }
     }
