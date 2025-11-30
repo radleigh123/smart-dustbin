@@ -13,6 +13,8 @@ import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
+import com.eldroid.trashbincloud.view.MainActivity
+import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
 import com.eldroid.trashbincloud.view.ChangePassword
 import com.eldroid.trashbincloud.view.auth.AuthActivity
