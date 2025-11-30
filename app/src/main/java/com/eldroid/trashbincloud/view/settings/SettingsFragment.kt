@@ -70,6 +70,21 @@ class SettingsFragment : Fragment(), SettingsContract.View {
             showLogoutConfirmation()
         }
 
+        binding.backArrow.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), MainActivity::class.java)
+            )
+        }
+
+        binding.constraintProfile.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), ProfileActivity::class.java)
+            )
+        }
+        binding.llUserGuide.setOnClickListener {
+            startActivity(Intent(requireContext(), UserGuideActivity::class.java))
+        }
+
         binding.menuWifiConnection.setOnClickListener {
             showMessage("WiFi Connection - Coming soon")
         }
