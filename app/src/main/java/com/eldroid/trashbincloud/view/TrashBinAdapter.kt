@@ -3,7 +3,9 @@ package com.eldroid.trashbincloud.view
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.databinding.ItemBinBinding
 import com.eldroid.trashbincloud.model.entity.TrashBin
 
@@ -22,7 +24,28 @@ class TrashBinAdapter(
             fun bind(bin: TrashBin) {
                 binding.tvBinName.text = bin.name ?: "UNNAMED BIN"
                 binding.tvBinLocation.text = bin.location ?: "UNKNOWN XYZ"
-                binding.tvFillLevel.text = "${bin.fillLevel ?: 0}%"
+//                binding.tvFillLevel.text = "${bin.fillLevel ?: 0}%"
+
+                val fill = bin.fillLevel ?: 0
+                binding.tvFillLevel.text = "$fill%"
+
+                // Change progress
+                binding.progressBar.progress = fill
+
+                // === NEW: Change progress bar color based on fill level ===
+                val color = when {
+                    fill > 80 -> ContextCompat.getColor(binding.root.context, R.color.red)
+                    fill > 50 -> ContextCompat.getColor(binding.root.context, R.color.orange)
+                    fill > 30 -> ContextCompat.getColor(binding.root.context, R.color.green)
+                    else -> ContextCompat.getColor(binding.root.context, R.color.green)
+                }
+
+                binding.progressBar.progressTintList =
+                    android.content.res.ColorStateList.valueOf(color)
+
+                binding.tvFillLevel.setTextColor(color)
+
+
                 binding.tvBinStatus.background = when (bin.status) {
                     0 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.background_text)
                     1 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_orange)
