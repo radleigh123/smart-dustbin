@@ -13,12 +13,15 @@ import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
+import com.eldroid.trashbincloud.view.MainActivity
+import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
 import com.eldroid.trashbincloud.view.ChangePassword
 import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.eldroid.trashbincloud.view.profile.EditProfileActivity
 import com.eldroid.trashbincloud.view.userguide.UserGuideActivity
 import com.eldroid.trashbincloud.R
+
 
 class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding? = null
@@ -48,19 +51,20 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         presenter.getUserInfo()
         presenter.loadThemePreference()
 
+
         setupListeners()
     }
 
     private fun setupListeners() {
-        binding.menuEditProfile.setOnClickListener {
+        binding.menuEditProfile?.setOnClickListener {
             startActivity(Intent(requireContext(), EditProfileActivity::class.java))
         }
 
-        binding.menuChangePassword.setOnClickListener {
+        binding.menuChangePassword?.setOnClickListener {
             startActivity(Intent(requireContext(), ChangePassword::class.java))
         }
 
-        binding.switchDarkMode.setOnCheckedChangeListener { _, isChecked ->
+        binding.switchDarkMode?.setOnCheckedChangeListener { _, isChecked ->
             if (isUserInteraction) {
                 presenter.toggleTheme(isChecked)
             }
@@ -70,44 +74,59 @@ class SettingsFragment : Fragment(), SettingsContract.View {
             showLogoutConfirmation()
         }
 
-        binding.menuWifiConnection.setOnClickListener {
+        binding.backArrow?.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), MainActivity::class.java)
+            )
+        }
+
+        binding.constraintProfile?.setOnClickListener {
+            startActivity(
+                Intent(requireContext(), ProfileActivity::class.java)
+            )
+        }
+        binding.llUserGuide?.setOnClickListener {
+            startActivity(Intent(requireContext(), UserGuideActivity::class.java))
+        }
+
+        binding.menuWifiConnection?.setOnClickListener {
             showMessage("WiFi Connection - Coming soon")
         }
 
-        binding.menuAddNewDevice.setOnClickListener {
+        binding.menuAddNewDevice?.setOnClickListener {
             showMessage("Add New Device - Coming soon")
         }
 
-        binding.menuLinkedBins.setOnClickListener {
+        binding.menuLinkedBins?.setOnClickListener {
             showMessage("Linked Bins - Coming soon")
         }
 
-        binding.menuLanguage.setOnClickListener {
+        binding.menuLanguage?.setOnClickListener {
             showMessage("Language selection - Coming soon")
         }
 
-        binding.menuNotifications.setOnClickListener {
+        binding.menuNotifications?.setOnClickListener {
             showMessage("Notifications - Coming soon")
         }
 
-        binding.menuFaq.setOnClickListener {
+        binding.menuFaq?.setOnClickListener {
             showMessage("FAQ - Coming soon")
         }
 
-        binding.menuUserGuide.setOnClickListener {
+        binding.menuUserGuide?.setOnClickListener {
             startActivity(Intent(requireContext(), UserGuideActivity::class.java))
         }
 
 
-        binding.menuContactSupport.setOnClickListener {
+        binding.menuContactSupport?.setOnClickListener {
             showMessage("Contact Support - Coming soon")
         }
 
-        binding.menuPrivacyPolicy.setOnClickListener {
+        binding.menuPrivacyPolicy?.setOnClickListener {
             showMessage("Privacy Policy - Coming soon")
         }
 
-        binding.menuTermsConditions.setOnClickListener {
+        binding.menuTermsConditions?.setOnClickListener {
             findNavController().navigate(R.id.action_Settings_to_SecondFragment)
         }
     }
@@ -143,7 +162,7 @@ class SettingsFragment : Fragment(), SettingsContract.View {
     override fun updateThemeSwitch(isDarkMode: Boolean) {
         _binding?.let {
             isUserInteraction = false
-            it.switchDarkMode.isChecked = isDarkMode
+            it.switchDarkMode?.isChecked = isDarkMode
             isUserInteraction = true
         }
     }

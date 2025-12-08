@@ -45,7 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         // Get user ID from payload or current logged-in user
         val userId = message.data["userId"] ?: FirebaseAuth.getInstance().currentUser?.uid
         if (userId.isNullOrEmpty()) {
-            showLocalNotification(title, body)
+            showLocalNotification(title, body, color)
             return
         }
 
@@ -119,10 +119,44 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
         }
 
         // ✅ Show local device notification
-        showLocalNotification(title, body)
+        showLocalNotification(title, body, color)
     }
 
-    private fun showLocalNotification(title: String, message: String) {
+//    private fun showLocalNotification(title: String, message: String) {
+//        val channelId = "trashbin_channel"
+//        val intent = Intent(this, Notification::class.java)
+//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+//
+//        val pendingIntent = PendingIntent.getActivity(
+//            this, 0, intent,
+//            PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
+//        )
+//
+//        val notificationBuilder = NotificationCompat.Builder(this, channelId)
+//            .setSmallIcon(R.drawable.notification_icon)
+//            .setContentTitle(title)
+//            .setContentText(message)
+//            .setAutoCancel(true)
+//            .setContentIntent(pendingIntent)
+//            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//
+//        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+//
+//        // ✅ Create channel for Android 8.0+
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            val channel = NotificationChannel(
+//                channelId,
+//                "TrashBin Alerts",
+//                NotificationManager.IMPORTANCE_HIGH
+//            )
+//            manager.createNotificationChannel(channel)
+//        }
+//
+//        // ✅ Use a unique ID so multiple notifications appear separately
+//        manager.notify(System.currentTimeMillis().toInt(), notificationBuilder.build())
+//    }
+
+    private fun showLocalNotification(title: String, message: String, colorKey: String) {
         val channelId = "trashbin_channel"
         val intent = Intent(this, Notification::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
@@ -132,6 +166,14 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             PendingIntent.FLAG_ONE_SHOT or PendingIntent.FLAG_IMMUTABLE
         )
 
+        // 🎨 Map cloud colors → actual Android colors
+        val notifColor = when (colorKey) {
+            "green" -> getColor(R.color.green)
+            "yellow" -> getColor(R.color.yellow)
+            "red" -> getColor(R.color.red)
+            else -> getColor(R.color.gray)
+        }
+
         val notificationBuilder = NotificationCompat.Builder(this, channelId)
             .setSmallIcon(R.drawable.notification_icon)
             .setContentTitle(title)
@@ -139,10 +181,11 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setColor(notifColor)         // 🔥 Apply color here
+            .setColorized(true)           // 🔥 Enables color background for Android 8+
 
         val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        // ✅ Create channel for Android 8.0+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 channelId,
@@ -152,7 +195,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             manager.createNotificationChannel(channel)
         }
 
-        // ✅ Use a unique ID so multiple notifications appear separately
         manager.notify(System.currentTimeMillis().toInt(), notificationBuilder.build())
     }
+
 }

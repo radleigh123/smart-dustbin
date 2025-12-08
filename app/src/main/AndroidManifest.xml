@@ -27,6 +27,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TrashbinCloud">
         <activity
+            android:name=".view.settings.UserGuideActivity"
+            android:exported="false" />
+        <activity
+            android:name=".view.settings.UserGuide"
+            android:exported="false" />
+        <activity
             android:name=".view.ChangePassword"
             android:exported="false" />
         <activity
