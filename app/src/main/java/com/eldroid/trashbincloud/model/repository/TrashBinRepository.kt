@@ -103,7 +103,7 @@ class TrashBinRepository(
     /**
      * Get all trash bins
      */
-    fun getAllBins(callback: (List<TrashBin>, String?) -> Unit) {
+    fun getAllBins(userUid: String, callback: (List<TrashBin>, String?) -> Unit) {
         binsRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val binsList = mutableListOf<TrashBin>()

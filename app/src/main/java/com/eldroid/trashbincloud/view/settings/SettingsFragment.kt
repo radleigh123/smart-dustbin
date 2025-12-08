@@ -13,6 +13,7 @@ import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
+import com.eldroid.trashbincloud.model.repository.TrashBinRepository
 import com.eldroid.trashbincloud.view.MainActivity
 import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
@@ -27,6 +28,10 @@ class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var presenter: SettingsContract.Presenter
+
+    private lateinit var auth: AuthRepository
+    private lateinit var bin: TrashBinRepository
+
     private var isUserInteraction = true
 
     override fun onCreateView(
@@ -40,19 +45,36 @@ class SettingsFragment : Fragment(), SettingsContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        bin = TrashBinRepository()
+        auth = AuthRepository()
         presenter = SettingsPresenter(
             this,
             UserRepository(),
             AuthRepository(),
             requireContext()
         )
-
         presenter.getUserInfo()
         presenter.loadThemePreference()
 
+        loadBinCount()
 
         setupListeners()
+    }
+
+    private fun loadBinCount() {
+        val userId = auth.currentUserId()
+        if (userId != null) {
+            bin.getAllBins(userId) { binsList, error ->
+                if (error == null) {
+                    val binCount = binsList.size
+                    binding.tvLinkedBinsCount?.text = "$binCount devices connected"
+                    Log.d("SettingsFragment", "Bin count: $binCount")
+                } else {
+                    Log.e("SettingsFragment", "Failed to load bin count: $error")
+                    binding.tvLinkedBinsCount?.text = "0 devices connected"
+                }
+            }
+        }
     }
 
     private fun setupListeners() {

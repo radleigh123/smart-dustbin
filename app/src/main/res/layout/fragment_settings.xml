@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingBottom="@dimen/padding_xlarge"
     android:fitsSystemWindows="true"
     android:background="@color/gray_100"
     >
@@ -852,11 +853,14 @@
                                 android:textSize="@dimen/text_default" />
 
 
-
-
-
-
-
+                            <TextView
+                                android:id="@+id/tv_linked_bins_count"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/montserrat"
+                                android:text=""
+                                android:textColor="@color/gray_700"
+                                android:textSize="@dimen/text_small" />
 
                         </LinearLayout>
 
@@ -1212,6 +1216,7 @@
                     android:backgroundTint="@color/white"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:paddingBottom="@dimen/padding_large"
                     android:orientation="vertical">
 
                     <LinearLayout
