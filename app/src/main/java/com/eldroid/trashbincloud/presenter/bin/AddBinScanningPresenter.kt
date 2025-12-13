@@ -45,7 +45,20 @@ class AddBinScanningPresenter(
             view?.requestBluetoothPermissions()
             return
         }
-        
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            val locationManager = context.getSystemService(Context.LOCATION_SERVICE) as android.location.LocationManager
+            if (!locationManager.isProviderEnabled(android.location.LocationManager.GPS_PROVIDER)) {
+                view?.showError("Please enable Location Services for BLE scanning")
+                return
+            }
+        }
+
+        if (!bleManager.isBluetoothEnabled()) {
+            view?.showBluetoothDisabled()
+            return
+        }
+
         view?.showLoading()
         foundBins.clear()
         
@@ -88,17 +101,17 @@ class AddBinScanningPresenter(
     }
     
     override fun checkBluetoothPermissions(): Boolean {
-        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            arrayOf(
-                Manifest.permission.BLUETOOTH_SCAN,
-                Manifest.permission.BLUETOOTH_CONNECT
-            )
+        val permissions = mutableListOf<String>()
+        
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            // Android 12+
+            permissions.add(Manifest.permission.BLUETOOTH_SCAN)
+            permissions.add(Manifest.permission.BLUETOOTH_CONNECT)
         } else {
-            arrayOf(
-                Manifest.permission.BLUETOOTH,
-                Manifest.permission.BLUETOOTH_ADMIN,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            )
+            // Android 6-11: BLE scanning requires location
+            permissions.add(Manifest.permission.BLUETOOTH)
+            permissions.add(Manifest.permission.BLUETOOTH_ADMIN)
+            permissions.add(Manifest.permission.ACCESS_FINE_LOCATION)
         }
         
         return permissions.all {
