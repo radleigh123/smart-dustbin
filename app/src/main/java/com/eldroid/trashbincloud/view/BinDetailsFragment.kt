@@ -96,8 +96,7 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
         binding.tvLocation.text = bin.location
         binding.tvFillLevel.text = "${bin.fillLevel}%"
         binding.progressBarCircular.progress = bin.fillLevel?.toInt() ?: 0
-        binding.tvLastEmptied.text = bin.lastEmptied
-        binding.tvDaysToFill.text = "${bin.daysToFill}"
+
 
         // Update fill percentage badge
         binding.tvFillPercentage.text = "${bin.fillLevel}%"

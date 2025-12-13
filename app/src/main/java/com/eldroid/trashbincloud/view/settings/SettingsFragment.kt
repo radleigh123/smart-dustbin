@@ -23,6 +23,7 @@ import com.eldroid.trashbincloud.view.userguide.UserGuideActivity
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.view.bin.AddBinActivity
 
+
 class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding? = null
     private val binding get() = _binding!!
@@ -58,76 +59,36 @@ class SettingsFragment : Fragment(), SettingsContract.View {
 
 
     private fun setupListeners() {
-        binding.menuEditProfile?.setOnClickListener {
-            startActivity(Intent(requireContext(), EditProfileActivity::class.java))
-        }
-
-        binding.menuChangePassword?.setOnClickListener {
-            startActivity(Intent(requireContext(), ChangePassword::class.java))
-        }
-
-        binding.switchDarkMode?.setOnCheckedChangeListener { _, isChecked ->
-            if (isUserInteraction) {
-                presenter.toggleTheme(isChecked)
-            }
-        }
 
         binding.itemLogOut.setOnClickListener {
             showLogoutConfirmation()
         }
 
-        binding.backArrow?.setOnClickListener {
-            startActivity(
-                Intent(requireContext(), MainActivity::class.java)
-            )
-        }
-
-        binding.constraintProfile?.setOnClickListener {
+        binding.constraintProfile.setOnClickListener {
             startActivity(
                 Intent(requireContext(), ProfileActivity::class.java)
             )
         }
-        binding.llUserGuide?.setOnClickListener {
-            startActivity(Intent(requireContext(), UserGuideActivity::class.java))
-        }
 
 
-
-        binding.LinkedBins?.setOnClickListener {
+        binding.menuAddNewDevice.setOnClickListener {
             startActivity(Intent(requireContext(), AddBinActivity::class.java))
         }
 
-        binding.menuLinkedBins?.setOnClickListener {
-            showMessage("Linked Bins - Coming soon")
-        }
 
-        binding.menuLanguage?.setOnClickListener {
-            showMessage("Language selection - Coming soon")
-        }
-
-        binding.menuNotifications?.setOnClickListener {
-            showMessage("Notifications - Coming soon")
-        }
-
-        binding.menuFaq?.setOnClickListener {
+        binding.menuFaq.setOnClickListener {
             showMessage("FAQ - Coming soon")
         }
 
-        binding.menuUserGuide?.setOnClickListener {
+        binding.menuUserGuide.setOnClickListener {
             startActivity(Intent(requireContext(), UserGuideActivity::class.java))
         }
-
-
-        binding.menuContactSupport?.setOnClickListener {
-            showMessage("Contact Support - Coming soon")
+        binding.menuChangePassword.setOnClickListener {
+            startActivity(Intent(requireContext(), ChangePassword::class.java))
         }
 
-        binding.menuPrivacyPolicy?.setOnClickListener {
+        binding.menuPrivacyPolicy.setOnClickListener {
             showMessage("Privacy Policy - Coming soon")
-        }
-
-        binding.menuTermsConditions?.setOnClickListener {
-            findNavController().navigate(R.id.action_Settings_to_SecondFragment)
         }
     }
 
