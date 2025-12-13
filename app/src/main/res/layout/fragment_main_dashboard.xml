@@ -174,57 +174,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/section_default">
 
-            <!-- Smart Insight Card -->
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="18dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="4dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="20dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:padding="16dp"
-                    android:gravity="center_vertical">
-
-                    <ImageView
-                        android:layout_width="24dp"
-                        android:layout_height="24dp"
-                        android:src="@drawable/ic_chart"
-                        app:tint="#2E7D5A" />
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginStart="12dp">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Smart Insight"
-                            android:textSize="16sp"
-                            android:textStyle="bold"
-                            android:textColor="#2C2C2C" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="You disposed 25kg waste this week"
-                            android:textSize="14sp"
-                            android:textColor="#8A8A8A" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
             <!-- Your Smart Bins Card -->
             <LinearLayout
                 android:layout_width="match_parent"
