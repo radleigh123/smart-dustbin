@@ -13,7 +13,6 @@ import com.eldroid.trashbincloud.contract.settings.SettingsContract
 import com.eldroid.trashbincloud.databinding.FragmentSettingsBinding
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.UserRepository
-import com.eldroid.trashbincloud.model.repository.TrashBinRepository
 import com.eldroid.trashbincloud.view.MainActivity
 import com.eldroid.trashbincloud.view.profile.ProfileActivity
 import com.eldroid.trashbincloud.presenter.settings.SettingsPresenter
@@ -22,7 +21,7 @@ import com.eldroid.trashbincloud.view.auth.AuthActivity
 import com.eldroid.trashbincloud.view.profile.EditProfileActivity
 import com.eldroid.trashbincloud.view.userguide.UserGuideActivity
 import com.eldroid.trashbincloud.R
-
+import com.eldroid.trashbincloud.view.bin.AddBinActivity
 
 class SettingsFragment : Fragment(), SettingsContract.View {
     private var _binding: FragmentSettingsBinding? = null
@@ -30,7 +29,6 @@ class SettingsFragment : Fragment(), SettingsContract.View {
     private lateinit var presenter: SettingsContract.Presenter
 
     private lateinit var auth: AuthRepository
-    private lateinit var bin: TrashBinRepository
 
     private var isUserInteraction = true
 
@@ -45,7 +43,6 @@ class SettingsFragment : Fragment(), SettingsContract.View {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        bin = TrashBinRepository()
         auth = AuthRepository()
         presenter = SettingsPresenter(
             this,
@@ -56,26 +53,9 @@ class SettingsFragment : Fragment(), SettingsContract.View {
         presenter.getUserInfo()
         presenter.loadThemePreference()
 
-        loadBinCount()
-
         setupListeners()
     }
 
-    private fun loadBinCount() {
-        val userId = auth.currentUserId()
-        if (userId != null) {
-            bin.getAllBins(userId) { binsList, error ->
-                if (error == null) {
-                    val binCount = binsList.size
-                    binding.tvLinkedBinsCount?.text = "$binCount devices connected"
-                    Log.d("SettingsFragment", "Bin count: $binCount")
-                } else {
-                    Log.e("SettingsFragment", "Failed to load bin count: $error")
-                    binding.tvLinkedBinsCount?.text = "0 devices connected"
-                }
-            }
-        }
-    }
 
     private fun setupListeners() {
         binding.menuEditProfile?.setOnClickListener {
@@ -111,12 +91,10 @@ class SettingsFragment : Fragment(), SettingsContract.View {
             startActivity(Intent(requireContext(), UserGuideActivity::class.java))
         }
 
-        binding.menuWifiConnection?.setOnClickListener {
-            showMessage("WiFi Connection - Coming soon")
-        }
 
-        binding.menuAddNewDevice?.setOnClickListener {
-            showMessage("Add New Device - Coming soon")
+
+        binding.LinkedBins?.setOnClickListener {
+            startActivity(Intent(requireContext(), AddBinActivity::class.java))
         }
 
         binding.menuLinkedBins?.setOnClickListener {
