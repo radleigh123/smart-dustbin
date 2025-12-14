@@ -1,5 +1,6 @@
 package com.eldroid.trashbincloud.contract
 
+import com.eldroid.trashbincloud.model.entity.ActivityEvent
 import com.eldroid.trashbincloud.model.entity.TrashBin
 
 interface BinDetailsContract {
@@ -13,6 +14,9 @@ interface BinDetailsContract {
             tvActivityTime: Int,
             ivInfo: Int
         ): View
+
+        fun showActivities(activities: List<ActivityEvent>)
+        fun showNoActivities(activities: List<ActivityEvent>)
     }
 
     interface Presenter {

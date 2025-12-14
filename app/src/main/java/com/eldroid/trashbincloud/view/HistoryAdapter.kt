@@ -106,7 +106,7 @@ class HistoryAdapter(
     inner class ActivityViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val iconImageView: ImageView = itemView.findViewById(R.id.activityIcon)
         private val titleTextView: TextView = itemView.findViewById(R.id.activityTitle)
-        private val descriptionTextView: TextView = itemView.findViewById(R.id.activityDescription)
+        private val descriptionTextView: TextView = itemView.findViewById(R.id.activityTitle)
         private val detailTextView: TextView = itemView.findViewById(R.id.activityDetail)
         private val timeTextView: TextView = itemView.findViewById(R.id.activityTime)
 
@@ -115,7 +115,7 @@ class HistoryAdapter(
             titleTextView.text = activity.title
             descriptionTextView.text = activity.description
             detailTextView.text = activity.detail
-            timeTextView.text = activity.time.format(timeFormatter)
+            timeTextView.text = activity.time?.format(timeFormatter)
 
             iconImageView.setImageResource(activity.iconResource)
         }

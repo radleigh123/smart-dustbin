@@ -74,7 +74,7 @@ class HistoryPresenter : HistoryContract.Presenter {
         // Filter by bin
         if (currentBin != "All Bins") {
             filteredActivities = filteredActivities.filter {
-                it.description.contains(currentBin, ignoreCase = true)
+                it.description?.contains(currentBin, ignoreCase = true) == true
             }
         }
 

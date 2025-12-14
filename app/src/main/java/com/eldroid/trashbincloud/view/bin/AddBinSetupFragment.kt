@@ -16,7 +16,7 @@ import com.eldroid.trashbincloud.model.entity.bin.FoundBin
 import com.eldroid.trashbincloud.presenter.bin.AddBinSetupPresenter
 import com.eldroid.trashbincloud.view.MainActivity
 
-class AddBinSetupFragment : Fragment(), AddBinSetupContract.View {
+class  AddBinSetupFragment : Fragment(), AddBinSetupContract.View {
 
     private var _binding: FragmentAddBinSetupBinding? = null
     private val binding get() = _binding!!

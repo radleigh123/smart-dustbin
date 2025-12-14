@@ -8,19 +8,32 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.eldroid.trashbincloud.R
 import com.eldroid.trashbincloud.contract.BinDetailsContract
 import com.eldroid.trashbincloud.databinding.FragmentBinDetailsBinding
+import com.eldroid.trashbincloud.model.entity.ActivityEvent
 import com.eldroid.trashbincloud.model.entity.TrashBin
+import com.eldroid.trashbincloud.model.repository.ActivityRepository
+import com.eldroid.trashbincloud.model.repository.AuthRepository
+import com.eldroid.trashbincloud.model.repository.TrashBinRepository
 import com.eldroid.trashbincloud.presenter.BinDetailsPresenter
-import kotlin.getValue
+import com.eldroid.trashbincloud.view.bin.AddBinSetupFragmentArgs
 
 class BinDetailsFragment : Fragment(), BinDetailsContract.View {
 
     private var _binding: FragmentBinDetailsBinding? = null
     private val binding get() = _binding!!
+
+    private lateinit var authRepository: AuthRepository
+
+    private lateinit var actRepository: ActivityRepository
+
+    private lateinit var activityRecyclerView: RecyclerView
+    private lateinit var activityAdapter: SingleHistoryAdapter
     private lateinit var presenter: BinDetailsContract.Presenter
-    private val args: BinDetailsFragmentArgs by navArgs() // Receive navigation arguments using Safe Args
+    private val args: BinDetailsFragmentArgs by navArgs()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,25 +46,30 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        presenter = BinDetailsPresenter(requireContext())
+        authRepository = AuthRepository()
+        actRepository = ActivityRepository()
+
+        presenter = BinDetailsPresenter(requireContext(), authRepository, actRepository)
         presenter.attachView(this)
 
-        // Setup menu button click listener
+        activityRecyclerView = binding.rvRecentActivity
+
         setupMenuButton()
-
-        // Setup back button
-        binding.btnBack.setOnClickListener {
-            // Handle back navigation
-            requireActivity().onBackPressedDispatcher.onBackPressed()
-        }
-
-        // Load bin data from arguments
+        setupBackButton()
+        setupRecyclerView()
         loadBinFromArguments()
     }
 
     private fun loadBinFromArguments() {
         val bin = args.bin
         presenter.loadBinData(bin)
+
+    }
+
+    private fun setupBackButton() {
+        binding.btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
     }
 
     private fun setupMenuButton() {
@@ -60,8 +78,15 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
         }
     }
 
+    private fun setupRecyclerView() {
+        activityAdapter = SingleHistoryAdapter(emptyList())
+        activityRecyclerView.apply {
+            layoutManager = LinearLayoutManager(context)
+            adapter = activityAdapter
+        }
+    }
+
     private fun showPopupMenu(view: View) {
-        // Use ContextThemeWrapper to apply custom style
         val wrapper = android.view.ContextThemeWrapper(requireContext(), R.style.CustomPopupMenu)
         val popupMenu = PopupMenu(wrapper, view)
         popupMenu.menuInflater.inflate(R.menu.bin_details_menu, popupMenu.menu)
@@ -69,13 +94,11 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_edit_details -> {
-                    // Handle edit details click
                     Toast.makeText(
                         requireContext(),
                         "Edit Details clicked",
                         Toast.LENGTH_SHORT
                     ).show()
-                    // TODO: Navigate to edit screen or show edit dialog
                     true
                 }
                 else -> false
@@ -96,12 +119,8 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
         binding.tvLocation.text = bin.location
         binding.tvFillLevel.text = "${bin.fillLevel}%"
         binding.progressBarCircular.progress = bin.fillLevel?.toInt() ?: 0
-
-
-        // Update fill percentage badge
         binding.tvFillPercentage.text = "${bin.fillLevel}%"
 
-        // Update alert message based on fill level
         when {
             bin.fillLevel!! >= 76 -> {
                 binding.tvAlertMessage.visibility = View.VISIBLE
@@ -116,13 +135,20 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
     override fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
-
     override fun findViewById(
         statusDot: Int,
         tvActivityTitle: Int,
         tvActivityTime: Int,
         ivInfo: Int
     ): BinDetailsContract.View {
+        TODO("Not yet implemented")
+    }
+
+    override fun showActivities(activities: List<ActivityEvent>) {
+        activityAdapter.updateActivities(activities)
+    }
+
+    override fun showNoActivities(activities: List<ActivityEvent>) {
         TODO("Not yet implemented")
     }
 }
