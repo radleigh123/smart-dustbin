@@ -177,4 +177,6 @@
     <string name="support_message">Can\'t find what you\'re looking for? Our support team is here to help you.</string>
     <string name="contact_support">Contact Support</string>
     <string name="view_faqs">View FAQs</string>
+
+    <string name="no_recent_activities">No recent activities</string>
 </resources>
