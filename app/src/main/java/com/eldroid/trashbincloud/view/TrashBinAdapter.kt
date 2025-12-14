@@ -32,27 +32,54 @@ class TrashBinAdapter(
                 // Change progress
                 binding.progressBar.progress = fill
 
-                // === NEW: Change progress bar color based on fill level ===
-                val color = when {
-                    fill > 80 -> ContextCompat.getColor(binding.root.context, R.color.red)
-                    fill > 50 -> ContextCompat.getColor(binding.root.context, R.color.orange)
-                    fill > 30 -> ContextCompat.getColor(binding.root.context, R.color.green)
-                    else -> ContextCompat.getColor(binding.root.context, R.color.green)
+                // ===== COLOR + STATUS BASED ON FILL LEVEL =====
+                val (statusText, statusColor) = when {
+                    fill == 100 -> Pair("FULL", R.color.red)
+                    fill > 80 -> Pair("CRITICAL", R.color.red)
+                    fill > 50 -> Pair("WARNING", R.color.orange)
+                    fill > 30 -> Pair("NORMAL", R.color.green)
+                    else -> Pair("LOW", R.color.green)
                 }
 
+                // Progress bar color
                 binding.progressBar.progressTintList =
-                    android.content.res.ColorStateList.valueOf(color)
+                    android.content.res.ColorStateList.valueOf(
+                        ContextCompat.getColor(binding.root.context, statusColor)
+                    )
 
-                binding.tvFillLevel.setTextColor(color)
+                // Fill percentage text color
+                binding.tvFillLevel.setTextColor(
+                    ContextCompat.getColor(binding.root.context, statusColor)
+                )
 
+                // ===== BIN STATUS TEXT + COLOR =====
+                binding.tvBinStatus.text = statusText
 
-                binding.tvBinStatus.background = when (bin.status) {
-                    0 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.background_text)
-                    1 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_orange)
-                    2 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_red)
-                    else -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.gradient_button_bg)
-                }
-                binding.progressBar.progress = bin.fillLevel ?: 0
+                // ⚠️ IMPORTANT: use backgroundTint, NOT setBackgroundColor
+                binding.tvBinStatus.backgroundTintList =
+                    ContextCompat.getColorStateList(binding.root.context, statusColor)
+
+                // === NEW: Change progress bar color based on fill level ===
+//                val color = when {
+//                    fill > 80 -> ContextCompat.getColor(binding.root.context, R.color.red)
+//                    fill > 50 -> ContextCompat.getColor(binding.root.context, R.color.orange)
+//                    fill > 30 -> ContextCompat.getColor(binding.root.context, R.color.green)
+//                    else -> ContextCompat.getColor(binding.root.context, R.color.green)
+//                }
+//
+//                binding.progressBar.progressTintList =
+//                    android.content.res.ColorStateList.valueOf(color)
+//
+//                binding.tvFillLevel.setTextColor(color)
+//
+//
+//                binding.tvBinStatus.background = when (bin.status) {
+//                    0 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.background_text)
+//                    1 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_orange)
+//                    2 -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.bg_fill_status_red)
+//                    else -> binding.tvBinStatus.context.getDrawable(com.eldroid.trashbincloud.R.drawable.gradient_button_bg)
+//                }
+//                binding.progressBar.progress = bin.fillLevel ?: 0
 
                 // Setup click listeners
                 setupClickListeners(bin)
