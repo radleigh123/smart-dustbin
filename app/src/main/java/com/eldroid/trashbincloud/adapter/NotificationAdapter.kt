@@ -85,25 +85,25 @@ class NotificationAdapter(
         when (colorKey) {
             "green" -> {
                 holder.tvType.text = "Info"
-                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.green))
+                holder.tvType.backgroundTintList = ContextCompat.getColorStateList(context, R.color.green)
                 holder.ivIcon.setImageResource(R.drawable.ic_notification)
                 holder.ivIcon.setColorFilter(ContextCompat.getColor(context, R.color.green))
             }
             "yellow" -> {
                 holder.tvType.text = "Warning"
-                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.yellow))
+                holder.tvType.backgroundTintList = ContextCompat.getColorStateList(context, R.color.yellow)
                 holder.ivIcon.setImageResource(R.drawable.ic_warning)
                 holder.ivIcon.setColorFilter(ContextCompat.getColor(context, R.color.yellow))
             }
             "red" -> {
                 holder.tvType.text = "Critical"
-                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.red))
+                holder.tvType.backgroundTintList = ContextCompat.getColorStateList(context, R.color.red)
                 holder.ivIcon.setImageResource(R.drawable.ic_warning)
                 holder.ivIcon.setColorFilter(ContextCompat.getColor(context, R.color.red))
             }
             else -> {
                 holder.tvType.text = "Info"
-                holder.tvType.setBackgroundColor(ContextCompat.getColor(context, R.color.gray))
+                holder.tvType.backgroundTintList = ContextCompat.getColorStateList(context, R.color.gray)
                 holder.ivIcon.setImageResource(R.drawable.notification_icon)
             }
         }
