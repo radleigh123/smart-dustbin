@@ -1,5 +1,6 @@
 package com.eldroid.trashbincloud.view
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,7 +20,7 @@ import com.eldroid.trashbincloud.model.repository.ActivityRepository
 import com.eldroid.trashbincloud.model.repository.AuthRepository
 import com.eldroid.trashbincloud.model.repository.TrashBinRepository
 import com.eldroid.trashbincloud.presenter.BinDetailsPresenter
-import com.eldroid.trashbincloud.view.bin.AddBinSetupFragmentArgs
+import com.google.android.material.textfield.TextInputEditText
 
 class BinDetailsFragment : Fragment(), BinDetailsContract.View {
 
@@ -27,13 +28,15 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
     private val binding get() = _binding!!
 
     private lateinit var authRepository: AuthRepository
-
     private lateinit var actRepository: ActivityRepository
-
+    private lateinit var binRepository: TrashBinRepository
     private lateinit var activityRecyclerView: RecyclerView
     private lateinit var activityAdapter: SingleHistoryAdapter
     private lateinit var presenter: BinDetailsContract.Presenter
     private val args: BinDetailsFragmentArgs by navArgs()
+
+    // Store current bin
+    private var currentBin: TrashBin? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -48,6 +51,7 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
 
         authRepository = AuthRepository()
         actRepository = ActivityRepository()
+        binRepository = TrashBinRepository()
 
         presenter = BinDetailsPresenter(requireContext(), authRepository, actRepository)
         presenter.attachView(this)
@@ -62,8 +66,8 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
 
     private fun loadBinFromArguments() {
         val bin = args.bin
+        currentBin = bin
         presenter.loadBinData(bin)
-
     }
 
     private fun setupBackButton() {
@@ -94,11 +98,7 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.menu_edit_details -> {
-                    Toast.makeText(
-                        requireContext(),
-                        "Edit Details clicked",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    showEditBinDialog()
                     true
                 }
                 else -> false
@@ -106,6 +106,72 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
         }
 
         popupMenu.show()
+    }
+
+    private fun showEditBinDialog() {
+        currentBin?.let { bin ->
+            // Create custom dialog layout
+            val dialogView = LayoutInflater.from(requireContext())
+                .inflate(R.layout.dialog_edit_bin, null)
+
+            val etBinName = dialogView.findViewById<TextInputEditText>(R.id.etBinName)
+            val etLocation = dialogView.findViewById<TextInputEditText>(R.id.etLocation)
+
+            // Pre-fill with current values
+            etBinName.setText(bin.name)
+            etLocation.setText(bin.location)
+
+            // Build the dialog
+            AlertDialog.Builder(requireContext())
+                .setTitle("Edit Bin Details")
+                .setView(dialogView)
+                .setPositiveButton("Save") { dialog, _ ->
+                    val newName = etBinName.text.toString().trim()
+                    val newLocation = etLocation.text.toString().trim()
+
+                    if (newName.isEmpty()) {
+                        Toast.makeText(requireContext(), "Bin name cannot be empty", Toast.LENGTH_SHORT).show()
+                        return@setPositiveButton
+                    }
+
+                    if (newLocation.isEmpty()) {
+                        Toast.makeText(requireContext(), "Location cannot be empty", Toast.LENGTH_SHORT).show()
+                        return@setPositiveButton
+                    }
+
+                    // Update bin details
+                    updateBinDetails(newName, newLocation)
+                    dialog.dismiss()
+                }
+                .setNegativeButton("Cancel") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+                .show()
+        }
+    }
+
+    private fun updateBinDetails(newName: String, newLocation: String) {
+        currentBin?.let { bin ->
+            // Update the bin object
+            bin.name = newName
+            bin.location = newLocation
+
+            // Update in Firebase
+            val userUid = authRepository.currentUserId()
+            userUid?.let { uid ->
+                binRepository.updateBin(uid, bin) { success, error ->
+                    if (success) {
+                        Toast.makeText(requireContext(), "Bin details updated successfully", Toast.LENGTH_SHORT).show()
+                        // Update UI
+                        binding.tvBinName.text = newName
+                        binding.tvLocation.text = newLocation
+                    } else {
+                        Toast.makeText(requireContext(), "Failed to update: ${error ?: "Unknown error"}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        }
     }
 
     override fun onDestroyView() {
@@ -135,6 +201,7 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
     override fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
     override fun findViewById(
         statusDot: Int,
         tvActivityTitle: Int,
@@ -145,10 +212,18 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
     }
 
     override fun showActivities(activities: List<ActivityEvent>) {
-        activityAdapter.updateActivities(activities)
+        if (activities.isEmpty()) {
+            binding.rvRecentActivity.visibility = View.GONE
+            // You can show empty state here if you added tvNoActivities in layout
+        } else {
+            binding.rvRecentActivity.visibility = View.VISIBLE
+            activityAdapter.updateActivities(activities)
+        }
     }
 
     override fun showNoActivities(activities: List<ActivityEvent>) {
-        TODO("Not yet implemented")
+        binding.rvRecentActivity.visibility = View.GONE
+        // Show empty state message
+        Toast.makeText(requireContext(), "No recent activities", Toast.LENGTH_SHORT).show()
     }
 }
