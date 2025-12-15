@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -181,22 +182,55 @@ class BinDetailsFragment : Fragment(), BinDetailsContract.View {
     }
 
     override fun showBinDetails(bin: TrashBin) {
-        binding.tvBinName.text = bin.name
-        binding.tvLocation.text = bin.location
-        binding.tvFillLevel.text = "${bin.fillLevel}%"
-        binding.progressBarCircular.progress = bin.fillLevel?.toInt() ?: 0
-        binding.tvFillPercentage.text = "${bin.fillLevel}%"
+        val fill = bin.fillLevel ?: 0
 
-        when {
-            bin.fillLevel!! >= 76 -> {
-                binding.tvAlertMessage.visibility = View.VISIBLE
-                binding.tvAlertMessage.text = "⚠️ Bin is nearly full"
-            }
-            else -> {
-                binding.tvAlertMessage.visibility = View.GONE
-            }
+        binding.tvBinName.text = bin.name ?: "UNNAMED BIN"
+        binding.tvLocation.text = bin.location ?: "UNKNOWN"
+        binding.tvFillLevel.text = "$fill%"
+        binding.tvFillPercentage.text = "$fill%"
+
+        // Circular progress
+        binding.progressBarCircular.progress = fill
+
+        // ===== COLOR + STATUS BASED ON FILL LEVEL =====
+        val (statusText, statusColor) = when {
+            fill == 100 -> Pair("FULL", R.color.red)
+            fill >= 80 -> Pair("CRITICAL", R.color.red)
+            fill >= 50 -> Pair("WARNING", R.color.orange)
+            fill > 30 -> Pair("NORMAL", R.color.green)
+            else -> Pair("LOW", R.color.green)
+        }
+
+        val context = requireContext()
+
+        // Base color (solid)
+        val baseColor = ContextCompat.getColor(context, statusColor)
+
+        // 🔥 80% opacity background (204 = ~80%)
+        val bgColorWithOpacity =
+            androidx.core.graphics.ColorUtils.setAlphaComponent(baseColor, 77)
+
+        // Progress color (solid)
+        binding.progressBarCircular.progressTintList =
+            android.content.res.ColorStateList.valueOf(baseColor)
+
+        // Percentage text color (solid)
+        binding.tvFillPercentage.setTextColor(baseColor)
+
+        // Rounded background with 80% opacity
+        binding.tvFillPercentage.backgroundTintList =
+            android.content.res.ColorStateList.valueOf(bgColorWithOpacity)
+
+        // ===== ALERT MESSAGE =====
+        if (fill >= 80) {
+            binding.tvAlertMessage.visibility = View.VISIBLE
+            binding.tvAlertMessage.text = "⚠️ Bin is nearly full ($statusText)"
+        } else {
+            binding.tvAlertMessage.visibility = View.GONE
         }
     }
+
+
 
     override fun showError(message: String) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
