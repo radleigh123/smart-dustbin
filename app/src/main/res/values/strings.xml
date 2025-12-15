@@ -116,9 +116,9 @@
     <string name="close">Close</string>
     <string name="hold">Hold</string>
 
-    <string name="legend_0_50">0-50%</string>
-    <string name="legend_51_75">51-75%</string>
-    <string name="legend_76_100">76-100%</string>
+    <string name="legend_0_50">0-49%</string>
+    <string name="legend_51_75">50-79%</string>
+    <string name="legend_76_100">80-100%</string>
 
     <string name="days_to_fill">2.5</string>
     <string name="days_to_fill_label">Days to fill</string>

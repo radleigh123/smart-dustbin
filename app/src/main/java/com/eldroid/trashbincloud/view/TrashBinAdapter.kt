@@ -35,8 +35,8 @@ class TrashBinAdapter(
                 // ===== COLOR + STATUS BASED ON FILL LEVEL =====
                 val (statusText, statusColor) = when {
                     fill == 100 -> Pair("FULL", R.color.red)
-                    fill > 80 -> Pair("CRITICAL", R.color.red)
-                    fill > 50 -> Pair("WARNING", R.color.orange)
+                    fill >= 80 -> Pair("CRITICAL", R.color.red)
+                    fill >= 50 -> Pair("WARNING", R.color.orange)
                     fill > 30 -> Pair("NORMAL", R.color.green)
                     else -> Pair("LOW", R.color.green)
                 }
